@@ -35,6 +35,8 @@
     <maven-checkstyle.version>3.6.0</maven-checkstyle.version>
     <nohttp-checkstyle.version>0.0.11</nohttp-checkstyle.version>
     <spring-format.version>0.0.47</spring-format.version>
+    <pitest.version>1.30.0</pitest.version>
+    <pitest-junit5.version>1.2.3</pitest-junit5.version>
   </properties>
 
   <dependencies>
@@ -293,6 +295,39 @@
         </executions>
       </plugin>
 
+      <!-- Mutation Testing harness (K03): PIT targeting core business package owner.* -->
+      <!-- Cấu hình bởi: 2312618 Trinh Trung Hieu (TV1 - QA Lead / Scrum Master & DevSecOps) -->
+      <plugin>
+        <groupId>org.pitest</groupId>
+        <artifactId>pitest-maven</artifactId>
+        <version>1.30.0</version>
+        <dependencies>
+          <dependency>
+            <groupId>org.pitest</groupId>
+            <artifactId>pitest-junit5-plugin</artifactId>
+            <version>1.2.3</version>
+          </dependency>
+        </dependencies>
+        <configuration>
+          <mutators>
+            <mutator>STRONGER</mutator>
+          </mutators>
+          <targetClasses>
+            <param>org.springframework.samples.petclinic.owner.*</param>
+          </targetClasses>
+          <targetTests>
+            <param>org.springframework.samples.petclinic.owner.*</param>
+          </targetTests>
+          <outputFormats>
+            <outputFormat>HTML</outputFormat>
+            <outputFormat>XML</outputFormat>
+          </outputFormats>
+          <timestampedReports>false</timestampedReports>
+          <!-- CỔNG CHẤT LƯỢNG TỰ ĐỘNG (QUALITY GATE) DO TV1 THIẾT LẬP: Mutation Score >= 88%, Line Coverage >= 95% -->
+          <mutationThreshold>88</mutationThreshold>
+          <coverageThreshold>95</coverageThreshold>
+        </configuration>
+      </plugin>
       <!-- Spring Boot Actuator displays build-related information if a git.properties file is
       present at the classpath -->
       <plugin>
