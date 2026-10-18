@@ -19,29 +19,27 @@
 [INFO] 
 [INFO] --- git-commit-id:9.2.0:revision (default) @ spring-petclinic ---
 [INFO] dotGitDirectory 'D:\SchoolFile\KiemThuPhanMem\BaiTapNhom\Program_R01-K03\.git'
-[INFO] Collected git.build.user.name with value idewithasmile
-[INFO] Collected git.build.user.email with value trinhtrunghieu0907@gmail.com
-[INFO] Collected git.branch with value personal
-[INFO] Collected git.commit.id.describe with value ab1cecc
-[INFO] Collected git.commit.id.describe-short with value ab1cecc
-[INFO] Collected git.commit.id with value ab1cecc12bd29deca0c947c56d6f6eb57981b878
-[INFO] Collected git.commit.id.abbrev with value ab1cecc
-[INFO] Collected git.dirty with value false
-[INFO] Collected git.commit.user.name with value Hubert Trinh
-[INFO] Collected git.commit.user.email with value trinhtrunghieu0907@gmail.com
-[INFO] Collected git.commit.message.full with value Merge pull request #6 from idewithasmile/TrinhTrungHieu/Session3
-
-[Feat:Rà soát, c?p nh?t và nâng c?p ch?t l??ng h?c thu?t cho , , cùng…
-[INFO] Collected git.commit.message.short with value Merge pull request #6 from idewithasmile/TrinhTrungHieu/Session3
-[INFO] Collected git.commit.time with value 2026-10-19T02:20:38+07:00
-[INFO] Collected git.commit.author.time with value 2026-10-19T02:20:38+07:00
-[INFO] Collected git.commit.committer.time with value 2026-10-19T02:20:38+07:00
+[INFO] Collected git.build.user.name with value 2312618 Trinh Trung Hieu
+[INFO] Collected git.build.user.email with value 2312618@dlu.edu.vn
+[INFO] Collected git.branch with value TrinhTrungHieu/Session4
+[INFO] Collected git.commit.id.describe with value 716aa55-dirty
+[INFO] Collected git.commit.id.describe-short with value 716aa55-dirty
+[INFO] Collected git.commit.id with value 716aa551e2a781b39cd145e54604dea90f6a68d6
+[INFO] Collected git.commit.id.abbrev with value 716aa55
+[INFO] Collected git.dirty with value true
+[INFO] Collected git.commit.user.name with value 2312618 Trinh Trung Hieu
+[INFO] Collected git.commit.user.email with value 2312618@dlu.edu.vn
+[INFO] Collected git.commit.message.full with value Pull project from default branch after merge
+[INFO] Collected git.commit.message.short with value Pull project from default branch after merge
+[INFO] Collected git.commit.time with value 2026-10-19T04:44:13+07:00
+[INFO] Collected git.commit.author.time with value 2026-10-19T04:44:13+07:00
+[INFO] Collected git.commit.committer.time with value 2026-10-19T04:44:13+07:00
 [INFO] Collected git.remote.origin.url with value https://github.com/spring-projects/spring-petclinic.git
 [INFO] Collected git.tags with value 
 [INFO] Collected git.tag with value 
 [INFO] Collected git.closest.tag.name with value 
 [INFO] Collected git.closest.tag.commit.count with value 
-[INFO] Collected git.total.commit.count with value 1058
+[INFO] Collected git.total.commit.count with value 1063
 [INFO] Collected git.local.branch.ahead with value 0
 [INFO] Collected git.local.branch.behind with value 0
 [INFO] Collected git.build.time with value 2024-11-28T21:37:52+07:00
@@ -155,17 +153,17 @@
 [INFO] Auto adding org.junit.platform:junit-platform-launcher:jar:6.0.3 < central (https://repo.maven.apache.org/maven2, default, releases) to classpath.
 [INFO] Mutating from D:\SchoolFile\KiemThuPhanMem\BaiTapNhom\Program_R01-K03\target\classes
 [INFO] Replacing properties in argLine 
-2:46:45 AM PIT >> INFO : Verbose logging is disabled. If you encounter a problem, please enable it before reporting an issue.
-2:46:45 AM PIT >> INFO : Created 8 mutation test units in pre scan
-2:46:46 AM PIT >> INFO : Sending 27 test classes to minion
-2:46:46 AM PIT >> INFO : Sent tests to minion
-2:46:46 AM PIT >> INFO : MINION : OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
-/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-2:46:50 AM PIT >> INFO : Calculated coverage in 4 seconds.
-2:46:50 AM PIT >> INFO : 0 tests took longer than 2000 ms
-2:46:50 AM PIT >> INFO : Slowest test ([engine:junit-jupiter]/[class:org.springframework.samples.petclinic.owner.ControllerBinderMutationTests]/[method:ownerControllerDisallowsIdBinding()]) took 726 ms
-2:46:50 AM PIT >> INFO : Largest test ([engine:junit-jupiter]/[class:org.springframework.samples.petclinic.owner.PetControllerTests]/[nested-class:ProcessUpdateFormHasErrors]/[method:processUpdateFormWithDataIntegrityViolation()]) covered 224 blocks
-2:46:50 AM PIT >> INFO : Created 8 mutation test units
-/-\|/-\|2:47:33 AM PIT >> INFO : Completed in 48 seconds
+4:49:50 AM PIT >> INFO : Verbose logging is disabled. If you encounter a problem, please enable it before reporting an issue.
+4:49:50 AM PIT >> INFO : Created 8 mutation test units in pre scan
+4:49:50 AM PIT >> INFO : Sending 28 test classes to minion
+4:49:50 AM PIT >> INFO : Sent tests to minion
+4:49:50 AM PIT >> INFO : MINION : OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-4:49:54 AM PIT >> INFO : Calculated coverage in 4 seconds.
+4:49:54 AM PIT >> INFO : 0 tests took longer than 2000 ms
+4:49:54 AM PIT >> INFO : Slowest test ([engine:junit-jupiter]/[class:org.springframework.samples.petclinic.owner.ControllerBinderMutationTests]/[method:ownerControllerDisallowsIdBinding()]) took 719 ms
+4:49:54 AM PIT >> INFO : Largest test ([engine:junit-jupiter]/[class:org.springframework.samples.petclinic.owner.PetControllerTests]/[nested-class:ProcessUpdateFormHasErrors]/[method:processUpdateFormWithDataIntegrityViolation()]) covered 224 blocks
+4:49:54 AM PIT >> INFO : Created 8 mutation test units
+/-\|/-\|4:50:39 AM PIT >> INFO : Completed in 49 seconds
 ================================================================================
 - Mutators
 ================================================================================
@@ -242,21 +240,21 @@
 > scan classpath : < 1 second
 > coverage and dependency analysis : 4 seconds
 > build mutation tests : < 1 second
-> run mutation analysis : 43 seconds
+> run mutation analysis : 44 seconds
 --------------------------------------------------------------------------------
-> Total  : 48 seconds
+> Total  : 49 seconds
 --------------------------------------------------------------------------------
 > 0 tests took longer than 2000 ms
-> Slowest test ([engine:junit-jupiter]/[class:org.springframework.samples.petclinic.owner.ControllerBinderMutationTests]/[method:ownerControllerDisallowsIdBinding()]) took 726 ms
+> Slowest test ([engine:junit-jupiter]/[class:org.springframework.samples.petclinic.owner.ControllerBinderMutationTests]/[method:ownerControllerDisallowsIdBinding()]) took 719 ms
 > Largest test ([engine:junit-jupiter]/[class:org.springframework.samples.petclinic.owner.PetControllerTests]/[nested-class:ProcessUpdateFormHasErrors]/[method:processUpdateFormWithDataIntegrityViolation()]) covered 224 blocks
 ================================================================================
 - Statistics
 ================================================================================
 >> Line Coverage (for mutated classes only): 250/250 (100%)
->> 27 tests examined
+>> 28 tests examined
 >> Generated 195 mutations Killed 192 (98%)
 >> Mutations with no coverage 0. Test strength 98%
->> Ran 595 tests (3.05 tests per mutation)
+>> Ran 593 tests (3.04 tests per mutation)
 Enhanced functionality available at https://www.arcmutate.com/
 
 Build messages:- 
@@ -264,6 +262,6 @@ Build messages:-
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time:  53.124 s
-[INFO] Finished at: 2026-10-19T02:47:33+07:00
+[INFO] Total time:  54.995 s
+[INFO] Finished at: 2026-10-19T04:50:39+07:00
 [INFO] ------------------------------------------------------------------------

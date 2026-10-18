@@ -1,4 +1,6 @@
-﻿*   2aff889 - 2312618 Trinh Trung Hieu (2026-10-19): Merge branch 'chore/ci-pitest-setup' into main
+﻿* 005c81f - 2312618 Trinh Trung Hieu (2026-10-19): docs(evidence): update experimental execution logs and git traceability for Session 4 (2312618 - TV1)
+* 716aa55 - 2312618 Trinh Trung Hieu (2026-10-19): Pull project from default branch after merge
+*   2aff889 - 2312618 Trinh Trung Hieu (2026-10-19): Merge branch 'chore/ci-pitest-setup' into main
 |\  
 | * fb03830 - 2312618 Trinh Trung Hieu (2026-10-19): docs(report): complete section D, section H and one-command reproducibility guide (2312618 - TV1)
 | * 886e16b - 2312618 Trinh Trung Hieu (2026-10-19): ci(actions): implement 6-step GitHub Actions mutation testing pipeline with artifact upload (2312618 - TV1)
@@ -28,5 +30,3 @@
 * 500158f - Pedro Arthur Hartmann (2026-09-29): added redirection to the page when the user types a page that is out of bounds
 * 0d064b0 - Pedro Arthur Hartmann (2026-09-24): adding integer overflow mitigations from user controlled input
 * b33136f - Pedro Arthur Hartmann (2026-09-24): adding integer overflow mitigations from user controlled input
-* f3c7483 - Ayush Keshri (2026-09-18): Validate visit description length
-* 3c7ab98 - Rennan Ballaro Gomes de Sousa (2026-09-28): Prevent HTTP 500 when owner city/address exceed column length
