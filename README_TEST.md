@@ -160,3 +160,16 @@ Dự án đã tích hợp quy trình kiểm thử tự động hóa toàn diện
 | `JAVA_HOME is not defined correctly` | Chưa cấu hình hoặc cấu hình sai biến môi trường `JAVA_HOME` | Thiết lập `JAVA_HOME` trỏ tới thư mục cài đặt JDK 17 và mở lại cửa sổ Terminal mới |
 | `PostgresIntegrationTests` báo lỗi kết nối | Máy tính chưa khởi động Docker daemon | Bình thường và hợp lệ; các bài test Docker đã được loại trừ bằng cờ `-Dtest='!*IntegrationTests'` |
 | `Port 8080 was already in use` | Cổng 8080 đang bị ứng dụng khác chiếm giữ | Thêm tham số `--server.port=8090` vào lệnh `spring-boot:run` |
+
+---
+
+## 8. Danh mục tệp log minh chứng kỹ thuật thực nghiệm (`logs/`)
+
+Nhóm đã trích xuất đầy đủ bộ tệp log thực nghiệm từ môi trường máy trạm phục vụ công tác thanh tra và phúc khảo:
+
+| Tệp log | Mục đích & Nội dung | Kết quả kiểm chứng |
+|:---|:---|:---|
+| `logs/local_unit_test.log` | Nhật ký chạy toàn bộ 153 Unit Tests | `153/153 Tests Passed`, `BUILD SUCCESS` |
+| `logs/pitest_mutation_coverage.log` | Nhật ký chạy kiểm thử đột biến Pitest trên gói `owner.*` | `192/195 Killed (98%)`, `Line Coverage: 250/250 (100%)`, `BUILD SUCCESS` |
+| `logs/git_history.log` | Nhật ký lưu vết lịch sử Git (Git Traceability) | Đầy đủ 20 commit gần nhất, tuân thủ định danh TV1 |
+
