@@ -1,0 +1,14 @@
+file,category,baseline_tests,final_tests,delta_tests,scope
+ControllerBinderMutationTests.java,Mutation mới,0,5,5,4 binder setDisallowedFields + minVisitDate
+OwnerControllerMutationTests.java,Mutation mới,0,6,6,"Pageable captor, OOB redirect, 2 lambda unknown-owner, id-mismatch direct"
+OwnerControllerTests.java,Baseline,18,18,0,MockMvc controller owner CRUD
+OwnerMutationTests.java,Mutation mới,0,27,27,addPet/getPet/addVisit/toString - decision table thuần unit
+OwnerTests.java,Baseline,2,2,0,Domain model Owner
+PetControllerMutationTests.java,Mutation mới,0,19,19,"side-effect captors, rethrow, detached-update, null-id guard, lambda direct"
+PetControllerTests.java,Baseline,14,14,0,MockMvc controller pet CRUD (ProcessCreationForm & ProcessUpdateForm)
+PetTypeFormatterTests.java,Baseline,3,3,0,Parse và print PetType
+PetValidatorMutationTests.java,Mutation mới,0,9,9,BVA 30/31 ký tự + decision table isNew × type
+PetValidatorTests.java,Baseline,7,7,0,Kiểm chuẩn Pet cơ bản (ValidateHasErrors)
+PetVisitModelMutationTests.java,Mutation mới,0,9,9,Pet/Visit model + PetTypeFormatter.print(null)
+VisitControllerMutationTests.java,Mutation mới,0,6,6,"pending-visit assert, pet/owner unknown, null-date direct, delegation captor"
+VisitControllerTests.java,Baseline,5,5,0,MockMvc controller visit CRUD
