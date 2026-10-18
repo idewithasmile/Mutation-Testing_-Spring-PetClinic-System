@@ -1,0 +1,269 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ------------< org.springframework.samples:spring-petclinic >------------
+[INFO] Building petclinic 4.0.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.3:enforce (enforce-java) @ spring-petclinic ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.version.RequireJavaVersion passed
+[INFO] 
+[INFO] --- spring-javaformat:0.0.47:validate (default) @ spring-petclinic ---
+[INFO] 
+[INFO] --- checkstyle:3.6.0:check (nohttp-checkstyle-validation) @ spring-petclinic ---
+[INFO] You have 0 Checkstyle violations.
+[INFO] 
+[INFO] --- jacoco:0.8.15:prepare-agent (default) @ spring-petclinic ---
+[INFO] Skipping JaCoCo execution because property jacoco.skip is set.
+[INFO] argLine set to empty
+[INFO] 
+[INFO] --- git-commit-id:9.2.0:revision (default) @ spring-petclinic ---
+[INFO] dotGitDirectory 'D:\SchoolFile\KiemThuPhanMem\BaiTapNhom\Program_R01-K03\.git'
+[INFO] Collected git.build.user.name with value idewithasmile
+[INFO] Collected git.build.user.email with value trinhtrunghieu0907@gmail.com
+[INFO] Collected git.branch with value personal
+[INFO] Collected git.commit.id.describe with value ab1cecc
+[INFO] Collected git.commit.id.describe-short with value ab1cecc
+[INFO] Collected git.commit.id with value ab1cecc12bd29deca0c947c56d6f6eb57981b878
+[INFO] Collected git.commit.id.abbrev with value ab1cecc
+[INFO] Collected git.dirty with value false
+[INFO] Collected git.commit.user.name with value Hubert Trinh
+[INFO] Collected git.commit.user.email with value trinhtrunghieu0907@gmail.com
+[INFO] Collected git.commit.message.full with value Merge pull request #6 from idewithasmile/TrinhTrungHieu/Session3
+
+[Feat:Rà soát, c?p nh?t và nâng c?p ch?t l??ng h?c thu?t cho , , cùng…
+[INFO] Collected git.commit.message.short with value Merge pull request #6 from idewithasmile/TrinhTrungHieu/Session3
+[INFO] Collected git.commit.time with value 2026-10-19T02:20:38+07:00
+[INFO] Collected git.commit.author.time with value 2026-10-19T02:20:38+07:00
+[INFO] Collected git.commit.committer.time with value 2026-10-19T02:20:38+07:00
+[INFO] Collected git.remote.origin.url with value https://github.com/spring-projects/spring-petclinic.git
+[INFO] Collected git.tags with value 
+[INFO] Collected git.tag with value 
+[INFO] Collected git.closest.tag.name with value 
+[INFO] Collected git.closest.tag.commit.count with value 
+[INFO] Collected git.total.commit.count with value 1058
+[INFO] Collected git.local.branch.ahead with value 0
+[INFO] Collected git.local.branch.behind with value 0
+[INFO] Collected git.build.time with value 2024-11-28T21:37:52+07:00
+[INFO] Collected git.build.version with value 4.0.0-SNAPSHOT
+[INFO] Collected git.build.host with value idewithasmilePC
+[INFO] including property 'git.tags' in results
+[INFO] including property 'git.build.version' in results
+[INFO] including property 'git.branch' in results
+[INFO] including property 'git.build.host' in results
+[INFO] including property 'git.commit.id' in results
+[INFO] including property 'git.commit.user.email' in results
+[INFO] including property 'git.local.branch.behind' in results
+[INFO] including property 'git.commit.author.time' in results
+[INFO] including property 'git.build.user.name' in results
+[INFO] including property 'git.dirty' in results
+[INFO] including property 'git.closest.tag.commit.count' in results
+[INFO] including property 'git.commit.user.name' in results
+[INFO] including property 'git.commit.id.abbrev' in results
+[INFO] including property 'git.commit.id.describe-short' in results
+[INFO] including property 'git.total.commit.count' in results
+[INFO] including property 'git.commit.id.describe' in results
+[INFO] including property 'git.build.user.email' in results
+[INFO] including property 'git.commit.message.short' in results
+[INFO] including property 'git.commit.committer.time' in results
+[INFO] including property 'git.tag' in results
+[INFO] including property 'git.closest.tag.name' in results
+[INFO] including property 'git.local.branch.ahead' in results
+[INFO] including property 'git.commit.time' in results
+[INFO] including property 'git.build.time' in results
+[INFO] including property 'git.commit.message.full' in results
+[INFO] including property 'git.remote.origin.url' in results
+[INFO] Reading existing properties file [D:\SchoolFile\KiemThuPhanMem\BaiTapNhom\Program_R01-K03\target\classes\git.properties] (for project petclinic)...
+[INFO] Properties file [D:\SchoolFile\KiemThuPhanMem\BaiTapNhom\Program_R01-K03\target\classes\git.properties] is up-to-date (for module petclinic)...
+[INFO] 
+[INFO] --- spring-boot:4.1.0:build-info (default) @ spring-petclinic ---
+[INFO] 
+[INFO] --- cyclonedx:2.9.1:makeAggregateBom (default) @ spring-petclinic ---
+[INFO] CycloneDX: Resolving Dependencies
+[INFO] CycloneDX: Creating BOM version 1.6 with 106 component(s)
+[INFO] CycloneDX: Writing and validating BOM (JSON): D:\SchoolFile\KiemThuPhanMem\BaiTapNhom\Program_R01-K03\target\classes\META-INF\sbom\application.cdx.json
+[WARNING] Unknown keyword meta:enum - you should define your own Meta Schema. If the keyword is irrelevant for validation, just use a NonValidationKeyword or if it should generate annotations AnnotationKeyword
+[WARNING] Unknown keyword deprecated - you should define your own Meta Schema. If the keyword is irrelevant for validation, just use a NonValidationKeyword or if it should generate annotations AnnotationKeyword
+[INFO]            attaching as spring-petclinic-4.0.0-SNAPSHOT-cyclonedx.json
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ spring-petclinic ---
+[INFO] Copying 3 resources from src\main\resources to target\classes
+[INFO] Copying 47 resources from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ spring-petclinic ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ spring-petclinic ---
+[INFO] skip non existing resourceDirectory D:\SchoolFile\KiemThuPhanMem\BaiTapNhom\Program_R01-K03\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ spring-petclinic ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- pitest:1.30.0:mutationCoverage (default-cli) @ spring-petclinic ---
+[INFO] Root dir is : D:\SchoolFile\KiemThuPhanMem\BaiTapNhom\Program_R01-K03
+[INFO] Found plugin : Default csv report plugin
+[INFO] Found plugin : Default xml report plugin
+[INFO] Found plugin : Log progress during mutation analysis
+[INFO] Found plugin : Default html report plugin
+[INFO] Found plugin : Static initializer code detector plugin
+[INFO] Found plugin : Excluded annotations plugin
+[INFO] Found plugin : Try with resources filter
+[INFO] Found plugin : Inlined finally block filter plugin
+[INFO] Found plugin : Implicit null check filter
+[INFO] Found plugin : Method reference null check filter
+[INFO] Found plugin : For each loop filter
+[INFO] Found plugin : Enum junk filter
+[INFO] Found plugin : Record junk mutation filter
+[INFO] Found plugin : String switch filter
+[INFO] Found plugin : Assertions filter
+[INFO] Found plugin : Enum switch filter
+[INFO] Found plugin : Logging calls filter
+[INFO] Found plugin : Infinite for loop filter
+[INFO] Found plugin : Long running iterator loop filter
+[INFO] Found plugin : For loop counter filter
+[INFO] Found plugin : Kotlin junk mutations filter
+[INFO] Found plugin : Groovy junk mutations filter
+[INFO] Found plugin : Max mutations per class limit
+[INFO] Found plugin : Equals shortcut equivalent mutant filter
+[INFO] Found plugin : Trivial return vals equivalence filter
+[INFO] Found plugin : Filters mutants with line number <= 1
+[INFO] Found plugin : Division by one equivalent mutant filter
+[INFO] Found plugin : Lombok junk mutations filter
+[INFO] Found plugin : Filter mutations to defensive wrappers such as unmodifiableCollection on return or field write
+[INFO] Found plugin : Final field null assignment equivalent mutant filter
+[INFO] Found plugin : Mutant export plugin
+[INFO] Found plugin : Auto add java.awt.headless=true to keep keyboard focus on Mac OS
+[INFO] Found plugin : Auto set number of threads based on machine
+[INFO] Found plugin : Automatically add -ea to launch args to enable assertions
+[INFO] Found plugin : Default build verifier
+[INFO] Found plugin : Detect missing JUnit5 plugin
+[INFO] Found plugin : Detect missing TestNG plugin
+[INFO] Found plugin : Detect missing kotlin plugin
+[INFO] Found plugin : Detect missing spring plugin
+[INFO] Found plugin : Default coverage exporter
+[INFO] Found plugin : Basic test statistics
+[INFO] Found shared classpath plugin : Default mutation engine
+[INFO] Found shared classpath plugin : JUnit 5 test framework support
+[INFO] Found shared classpath plugin : JUnit plugin
+[INFO] Found shared classpath plugin : Support for mocking frameworks using javassist
+[INFO] Found shared classpath plugin : Disable JaCoCo
+[INFO] Found shared classpath plugin : Normalise record attributes
+[INFO] Found shared classpath plugin : Reset environment for javassist
+[INFO] Available mutators : EXPERIMENTAL_ARGUMENT_PROPAGATION,FALSE_RETURNS,TRUE_RETURNS,CONDITIONALS_BOUNDARY,CONSTRUCTOR_CALLS,EMPTY_RETURNS,INCREMENTS,INLINE_CONSTS,INVERT_NEGS,MATH,NEGATE_CONDITIONALS,NON_VOID_METHOD_CALLS,NULL_RETURNS,PRIMITIVE_RETURNS,REMOVE_CONDITIONALS_EQUAL_IF,REMOVE_CONDITIONALS_EQUAL_ELSE,REMOVE_CONDITIONALS_ORDER_IF,REMOVE_CONDITIONALS_ORDER_ELSE,VOID_METHOD_CALLS,EXPERIMENTAL_BIG_DECIMAL,EXPERIMENTAL_BIG_INTEGER,EXPERIMENTAL_MEMBER_VARIABLE,EXPERIMENTAL_NAKED_RECEIVER,REMOVE_INCREMENTS,EXPERIMENTAL_SWITCH
+[INFO] Adding org.pitest:pitest-junit5-plugin to SUT classpath
+[INFO] Adding org.pitest:pitest to SUT classpath
+[INFO] Auto adding org.junit.platform:junit-platform-launcher:jar:6.0.3 < central (https://repo.maven.apache.org/maven2, default, releases) to classpath.
+[INFO] Mutating from D:\SchoolFile\KiemThuPhanMem\BaiTapNhom\Program_R01-K03\target\classes
+[INFO] Replacing properties in argLine 
+2:46:45 AM PIT >> INFO : Verbose logging is disabled. If you encounter a problem, please enable it before reporting an issue.
+2:46:45 AM PIT >> INFO : Created 8 mutation test units in pre scan
+2:46:46 AM PIT >> INFO : Sending 27 test classes to minion
+2:46:46 AM PIT >> INFO : Sent tests to minion
+2:46:46 AM PIT >> INFO : MINION : OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-2:46:50 AM PIT >> INFO : Calculated coverage in 4 seconds.
+2:46:50 AM PIT >> INFO : 0 tests took longer than 2000 ms
+2:46:50 AM PIT >> INFO : Slowest test ([engine:junit-jupiter]/[class:org.springframework.samples.petclinic.owner.ControllerBinderMutationTests]/[method:ownerControllerDisallowsIdBinding()]) took 726 ms
+2:46:50 AM PIT >> INFO : Largest test ([engine:junit-jupiter]/[class:org.springframework.samples.petclinic.owner.PetControllerTests]/[nested-class:ProcessUpdateFormHasErrors]/[method:processUpdateFormWithDataIntegrityViolation()]) covered 224 blocks
+2:46:50 AM PIT >> INFO : Created 8 mutation test units
+/-\|/-\|2:47:33 AM PIT >> INFO : Completed in 48 seconds
+================================================================================
+- Mutators
+================================================================================
+> org.pitest.mutationtest.engine.gregor.mutators.RemoveConditionalMutator_ORDER_ELSE
+>> Generated 3 Killed 3 (100%)
+> KILLED 3 SURVIVED 0 TIMED_OUT 0 NON_VIABLE 0 
+> MEMORY_ERROR 0 NOT_STARTED 0 STARTED 0 RUN_ERROR 0 
+> NO_COVERAGE 0 EQUIVALENT 0 
+--------------------------------------------------------------------------------
+> org.pitest.mutationtest.engine.gregor.mutators.ConditionalsBoundaryMutator
+>> Generated 3 Killed 3 (100%)
+> KILLED 3 SURVIVED 0 TIMED_OUT 0 NON_VIABLE 0 
+> MEMORY_ERROR 0 NOT_STARTED 0 STARTED 0 RUN_ERROR 0 
+> NO_COVERAGE 0 EQUIVALENT 0 
+--------------------------------------------------------------------------------
+> org.pitest.mutationtest.engine.gregor.mutators.VoidMethodCallMutator
+>> Generated 33 Killed 32 (97%)
+> KILLED 32 SURVIVED 1 TIMED_OUT 0 NON_VIABLE 0 
+> MEMORY_ERROR 0 NOT_STARTED 0 STARTED 0 RUN_ERROR 0 
+> NO_COVERAGE 0 EQUIVALENT 0 
+--------------------------------------------------------------------------------
+> org.pitest.mutationtest.engine.gregor.mutators.returns.BooleanTrueReturnValsMutator
+>> Generated 2 Killed 2 (100%)
+> KILLED 2 SURVIVED 0 TIMED_OUT 0 NON_VIABLE 0 
+> MEMORY_ERROR 0 NOT_STARTED 0 STARTED 0 RUN_ERROR 0 
+> NO_COVERAGE 0 EQUIVALENT 0 
+--------------------------------------------------------------------------------
+> org.pitest.mutationtest.engine.gregor.mutators.returns.NullReturnValsMutator
+>> Generated 20 Killed 20 (100%)
+> KILLED 20 SURVIVED 0 TIMED_OUT 0 NON_VIABLE 0 
+> MEMORY_ERROR 0 NOT_STARTED 0 STARTED 0 RUN_ERROR 0 
+> NO_COVERAGE 0 EQUIVALENT 0 
+--------------------------------------------------------------------------------
+> org.pitest.mutationtest.engine.gregor.mutators.RemoveConditionalMutator_EQUAL_ELSE
+>> Generated 48 Killed 48 (100%)
+> KILLED 48 SURVIVED 0 TIMED_OUT 0 NON_VIABLE 0 
+> MEMORY_ERROR 0 NOT_STARTED 0 STARTED 0 RUN_ERROR 0 
+> NO_COVERAGE 0 EQUIVALENT 0 
+--------------------------------------------------------------------------------
+> org.pitest.mutationtest.engine.gregor.mutators.RemoveConditionalMutator_ORDER_IF
+>> Generated 3 Killed 3 (100%)
+> KILLED 3 SURVIVED 0 TIMED_OUT 0 NON_VIABLE 0 
+> MEMORY_ERROR 0 NOT_STARTED 0 STARTED 0 RUN_ERROR 0 
+> NO_COVERAGE 0 EQUIVALENT 0 
+--------------------------------------------------------------------------------
+> org.pitest.mutationtest.engine.gregor.mutators.MathMutator
+>> Generated 1 Killed 1 (100%)
+> KILLED 1 SURVIVED 0 TIMED_OUT 0 NON_VIABLE 0 
+> MEMORY_ERROR 0 NOT_STARTED 0 STARTED 0 RUN_ERROR 0 
+> NO_COVERAGE 0 EQUIVALENT 0 
+--------------------------------------------------------------------------------
+> org.pitest.mutationtest.engine.gregor.mutators.returns.EmptyObjectReturnValsMutator
+>> Generated 33 Killed 33 (100%)
+> KILLED 33 SURVIVED 0 TIMED_OUT 0 NON_VIABLE 0 
+> MEMORY_ERROR 0 NOT_STARTED 0 STARTED 0 RUN_ERROR 0 
+> NO_COVERAGE 0 EQUIVALENT 0 
+--------------------------------------------------------------------------------
+> org.pitest.mutationtest.engine.gregor.mutators.returns.BooleanFalseReturnValsMutator
+>> Generated 1 Killed 1 (100%)
+> KILLED 1 SURVIVED 0 TIMED_OUT 0 NON_VIABLE 0 
+> MEMORY_ERROR 0 NOT_STARTED 0 STARTED 0 RUN_ERROR 0 
+> NO_COVERAGE 0 EQUIVALENT 0 
+--------------------------------------------------------------------------------
+> org.pitest.mutationtest.engine.gregor.mutators.RemoveConditionalMutator_EQUAL_IF
+>> Generated 48 Killed 46 (96%)
+> KILLED 46 SURVIVED 2 TIMED_OUT 0 NON_VIABLE 0 
+> MEMORY_ERROR 0 NOT_STARTED 0 STARTED 0 RUN_ERROR 0 
+> NO_COVERAGE 0 EQUIVALENT 0 
+--------------------------------------------------------------------------------
+================================================================================
+- Timings
+================================================================================
+> pre-scan for mutations : < 1 second
+> scan classpath : < 1 second
+> coverage and dependency analysis : 4 seconds
+> build mutation tests : < 1 second
+> run mutation analysis : 43 seconds
+--------------------------------------------------------------------------------
+> Total  : 48 seconds
+--------------------------------------------------------------------------------
+> 0 tests took longer than 2000 ms
+> Slowest test ([engine:junit-jupiter]/[class:org.springframework.samples.petclinic.owner.ControllerBinderMutationTests]/[method:ownerControllerDisallowsIdBinding()]) took 726 ms
+> Largest test ([engine:junit-jupiter]/[class:org.springframework.samples.petclinic.owner.PetControllerTests]/[nested-class:ProcessUpdateFormHasErrors]/[method:processUpdateFormWithDataIntegrityViolation()]) covered 224 blocks
+================================================================================
+- Statistics
+================================================================================
+>> Line Coverage (for mutated classes only): 250/250 (100%)
+>> 27 tests examined
+>> Generated 195 mutations Killed 192 (98%)
+>> Mutations with no coverage 0. Test strength 98%
+>> Ran 595 tests (3.05 tests per mutation)
+Enhanced functionality available at https://www.arcmutate.com/
+
+Build messages:- 
+* Project uses Spring, but the Arcmutate Spring plugin is not present. (https://docs.arcmutate.com/docs/spring.html)
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  53.124 s
+[INFO] Finished at: 2026-10-19T02:47:33+07:00
+[INFO] ------------------------------------------------------------------------

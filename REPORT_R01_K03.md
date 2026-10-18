@@ -672,3 +672,10 @@ chmod +x mvnw
   `target/pit-reports/mutations.xml` (xác nhận 192 thẻ trạng thái `KILLED` và đúng 3 thẻ `SURVIVED` tương đương).
 - Nếu xem trên GitHub: Truy cập tab **Actions** $\rightarrow$ chọn workflow run gần nhất $\rightarrow$ tải Artifact **`Pitest-Mutation-Coverage-Report-R01-K03`** để kiểm tra trọn vẹn báo cáo.
 
+#### Bước 6: Đối soát Bộ tệp Log Kỹ thuật Thực nghiệm (`logs/`)
+Dự án lưu giữ đầy đủ bộ log minh chứng thực nghiệm được trích xuất trực tiếp tại máy trạm và lưu vết trong kho Git:
+1. `logs/local_unit_test.log`: Minh chứng thực thi 153 Unit Tests toàn hệ thống (153 passed, 0 failures, `BUILD SUCCESS`).
+2. `logs/pitest_mutation_coverage.log`: Minh chứng thực thi Pitest trên gói `owner.*` (192/195 killed - 98%, Line coverage 100%, `BUILD SUCCESS`).
+3. `logs/git_history.log`: Minh chứng lưu vết Git Traceability chi tiết theo quy trình phân công nhiệm vụ của Thành viên 1 (Nhóm trưởng).
+
+
