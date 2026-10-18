@@ -257,6 +257,81 @@ def generate_mutator_breakdown(baseline_mutations, final_mutations, out_path: Pa
     print(f"[OK] Generated {out_path} ({len(rows)} rows)")
 
 
+def generate_tests_by_file(repo_root: Path, out_path: Path):
+    """Generate reports/data/tests_by_file.csv scanning test directory."""
+    import re
+
+    test_dir = repo_root / "src" / "test" / "java" / "org" / "springframework" / "samples" / "petclinic" / "owner"
+    if not test_dir.exists():
+        raise FileNotFoundError(f"Test directory not found: {test_dir}")
+
+    # Baseline files present at pinned commit 500158f732419217507c7656904b8e6aa1bcc0d6
+    baseline_filenames = {
+        "OwnerControllerTests.java",
+        "OwnerTests.java",
+        "PetControllerTests.java",
+        "PetTypeFormatterTests.java",
+        "PetValidatorTests.java",
+        "VisitControllerTests.java",
+    }
+
+    test_scope_map = {
+        "ControllerBinderMutationTests.java": "4 binder setDisallowedFields + minVisitDate",
+        "OwnerControllerMutationTests.java": "Pageable captor, OOB redirect, 2 lambda unknown-owner, id-mismatch direct",
+        "OwnerControllerTests.java": "MockMvc controller owner CRUD",
+        "OwnerMutationTests.java": "addPet/getPet/addVisit/toString - decision table thuần unit",
+        "OwnerTests.java": "Domain model Owner",
+        "PetControllerMutationTests.java": "side-effect captors, rethrow, detached-update, null-id guard, lambda direct",
+        "PetControllerTests.java": "MockMvc controller pet CRUD (ProcessCreationForm & ProcessUpdateForm)",
+        "PetTypeFormatterTests.java": "Parse và print PetType",
+        "PetValidatorMutationTests.java": "BVA 30/31 ký tự + decision table isNew × type",
+        "PetValidatorTests.java": "Kiểm chuẩn Pet cơ bản (ValidateHasErrors)",
+        "PetVisitModelMutationTests.java": "Pet/Visit model + PetTypeFormatter.print(null)",
+        "VisitControllerMutationTests.java": "pending-visit assert, pet/owner unknown, null-date direct, delegation captor",
+        "VisitControllerTests.java": "MockMvc controller visit CRUD",
+    }
+
+    rows = []
+    total_baseline = 0
+    total_final = 0
+
+    for java_file in sorted(test_dir.glob("*.java")):
+        filename = java_file.name
+        content = java_file.read_text(encoding="utf-8")
+        test_matches = re.findall(r'@(?:ParameterizedTest|Test|RepeatedTest)\b', content)
+        final_count = len(test_matches)
+        is_baseline = filename in baseline_filenames
+        baseline_count = final_count if is_baseline else 0
+        delta = final_count - baseline_count
+
+        total_baseline += baseline_count
+        total_final += final_count
+
+        rows.append({
+            "file": filename,
+            "category": "Baseline" if is_baseline else "Mutation mới",
+            "baseline_tests": baseline_count,
+            "final_tests": final_count,
+            "delta_tests": delta,
+            "scope": test_scope_map.get(filename, ""),
+        })
+
+    # Assert integrity
+    assert len(rows) == 13, f"Expected 13 test files, got {len(rows)}"
+    assert total_baseline == 49, f"Expected 49 baseline tests, got {total_baseline}"
+    assert total_final == 130, f"Expected 130 final tests, got {total_final}"
+
+    fieldnames = ["file", "category", "baseline_tests", "final_tests", "delta_tests", "scope"]
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(out_path, mode="w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer.writeheader()
+        for r in rows:
+            writer.writerow(r)
+
+    print(f"[OK] Generated {out_path} ({len(rows)} files, Baseline: {total_baseline}, Final: {total_final}, Delta: +{total_final - total_baseline})")
+
+
 def main():
     # Resolve repository root
     script_dir = Path(__file__).resolve().parent
@@ -283,6 +358,7 @@ def main():
     generate_metrics_summary(baseline_mutations, final_mutations, data_dir / "metrics_summary.csv")
     generate_survivors_baseline(baseline_mutations, data_dir / "survivors_baseline.csv")
     generate_mutator_breakdown(baseline_mutations, final_mutations, data_dir / "mutator_breakdown.csv")
+    generate_tests_by_file(repo_root, data_dir / "tests_by_file.csv")
     print("[SUCCESS] All reports generated successfully.")
 
 
