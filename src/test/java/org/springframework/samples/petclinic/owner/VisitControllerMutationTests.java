@@ -77,6 +77,20 @@ class VisitControllerMutationTests {
 		given(this.owners.findById(TEST_OWNER_ID)).willReturn(Optional.of(owner));
 	}
 
+	/**
+	 * Kỹ thuật: Basis Path / Model Assertion Đường đi/Nhánh: BP-VC-05 (Dòng 76–81 trong
+	 * VisitController.java) Mutant mục tiêu: VoidMethodCallMutator dòng 80 (xóa
+	 * pet.addVisit(visit)) Ý đồ: Kiểm tra đối tượng pet đưa vào model đã được gắn sẵn
+	 * thực thể visit mới khởi tạo (size=1), diệt VoidMethodCallMutator khi lời gọi
+	 * addVisit bị loại bỏ.
+	 */
+	/**
+	 * Kỹ thuật: Basis Path / Model Assertion Đường đi/Nhánh: BP-VC-05 (Dòng 76–81 trong
+	 * VisitController.java) Mutant mục tiêu: VoidMethodCallMutator dòng 80 (xóa
+	 * pet.addVisit(visit)) Ý đồ: Kiểm tra đối tượng pet đưa vào model đã được gắn sẵn
+	 * thực thể visit mới khởi tạo (size=1), diệt VoidMethodCallMutator khi lời gọi
+	 * addVisit bị loại bỏ.
+	 */
 	@Test
 	void newVisitFormExposesPetWithPendingVisit() throws Exception {
 		this.mockMvc.perform(get("/owners/{ownerId}/pets/{petId}/visits/new", TEST_OWNER_ID, TEST_PET_ID))
@@ -84,6 +98,20 @@ class VisitControllerMutationTests {
 			.andExpect(model().attribute("pet", hasProperty("visits", hasSize(1))));
 	}
 
+	/**
+	 * Kỹ thuật: Error Guessing / Null Guard Đường đi/Nhánh: BP-VC-04 (Dòng 71–74 trong
+	 * VisitController.java) Mutant mục tiêu: RemoveConditionalMutator_EQUAL_ELSE dòng 71
+	 * (thay pet == null bằng false) Ý đồ: Kiểm tra nhánh guard pet == null ném
+	 * IllegalArgumentException khi truy cập petId=99 không thuộc về ownerId=1, diệt
+	 * RemoveConditionalMutator.
+	 */
+	/**
+	 * Kỹ thuật: Error Guessing / Null Guard Đường đi/Nhánh: BP-VC-04 (Dòng 71–74 trong
+	 * VisitController.java) Mutant mục tiêu: RemoveConditionalMutator_EQUAL_ELSE dòng 71
+	 * (thay pet == null bằng false) Ý đồ: Kiểm tra nhánh guard pet == null ném
+	 * IllegalArgumentException khi truy cập petId=99 không thuộc về ownerId=1, diệt
+	 * RemoveConditionalMutator.
+	 */
 	@Test
 	void newVisitFormWithUnknownPetThrowsIllegalArgument() {
 		assertThatThrownBy(
@@ -92,6 +120,20 @@ class VisitControllerMutationTests {
 			.hasStackTraceContaining("Pet with id 99 not found for owner with id 1");
 	}
 
+	/**
+	 * Kỹ thuật: Error Guessing / Exception Testing Đường đi/Nhánh: BP-VC-03 (Dòng 66–69
+	 * trong VisitController.java) Mutant mục tiêu: NullReturnValsMutator dòng 68
+	 * (orElseThrow lambda cho owners.findById) Ý đồ: Xác nhận khi URL chứa ownerId=999
+	 * không tồn tại, phương thức loadPetWithVisit ném IllegalArgumentException với thông
+	 * điệp rõ ràng, diệt NullReturnValsMutator.
+	 */
+	/**
+	 * Kỹ thuật: Error Guessing / Exception Testing Đường đi/Nhánh: BP-VC-03 (Dòng 66–69
+	 * trong VisitController.java) Mutant mục tiêu: NullReturnValsMutator dòng 68
+	 * (orElseThrow lambda cho owners.findById) Ý đồ: Xác nhận khi URL chứa ownerId=999
+	 * không tồn tại, phương thức loadPetWithVisit ném IllegalArgumentException với thông
+	 * điệp rõ ràng, diệt NullReturnValsMutator.
+	 */
 	@Test
 	void newVisitFormWithUnknownOwnerThrowsIllegalArgument() {
 		given(this.owners.findById(999)).willReturn(Optional.empty());
@@ -102,6 +144,20 @@ class VisitControllerMutationTests {
 			.hasStackTraceContaining("Owner not found with id: 999");
 	}
 
+	/**
+	 * Kỹ thuật: Basis Path / ArgumentCaptor Đường đi/Nhánh: BP-VC-08 (Dòng 108–112 trong
+	 * VisitController.java) Mutant mục tiêu: VoidMethodCallMutator dòng 108, 109 (xóa
+	 * owner.addVisit hoặc save) Ý đồ: Dùng ArgumentCaptor kiểm tra owner được save có
+	 * chứa đúng visit mới với ngày hợp lệ và mô tả "Annual checkup", diệt
+	 * VoidMethodCallMutator và verify side effect lưu DB.
+	 */
+	/**
+	 * Kỹ thuật: Basis Path / ArgumentCaptor Đường đi/Nhánh: BP-VC-08 (Dòng 108–112 trong
+	 * VisitController.java) Mutant mục tiêu: VoidMethodCallMutator dòng 108, 109 (xóa
+	 * owner.addVisit hoặc save) Ý đồ: Dùng ArgumentCaptor kiểm tra owner được save có
+	 * chứa đúng visit mới với ngày hợp lệ và mô tả "Annual checkup", diệt
+	 * VoidMethodCallMutator và verify side effect lưu DB.
+	 */
 	@Test
 	void bookingPersistsVisitThroughOwner() throws Exception {
 		this.mockMvc
@@ -118,6 +174,20 @@ class VisitControllerMutationTests {
 		assertThat(pet.getVisits().iterator().next().getDescription()).isEqualTo("Annual checkup");
 	}
 
+	/**
+	 * Kỹ thuật: Basis Path / Null Guard Đường đi/Nhánh: BP-VC-07 (Dòng 100 trong
+	 * VisitController.java) Mutant mục tiêu: RemoveConditionalMutator_EQUAL_ELSE dòng 100
+	 * (thay date != null bằng false) Ý đồ: Gọi trực tiếp processNewVisitForm với
+	 * visit.getDate() = null để kiểm chứng null-guard tránh NPE tại
+	 * visit.getDate().isAfter(), đảm bảo đặt lịch thành công khi ngày để trống.
+	 */
+	/**
+	 * Kỹ thuật: Basis Path / Null Guard Đường đi/Nhánh: BP-VC-07 (Dòng 100 trong
+	 * VisitController.java) Mutant mục tiêu: RemoveConditionalMutator_EQUAL_ELSE dòng 100
+	 * (thay date != null bằng false) Ý đồ: Gọi trực tiếp processNewVisitForm với
+	 * visit.getDate() = null để kiểm chứng null-guard tránh NPE tại
+	 * visit.getDate().isAfter(), đảm bảo đặt lịch thành công khi ngày để trống.
+	 */
 	@Test
 	void processNewVisitFormWithNullDateBooksSuccessfully() {
 		OwnerRepository repository = mock(OwnerRepository.class);
@@ -141,6 +211,20 @@ class VisitControllerMutationTests {
 		assertThat(captor.getValue().getPet(TEST_PET_ID).getVisits()).contains(visit);
 	}
 
+	/**
+	 * Kỹ thuật: Boundary Value / Basis Path Đường đi/Nhánh: BP-VC-06 (Dòng 100–103,
+	 * 105–106 trong VisitController.java) Mutant mục tiêu: ConditionalsBoundaryMutator và
+	 * RemoveConditionalMutator_EQUAL_IF dòng 100 Ý đồ: Đặt ngày khám là ngày hiện tại
+	 * (LocalDate.now()), khẳng định nhánh ranh giới !isAfter(now) kích hoạt rejectValue
+	 * "typeMismatch.visitDate" và trả về form, diệt ConditionalsBoundaryMutator.
+	 */
+	/**
+	 * Kỹ thuật: Boundary Value / Basis Path Đường đi/Nhánh: BP-VC-06 (Dòng 100–103,
+	 * 105–106 trong VisitController.java) Mutant mục tiêu: ConditionalsBoundaryMutator và
+	 * RemoveConditionalMutator_EQUAL_IF dòng 100 Ý đồ: Đặt ngày khám là ngày hiện tại
+	 * (LocalDate.now()), khẳng định nhánh ranh giới !isAfter(now) kích hoạt rejectValue
+	 * "typeMismatch.visitDate" và trả về form, diệt ConditionalsBoundaryMutator.
+	 */
 	@Test
 	void todayVisitDateIsRejected() throws Exception {
 		this.mockMvc
