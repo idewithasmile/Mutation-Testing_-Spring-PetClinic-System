@@ -188,6 +188,115 @@ final_mutations.xml:
 
 - **Điểm còn mở:** Toàn bộ tiêu chí nghiệm thu của Session S1 đã hoàn thành xuất sắc 100%, không còn blocker nào.
 - **Kế hoạch cho Session S2:**
-  1. **Phần G.2 (Code Smell & Defect Analysis):** Rà soát các vấn đề thiết kế mã nguồn, dead code, và code smell trong gói `owner` phát hiện qua quá trình kiểm thử đột biến (ví dụ: `addPet` dư thừa điều kiện, `@PathVariable` binding trùng lặp `setId`, các nhánh exception unreachable).
-  2. **Phần G.3 (Root Cause Analysis - RCA):** Lập bảng phân tích nguyên nhân gốc rễ theo mô hình chuẩn IEEE **Error – Fault – Failure** cho các khiếm khuyết được phát hiện và giải thích vì sao bộ test baseline bỏ sót.
-  3. **Phần G.4 (Boolean Algebraic Proof):** Thực hiện chứng minh hình thức bằng đại số Boolean cho 3 Equivalent Mutants (`EQ-01`, `EQ-02` tại `Owner.java:108` và `EQ-03` tại `OwnerController.java:167`).
+  - Thực hiện nhiệm vụ trực quan hóa (Visualization): Viết `scripts/make_charts.py` xuất 4 biểu đồ PNG chuẩn in ấn 200 DPI dựa trên dữ liệu CSV.
+  - Lập hướng dẫn chụp màn hình báo cáo PIT HTML (`pit_index.png`).
+
+---
+---
+
+## SESSION S2: Trực quan hóa số liệu kiểm thử (Data Visualization)
+- **Ngày thực hiện:** 2026-10-19
+- **Nhánh làm việc:** `docs/metrics-rca-final-report`
+- **Mục tiêu:**
+  1. Xin cấp phép sử dụng mạng ngoài (tuân thủ Ràng buộc bất biến số 4) để tải `get-pip.py` và cài đặt `matplotlib` (3.11.2) vào môi trường Python 3.11 portable (`C:\Users\Admin\.python`).
+  2. Bổ sung trích xuất dữ liệu tăng trưởng test case theo file vào `scripts/parse_mutations.py` để sinh tệp chuẩn `reports/data/tests_by_file.csv` với cơ chế assert dữ liệu nghiêm ngặt (13 files, 49 baseline tests, 130 final tests, delta +81 tests).
+  3. Xây dựng công cụ đồ họa `scripts/make_charts.py` (sử dụng `matplotlib`), xuất 4 hình ảnh PNG độ phân giải 200 DPI vào `reports/figures/` phục vụ báo cáo học thuật:
+     - `fig1_coverage_vs_mutation.png`: Cột nhóm Line Coverage vs Mutation Score (Baseline vs Final), làm nổi bật thông điệp khoảng trống kiểm thử 29.62% (Line coverage 96.80% ~ 97% nhưng Mutation score chỉ 67.18%).
+     - `fig2_mutant_status.png`: Cột chồng (stacked bar) Killed / Survived / No Coverage (Baseline vs Final).
+     - `fig3_survivors_by_mutator.png`: Biểu đồ ngang phân rã 64 mutants chưa diệt ở Baseline theo 8 toán tử (Survived + No Coverage).
+     - `fig4_tests_growth.png`: Tăng trưởng test case theo từng file kiểm thử (Baseline vs Final).
+  4. Tuân thủ tiêu chuẩn trình bày biểu đồ: Font tiếng Việt chuẩn Unicode (`Segoe UI`, `Arial`), nhãn số liệu trực tiếp trên từng cột/thanh, phối màu tương phản cao kết hợp vân sọc (hatch patterns) giúp nhận diện rõ ràng khi in ấn đen trắng, tiêu đề học thuật và chú thích nguồn dữ liệu CSV minh bạch.
+  5. Biên soạn tài liệu hướng dẫn chụp ảnh màn hình báo cáo HTML gốc của PIT: `reports/figures/GUIDE_CAPTURE_PIT_INDEX.md` để thành viên tự lưu thành `reports/figures/pit_index.png` (tuyệt đối không giả mạo ảnh).
+  6. Thực hiện vòng lặp VERIFY - FIX trực quan: Dùng công cụ `view_file` xem lại từng ảnh PNG, tinh chỉnh khoảng cách tọa độ để triệt tiêu hoàn toàn hiện tượng chồng chữ, lẹm chữ, hay tràn viền.
+
+---
+
+### 1. KẾT QUẢ THỰC HIỆN CHECKLIST SESSION S2
+
+| Mục tiêu / Tiêu chí nghiệm thu | Yêu cầu kỹ thuật | Kết quả thực tế đạt được | Trạng thái | Nguồn kiểm chứng |
+| :--- | :--- | :--- | :---: | :--- |
+| **1. Cài đặt Matplotlib** | Python 3.11 portable + pip + matplotlib | Đã cài đặt thành công `pip-26.2.1` và `matplotlib-3.11.2` sau khi người dùng phê chuẩn qua `ask_question` | **ĐẠT (✓)** | `python -c "import matplotlib; print(matplotlib.__version__)"` → `3.11.2` |
+| **2. Tệp `tests_by_file.csv`** | Đầy đủ 13 file test, khớp 49 baseline / 130 final | Đã sinh tệp `reports/data/tests_by_file.csv`, assert dữ liệu khớp 100% tài liệu bàn giao | **ĐẠT (✓)** | `reports/data/tests_by_file.csv`<br>`scripts/parse_mutations.py` |
+| **3. Script `make_charts.py`** | Đọc dữ liệu từ CSV, tự động `assert` trước khi vẽ | Script hoàn thành, tự động assert đúng từng chỉ số: 96.80%, 67.18%, 100%, 98.46%, tổng 195 mutants, 64 survivors | **ĐẠT (✓)** | `scripts/make_charts.py` |
+| **4. Xuất 4 tệp PNG 200 DPI** | `fig1`, `fig2`, `fig3`, `fig4` tại `reports/figures/` | Đã xuất đủ 4 tệp PNG độ phân giải cao 200 DPI, kích thước chuẩn ấn phẩm khoa học | **ĐẠT (✓)** | `reports/figures/*.png` |
+| **5. Kiểm chứng trực quan ảnh** | Không chồng chữ, không cắt nhãn, phân biệt khi in B&W | Đã mở xem trực tiếp cả 4 file ảnh qua `view_file`, tinh chỉnh layout không lỗi font/tofu, có họa tiết vân sọc | **ĐẠT (✓)** | Công cụ `view_file` xác nhận ảnh sắc nét |
+| **6. Hướng dẫn `pit_index.png`** | Hướng dẫn tự chụp màn hình, không giả mạo ảnh | Đã tạo tài liệu `reports/figures/GUIDE_CAPTURE_PIT_INDEX.md` hướng dẫn chi tiết 4 bước chụp ảnh | **ĐẠT (✓)** | `reports/figures/GUIDE_CAPTURE_PIT_INDEX.md` |
+
+---
+
+### 2. ĐẶC TẢ CHI TIẾT 4 BIỂU ĐỒ NGUYỆM THU
+
+#### 2.1. `fig1_coverage_vs_mutation.png` (So sánh Line Coverage vs Mutation Score)
+- **Thông điệp cốt lõi:** Làm nổi bật sự tương phản giữa Line Coverage cao (96.80% ~ 97%) và Mutation Score thực tế (67.18% ~ 67%) tại giai đoạn Baseline, vạch rõ "Khoảng trống kiểm thử (Test Gap) 29.62%" và sự nguy hiểm của ảo giác an toàn khi chỉ đo độ bao phủ dòng.
+- **Tại Final:** Độ bao phủ dòng đạt tuyệt đối 100.00% (250/250 lines) và điểm đột biến tiệm cận tối đa 98.46% (192/195 killed), toàn bộ 3 mutant sống sót đều là Equivalent Mutants (điểm đột biến hữu hiệu đạt 100%).
+- **Trình bày:** Cột nhóm 2 pha, màu xanh Navy vân sọc chéo (`//`) cho Line Coverage và màu cam đất hạt chấm (`..`) cho Mutation Score; hộp chú thích nổi bật khoảng trống 29.62% ở vị trí trung tâm thoáng đãng.
+
+#### 2.2. `fig2_mutant_status.png` (Cơ cấu trạng thái Mutant)
+- **Thông điệp cốt lõi:** Phân bổ toàn diện 195 mutants theo 3 trạng thái: Killed (Đã diệt), Survived (Sống sót) và No Coverage (Không có test chạm tới).
+- **Số liệu:**
+  - *Baseline:* 131 Killed (67.2%), 55 Survived (28.2%), 9 No Coverage (4.6%).
+  - *Final:* 192 Killed (98.5%), 3 Survived (1.5% - 100% Equivalent Mutants), 0 No Coverage (0.0%).
+- **Trình bày:** Cột chồng (stacked bar) chuẩn xác; đường chỉ dẫn (leader line) trỏ từ ngoài vào cho các lát cắt nhỏ (9 No Coverage và 3 Survived) chống đè chữ; nhãn tổng số 195 mutants rõ nét trên đỉnh cột.
+
+#### 2.3. `fig3_survivors_by_mutator.png` (Phân bố 64 mutant sống sót ở Baseline theo Toán tử)
+- **Thông điệp cốt lõi:** Bóc tách nguyên nhân vì sao bộ test gốc để lọt 64 mutants non-killed trên 8 toán tử đột biến khác nhau, phân định rõ giữa mutant có test chạm tới nhưng thiếu assert (55 Survived) và mutant hoàn toàn thiếu test (9 No Coverage).
+- **Toán tử trọng điểm:** `RemoveConditionalMutator_EQUAL_IF` (20 mutants: 19 S, 1 NC), `VoidMethodCallMutator` (20 mutants: 18 S, 2 NC), `RemoveConditionalMutator_EQUAL_ELSE` (12 mutants: 11 S, 1 NC), `NullReturnValsMutator` (6 mutants: 1 S, 5 NC).
+- **Trình bày:** Cột ngang phân cấp giảm dần từ trên xuống dưới, hiển thị chi tiết số lượng Survived và No Coverage trên từng thanh.
+
+#### 2.4. `fig4_tests_growth.png` (Tăng trưởng Test Case theo từng file)
+- **Thông điệp cốt lõi:** Minh họa trực quan quá trình nâng cấp toàn diện bộ test suite từ 6 file gốc (49 tests) lên 13 file (130 tests), bổ sung 7 file chuyên biệt (+81 tests, tỷ lệ tăng trưởng +165.31%).
+- **Trình bày:** Cột ngang đôi (paired horizontal bars) với đường ranh giới phân tách trực quan giữa nhóm file gốc (Baseline) và nhóm file đột biến mới (Mutation), nhãn số lượng test và mức tăng (`+Δ`) hiển thị rõ ràng bên cạnh mỗi thanh.
+
+---
+
+### 3. BẢNG MÃ BĂM DỮ LIỆU ĐÃ KIỂM CHỨNG (SHA-256 INTEGRITY)
+
+```text
+fig1_coverage_vs_mutation.png:
+BCA1118EE42A868B792441DA249C42C5685F7D3F1C80934D2D60FB743D5CB9A2
+
+fig2_mutant_status.png:
+7E8041823B672EE9CE77D52EB1A7F81AFB33B6ED15DBBD06557AB66526483509
+
+fig3_survivors_by_mutator.png:
+2391071638671A69B2F1ECA832062B34D4251D0180FD2F146382F410C7135686
+
+fig4_tests_growth.png:
+1F27D444E6C3C5897071CBD04716DD233A049BBBEBD857B65F522A0AF6055150
+
+tests_by_file.csv:
+AA501AD4EC4BCD8C6866EC2099F6989A78999E45BC64CD5C1F8DCF06F31799BC
+
+make_charts.py:
+D94737645523C15C2AD3B145B8B612943192C4045F02B59DEC636EF18C6995A0
+
+GUIDE_CAPTURE_PIT_INDEX.md:
+F10B2D71BEE70527D4D46E647F50574CF059F2451E4AC0A56C5A24BDC6F2DB29
+```
+
+---
+
+### 4. DANH MỤC TỆP TIN TẠO / CẬP NHẬT TRONG SESSION S2
+
+1. [`scripts/make_charts.py`](file:///D:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/scripts/make_charts.py): Script Python xuất 4 biểu đồ 200 DPI tự động kiểm chứng assert với dữ liệu CSV.
+2. [`scripts/parse_mutations.py`](file:///D:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/scripts/parse_mutations.py): Bổ sung hàm `generate_tests_by_file` tự động sinh `tests_by_file.csv`.
+3. [`reports/data/tests_by_file.csv`](file:///D:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/reports/data/tests_by_file.csv): Bảng dữ liệu thống kê số lượng test case theo từng file giữa Baseline và Final.
+4. [`reports/figures/fig1_coverage_vs_mutation.png`](file:///D:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/reports/figures/fig1_coverage_vs_mutation.png): Biểu đồ Line Coverage vs Mutation Score (200 DPI).
+5. [`reports/figures/fig2_mutant_status.png`](file:///D:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/reports/figures/fig2_mutant_status.png): Biểu đồ cột chồng cơ cấu trạng thái mutant (200 DPI).
+6. [`reports/figures/fig3_survivors_by_mutator.png`](file:///D:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/reports/figures/fig3_survivors_by_mutator.png): Biểu đồ phân rã survivor baseline theo mutator (200 DPI).
+7. [`reports/figures/fig4_tests_growth.png`](file:///D:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/reports/figures/fig4_tests_growth.png): Biểu đồ tăng trưởng số test theo file (200 DPI).
+8. [`reports/figures/GUIDE_CAPTURE_PIT_INDEX.md`](file:///D:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/reports/figures/GUIDE_CAPTURE_PIT_INDEX.md): Hướng dẫn thành viên tự chụp ảnh màn hình báo cáo PIT HTML.
+9. [`docs/sessions/SESSION_LOG.md`](file:///D:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/docs/sessions/SESSION_LOG.md): Cập nhật toàn diện tiến độ phiên làm việc Session S2.
+
+*(Ràng buộc bất biến tuân thủ 100%: Không chỉnh sửa `src/main/java`, `src/test/java`, hay `pom.xml`).*
+
+---
+
+### 5. ĐIỂM CÒN MỞ & KẾ HOẠCH CHO SESSION TIẾP THEO (SESSION S3)
+
+- **Điểm còn mở:** Toàn bộ tiêu chí nghiệm thu của Session S2 đã hoàn thành xuất sắc 100%, không còn blocker nào.
+- **Kế hoạch cho Session S3:**
+  1. **Phần G.2 (Code Smell & Defect Analysis):** Phân tích chi tiết các vấn đề thiết kế mã nguồn, dead code và code smell được phát hiện trong gói `owner` qua quá trình kiểm thử đột biến.
+  2. **Phần G.3 (Root Cause Analysis - RCA):** Lập bảng phân tích nguyên nhân gốc rễ theo chuẩn IEEE **Error – Fault – Failure** cho các khiếm khuyết được phát hiện và giải thích vì sao bộ test baseline bỏ sót.
+  3. **Phần G.4 (Boolean Algebraic Proof):** Thực hiện chứng minh hình thức bằng đại số Boolean cho 3 Equivalent Mutants (`Owner.java:108` x2 và `OwnerController.java:167`).
+

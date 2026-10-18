@@ -1,0 +1,32 @@
+﻿*   2aff889 - 2312618 Trinh Trung Hieu (2026-10-19): Merge branch 'chore/ci-pitest-setup' into main
+|\  
+| * fb03830 - 2312618 Trinh Trung Hieu (2026-10-19): docs(report): complete section D, section H and one-command reproducibility guide (2312618 - TV1)
+| * 886e16b - 2312618 Trinh Trung Hieu (2026-10-19): ci(actions): implement 6-step GitHub Actions mutation testing pipeline with artifact upload (2312618 - TV1)
+| * 7254b9f - 2312618 Trinh Trung Hieu (2026-10-19): chore(build): configure pitest-maven 1.30.0 for JUnit 6 and enforce 88% mutation quality gate (2312618 - TV1)
+|/  
+*   ab1cecc - Hubert Trinh (2026-10-19): Merge pull request #6 from idewithasmile/TrinhTrungHieu/Session3
+|\  
+| * e02759f - idewithasmile (2026-10-19): [Feat:R├á so├ít, cß║¡p nhß║¡t v├á n├óng cß║Ñp chß║Ñt l╞░ß╗úng hß╗ìc thuß║¡t cho , , c├╣ng Phß║ºn D v├á Phß║ºn H trong  ─æß╗â b├ím s├ít 100% kiß║┐n thß╗⌐c b├ái giß║úng Kiß╗âm thß╗¡ phß║ºn mß╗üm v├á quy tr├¼nh CI/CD vß╗½a thiß║┐t lß║¡p.]
+* |   5ffed83 - Hubert Trinh (2026-10-19): Merge pull request #5 from idewithasmile/VietLinh/Session1
+|\ \  
+| * | 73d66fb - VietLinh (2026-10-19): Thu thß║¡p metrics v├á dß╗▒ng Baseline thß║¡t
+| |/  
+* |   4b92412 - Hubert Trinh (2026-10-19): Merge pull request #4 from idewithasmile/BaoBao/Session1
+|\ \  
+| |/  
+|/|   
+| * 1d322e3 - Truong Bao Bao (2026-10-19): FLOW GRAPH & CYCLOMATIC
+|/  
+*   33c801b - Hubert Trinh (2026-10-18): Merge pull request #2 from idewithasmile/TrinhTrungHieu/Session2
+|\  
+| * 0ca3100 - idewithasmile (2026-10-18): [Feat: Thiß║┐t lß║¡p ─æ╞░ß╗¥ng ß╗æng T├¡ch hß╗úp li├¬n tß╗Ñc (CI/CD Pipeline) tß╗▒ ─æß╗Öng h├│a ho├án to├án tß║íi tß╗çp  theo kiß║┐n tr├║c 6 b╞░ß╗¢c chuß║⌐n Fail-Fast.]
+* | 1420826 - Hubert Trinh (2026-10-18): Merge pull request #1 from idewithasmile/TrinhTrungHieu/Session1
+|\| 
+| * c45092d - idewithasmile (2026-10-18): [Feat: Kiß╗âm to├ín t├¡nh to├án vß║╣n cß╗ºa kho m├ú nguß╗ôn v├á n├óng cß║Ñp cß║Ñu h├¼nh pitest-maven trong pom.xml ─æß╗â t├¡ch hß╗úp Cß╗òng chß║Ñt l╞░ß╗úng tß╗▒ ─æß╗Öng (Quality Gate): tß╗▒ ─æß╗Öng ─æ├ính tr╞░ß╗út bß║ún build nß║┐u Mutation Score < 88% hoß║╖c Line Coverage < 95%]
+|/  
+* cba224f - idewithasmile (2026-10-13): test: add mutation testing for owner module
+* 500158f - Pedro Arthur Hartmann (2026-09-29): added redirection to the page when the user types a page that is out of bounds
+* 0d064b0 - Pedro Arthur Hartmann (2026-09-24): adding integer overflow mitigations from user controlled input
+* b33136f - Pedro Arthur Hartmann (2026-09-24): adding integer overflow mitigations from user controlled input
+* f3c7483 - Ayush Keshri (2026-09-18): Validate visit description length
+* 3c7ab98 - Rennan Ballaro Gomes de Sousa (2026-09-28): Prevent HTTP 500 when owner city/address exceed column length
