@@ -1,4 +1,8 @@
 name: Mutation Testing CI (PITest - K03)
+# ==============================================================================
+# GitHub Actions CI/CD Pipeline: 6-Step Mutation Testing & Quality Gate (PIT)
+# Thiết kế & Vận hành: 2312618 Trinh Trung Hieu (TV1 - QA Lead / DevSecOps)
+# ==============================================================================
 
 on:
   push:

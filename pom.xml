@@ -296,6 +296,7 @@
       </plugin>
 
       <!-- Mutation Testing harness (K03): PIT targeting core business package owner.* -->
+      <!-- Cấu hình bởi: 2312618 Trinh Trung Hieu (TV1 - QA Lead / Scrum Master & DevSecOps) -->
       <plugin>
         <groupId>org.pitest</groupId>
         <artifactId>pitest-maven</artifactId>
@@ -322,7 +323,7 @@
             <outputFormat>XML</outputFormat>
           </outputFormats>
           <timestampedReports>false</timestampedReports>
-          <!-- CỔNG CHẤT LƯỢNG TỰ ĐỘNG (QUALITY GATE) DO TV1 THIẾT LẬP -->
+          <!-- CỔNG CHẤT LƯỢNG TỰ ĐỘNG (QUALITY GATE) DO TV1 THIẾT LẬP: Mutation Score >= 88%, Line Coverage >= 95% -->
           <mutationThreshold>88</mutationThreshold>
           <coverageThreshold>95</coverageThreshold>
         </configuration>
