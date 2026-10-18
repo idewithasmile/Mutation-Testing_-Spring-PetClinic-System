@@ -161,3 +161,23 @@ Ghi riêng 200 và 3xx/Location; công cụ tự theo redirect có thể chỉ h
 | Docs thiết kế S01 | Không có ở branch hiện tại | Vẫn cần tích hợp từ commit 1f1091b ở phiên phù hợp |
 
 Checklist nghiệm thu máy sạch nằm ở C.8 của onboarding; chưa đánh dấu thay người thực hiện. S05 chỉ thay hai tài liệu trong docs/tv3, không chỉnh bản báo cáo chung, không tạo commit/PR và không chạy ứng dụng. **Next: S06** để thu test/PIT evidence hiện tại; S07 đối chiếu docs và đóng gói bàn giao.
+
+## C.8. Cập nhật bằng chứng S06 — 19/10/2026
+
+S06 đã tái hiện verification sau S05 tại branch `TranMinhTai/Session5`, HEAD
+`589a5057a75f37d476bc95268b0e04f1e0ff62c1`, bằng Temurin 21.0.12.1. Bảng này
+thay thế nhãn “chưa chạy trong S05” **chỉ cho kết quả S06**; không biến việc
+chạy trên snapshot hiện tại thành xác nhận máy sạch hoặc demo HTTP.
+
+| Lệnh | Thời gian +07:00 | Exit | Kết quả thực tế | Report |
+|---|---|---:|---|---|
+| `mvnw.cmd test -Dtest=OwnerMutationTests,PetValidatorMutationTests,PetVisitModelMutationTests` | 04:20:41–04:20:55 | 0 | 45 run, 45 pass, 0 failures/errors/skipped | `target/surefire-reports/TEST-*.xml` |
+| `mvnw.cmd test -Dtest=org.springframework.samples.petclinic.owner.**` | 04:20:57–04:21:20 | 0 | 130 run, 130 pass, 0 failures/errors/skipped | `target/surefire-reports/TEST-*.xml` |
+| `mvnw.cmd test -Dtest=!*IntegrationTests -DfailIfNoTests=false` | 04:21:22–04:21:53 | 0 | 153 run, 153 pass, 0 failures/errors/skipped | `target/surefire-reports/TEST-*.xml` |
+| `mvnw.cmd test-compile org.pitest:pitest-maven:mutationCoverage -Djacoco.skip=true` | 04:21:59–04:23:42 | 0 | 195 generated; 192 killed; 3 survived; 0 no coverage; line 250/250 | `target/pit-reports/mutations.xml`, `index.html` |
+
+Mutation score là 192/195 = 98%, vượt ngưỡng 88%; line coverage 100%, vượt
+ngưỡng 95%. PIT ghi 27 tests examined, là metric mutation riêng, không phải
+45 test TV3 hoặc 130 test owner. Các report ở `target/` là artifact local có
+thể bị ghi đè và không đưa vào commit. Xem giới hạn snapshot và survivor tại
+[TV3 handoff](TV3_HANDOFF.md).
