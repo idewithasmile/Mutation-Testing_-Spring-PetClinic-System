@@ -1,0 +1,24 @@
+flowchart TD
+    classDef default fill:#f8fafc,stroke:#334155,stroke-width:1.5px,font-family:Arial,font-size:13px;
+    classDef decision fill:#eff6ff,stroke:#2563eb,stroke-width:2px;
+    classDef action fill:#f0fdf4,stroke:#16a34a,stroke-width:1.5px;
+    classDef error fill:#fef2f2,stroke:#dc2626,stroke-width:2px;
+    classDef exit fill:#f1f5f9,stroke:#64748b,stroke-width:2px,stroke-dasharray: 4 4;
+
+    N1["N1 (Dòng 186-188): Entry<br/>id = pet.getId()<br/>Assert.state(id != null)?"]:::decision
+    N2["N2 (Dòng 188): throw IllegalStateException<br/>('pet.getId()' must not be null)"]:::error
+    N3["N3 (Dòng 189-190): existingPet = owner.getPet(id)<br/>existingPet != null?"]:::decision
+    N4["N4 (Dòng 192-194): Cập nhật thực thể quản lý<br/>existingPet.setName(pet.getName())<br/>existingPet.setBirthDate(pet.getBirthDate())<br/>existingPet.setType(pet.getType())"]:::action
+    N5["N5 (Dòng 197): Thêm mới vào chủ nuôi<br/>owner.addPet(pet)"]:::action
+    N6["N6 (Dòng 199): Lưu cơ sở dữ liệu<br/>this.owners.saveAndFlush(owner)"]:::action
+    N7["N7 (Dòng 200): Exit (Kết thúc)"]:::exit
+
+    N1 -->|False: id == null| N2
+    N1 -->|True: id != null| N3
+    N2 --> N7
+    N3 -->|True: tìm thấy pet| N4
+    N3 -->|False: pet chưa có trong owner| N5
+    N4 --> N6
+    N5 --> N6
+    N6 --> N7
+

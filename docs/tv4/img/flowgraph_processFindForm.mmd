@@ -1,0 +1,42 @@
+flowchart TD
+    classDef default fill:#f8fafc,stroke:#334155,stroke-width:1.5px,font-family:Arial,font-size:12px;
+    classDef decision fill:#eff6ff,stroke:#2563eb,stroke-width:2px;
+    classDef action fill:#f0fdf4,stroke:#16a34a,stroke-width:1.5px;
+    classDef redirect fill:#fffbeb,stroke:#d97706,stroke-width:2px;
+    classDef exit fill:#f1f5f9,stroke:#64748b,stroke-width:2px,stroke-dasharray: 4 4;
+
+    N1["N1 (Dòng 95-97): Entry<br/>owner.getLastName() == null?"]:::decision
+    N2["N2 (Dòng 98): owner.setLastName('')"]:::action
+    N3["N3 (Dòng 100): lastName = owner.getLastName()"]:::action
+    N4["N4 (Dòng 104-108): findPaginated(page, lastName)<br/>page < 1?"]:::decision
+    N5["N5 (Dòng 108): page > Math.max(totalPages, 1)?"]:::decision
+    N6["N6 (Dòng 109-110): Phân trang vượt biên<br/>addParam('page', 1)<br/>!lastName.isEmpty()?"]:::decision
+    N7["N7 (Dòng 111): addParam('lastName', lastName)"]:::action
+    N8["N8 (Dòng 113): return 'redirect:/owners'"]:::redirect
+    N9["N9 (Dòng 116): ownersResults.isEmpty()?"]:::decision
+    N10["N10 (Dòng 118-119): rejectValue('lastName', 'notFound')<br/>return 'owners/findOwners'"]:::action
+    N11["N11 (Dòng 122): ownersResults.getTotalElements() == 1?"]:::decision
+    N12["N12 (Dòng 124-125): Tìm thấy đúng 1 chủ nuôi<br/>return 'redirect:/owners/' + id"]:::redirect
+    N13["N13 (Dòng 128-129): Nhiều kết quả<br/>addPaginationModel(...)<br/>return 'owners/ownersList'"]:::action
+    N14["N14 (Dòng 130): Exit (Kết thúc)"]:::exit
+
+    N1 -->|True: lastName null| N2
+    N1 -->|False: lastName != null| N3
+    N2 --> N4
+    N3 --> N4
+    N4 -->|True: page < 1| N6
+    N4 -->|False: page >= 1| N5
+    N5 -->|True: page vượt quá max| N6
+    N5 -->|False: trong phạm vi| N9
+    N6 -->|True: có lastName| N7
+    N6 -->|False: rỗng| N8
+    N7 --> N8
+    N8 --> N14
+    N9 -->|True: không tìm thấy| N10
+    N9 -->|False: có dữ liệu| N11
+    N10 --> N14
+    N11 -->|True: đúng 1 kết quả| N12
+    N11 -->|False: > 1 kết quả| N13
+    N12 --> N14
+    N13 --> N14
+
