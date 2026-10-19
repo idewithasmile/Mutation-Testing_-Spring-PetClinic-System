@@ -18,35 +18,35 @@
 [INFO] argLine set to empty
 [INFO] 
 [INFO] --- git-commit-id:9.2.0:revision (default) @ spring-petclinic ---
-[INFO] dotGitDirectory 'K:\Mutation-Testing_-Spring-PetClinic-System\.git'
-[INFO] Collected git.build.user.name with value VietLinh
-[INFO] Collected git.build.user.email with value 2312664@dlu.edu.vn
-[INFO] Collected git.branch with value docs/metrics-rca-final-report
-[INFO] Collected git.commit.id.describe with value 33c801b
-[INFO] Collected git.commit.id.describe-short with value 33c801b
-[INFO] Collected git.commit.id with value 33c801b1189c7bff4d9d1c785c10df0f3d069494
-[INFO] Collected git.commit.id.abbrev with value 33c801b
-[INFO] Collected git.dirty with value false
+[INFO] dotGitDirectory 'D:\SchoolFile\KiemThuPhanMem\BaiTapNhom\Program_R01-K03\.git'
+[INFO] Collected git.build.user.name with value 2312618 Trinh Trung Hieu
+[INFO] Collected git.build.user.email with value 2312618@dlu.edu.vn
+[INFO] Collected git.branch with value main
+[INFO] Collected git.commit.id.describe with value 5f504a2-dirty
+[INFO] Collected git.commit.id.describe-short with value 5f504a2-dirty
+[INFO] Collected git.commit.id with value 5f504a22b05facf5d0e88625fb6754bf80a5563a
+[INFO] Collected git.commit.id.abbrev with value 5f504a2
+[INFO] Collected git.dirty with value true
 [INFO] Collected git.commit.user.name with value Hubert Trinh
 [INFO] Collected git.commit.user.email with value trinhtrunghieu0907@gmail.com
-[INFO] Collected git.commit.message.full with value Merge pull request #2 from idewithasmile/TrinhTrungHieu/Session2
+[INFO] Collected git.commit.message.full with value Merge pull request #18 from idewithasmile/VietLinh/Session3
 
-[Feat: Thi?t l?p ???ng ?ng Tï¿½ch h?p liï¿½n t?c (CI/CD Pipeline) t? ??ngï¿½
-[INFO] Collected git.commit.message.short with value Merge pull request #2 from idewithasmile/TrinhTrungHieu/Session2
-[INFO] Collected git.commit.time with value 2026-10-18T23:25:46+07:00
-[INFO] Collected git.commit.author.time with value 2026-10-18T23:25:46+07:00
-[INFO] Collected git.commit.committer.time with value 2026-10-18T23:25:46+07:00
-[INFO] Collected git.remote.origin.url with value https://github.com/idewithasmile/Mutation-Testing_-Spring-PetClinic-System.git
+RCA (Error – Fault – Failure) và Code Smell
+[INFO] Collected git.commit.message.short with value Merge pull request #18 from idewithasmile/VietLinh/Session3
+[INFO] Collected git.commit.time with value 2026-10-19T08:51:26+07:00
+[INFO] Collected git.commit.author.time with value 2026-10-19T08:51:26+07:00
+[INFO] Collected git.commit.committer.time with value 2026-10-19T08:51:26+07:00
+[INFO] Collected git.remote.origin.url with value https://github.com/spring-projects/spring-petclinic.git
 [INFO] Collected git.tags with value 
 [INFO] Collected git.tag with value 
 [INFO] Collected git.closest.tag.name with value 
 [INFO] Collected git.closest.tag.commit.count with value 
-[INFO] Collected git.total.commit.count with value 1052
-[INFO] Collected git.local.branch.ahead with value NO_REMOTE
-[INFO] Collected git.local.branch.behind with value NO_REMOTE
+[INFO] Collected git.total.commit.count with value 1093
+[INFO] Collected git.local.branch.ahead with value 46
+[INFO] Collected git.local.branch.behind with value 0
 [INFO] Collected git.build.time with value 2024-11-28T21:37:52+07:00
 [INFO] Collected git.build.version with value 4.0.0-SNAPSHOT
-[INFO] Collected git.build.host with value Admin-PC
+[INFO] Collected git.build.host with value idewithasmilePC
 [INFO] including property 'git.tags' in results
 [INFO] including property 'git.build.version' in results
 [INFO] including property 'git.branch' in results
@@ -73,15 +73,15 @@
 [INFO] including property 'git.build.time' in results
 [INFO] including property 'git.commit.message.full' in results
 [INFO] including property 'git.remote.origin.url' in results
-[INFO] Reading existing properties file [K:\Mutation-Testing_-Spring-PetClinic-System\target\classes\git.properties] (for project petclinic)...
-[INFO] Properties file [K:\Mutation-Testing_-Spring-PetClinic-System\target\classes\git.properties] is up-to-date (for module petclinic)...
+[INFO] Reading existing properties file [D:\SchoolFile\KiemThuPhanMem\BaiTapNhom\Program_R01-K03\target\classes\git.properties] (for project petclinic)...
+[INFO] Properties file [D:\SchoolFile\KiemThuPhanMem\BaiTapNhom\Program_R01-K03\target\classes\git.properties] is up-to-date (for module petclinic)...
 [INFO] 
 [INFO] --- spring-boot:4.1.0:build-info (default) @ spring-petclinic ---
 [INFO] 
 [INFO] --- cyclonedx:2.9.1:makeAggregateBom (default) @ spring-petclinic ---
 [INFO] CycloneDX: Resolving Dependencies
 [INFO] CycloneDX: Creating BOM version 1.6 with 106 component(s)
-[INFO] CycloneDX: Writing and validating BOM (JSON): K:\Mutation-Testing_-Spring-PetClinic-System\target\classes\META-INF\sbom\application.cdx.json
+[INFO] CycloneDX: Writing and validating BOM (JSON): D:\SchoolFile\KiemThuPhanMem\BaiTapNhom\Program_R01-K03\target\classes\META-INF\sbom\application.cdx.json
 [WARNING] Unknown keyword meta:enum - you should define your own Meta Schema. If the keyword is irrelevant for validation, just use a NonValidationKeyword or if it should generate annotations AnnotationKeyword
 [WARNING] Unknown keyword deprecated - you should define your own Meta Schema. If the keyword is irrelevant for validation, just use a NonValidationKeyword or if it should generate annotations AnnotationKeyword
 [INFO]            attaching as spring-petclinic-4.0.0-SNAPSHOT-cyclonedx.json
@@ -91,20 +91,16 @@
 [INFO] Copying 47 resources from src\main\resources to target\classes
 [INFO] 
 [INFO] --- compiler:3.15.0:compile (default-compile) @ spring-petclinic ---
-[INFO] Recompiling the module because of added or removed source files.
-[INFO] Compiling 30 source files with javac [debug parameters release 17] to target\classes
+[INFO] Nothing to compile - all classes are up to date.
 [INFO] 
 [INFO] --- resources:3.5.0:testResources (default-testResources) @ spring-petclinic ---
-[INFO] skip non existing resourceDirectory K:\Mutation-Testing_-Spring-PetClinic-System\src\test\resources
+[INFO] skip non existing resourceDirectory D:\SchoolFile\KiemThuPhanMem\BaiTapNhom\Program_R01-K03\src\test\resources
 [INFO] 
 [INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ spring-petclinic ---
-[INFO] Recompiling the module because of changed dependency.
-[INFO] Compiling 27 source files with javac [debug parameters release 17] to target\test-classes
-[INFO] /K:/Mutation-Testing_-Spring-PetClinic-System/src/test/java/org/springframework/samples/petclinic/owner/OwnerControllerMutationTests.java: Some input files use unchecked or unsafe operations.
-[INFO] /K:/Mutation-Testing_-Spring-PetClinic-System/src/test/java/org/springframework/samples/petclinic/owner/OwnerControllerMutationTests.java: Recompile with -Xlint:unchecked for details.
+[INFO] Nothing to compile - all classes are up to date.
 [INFO] 
 [INFO] --- pitest:1.30.0:mutationCoverage (default-cli) @ spring-petclinic ---
-[INFO] Root dir is : K:\Mutation-Testing_-Spring-PetClinic-System
+[INFO] Root dir is : D:\SchoolFile\KiemThuPhanMem\BaiTapNhom\Program_R01-K03
 [INFO] Found plugin : Default csv report plugin
 [INFO] Found plugin : Default xml report plugin
 [INFO] Found plugin : Log progress during mutation analysis
@@ -157,19 +153,19 @@
 [INFO] Adding org.pitest:pitest-junit5-plugin to SUT classpath
 [INFO] Adding org.pitest:pitest to SUT classpath
 [INFO] Auto adding org.junit.platform:junit-platform-launcher:jar:6.0.3 < central (https://repo.maven.apache.org/maven2, default, releases) to classpath.
-[INFO] Mutating from K:\Mutation-Testing_-Spring-PetClinic-System\target\classes
+[INFO] Mutating from D:\SchoolFile\KiemThuPhanMem\BaiTapNhom\Program_R01-K03\target\classes
 [INFO] Replacing properties in argLine 
-12:43:27 AM PIT >> INFO : Verbose logging is disabled. If you encounter a problem, please enable it before reporting an issue.
-12:43:27 AM PIT >> INFO : Created 8 mutation test units in pre scan
-12:43:28 AM PIT >> INFO : Sending 27 test classes to minion
-12:43:28 AM PIT >> INFO : Sent tests to minion
-12:43:29 AM PIT >> INFO : MINION : OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
-/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-12:43:35 AM PIT >> INFO : Calculated coverage in 8 seconds.
-12:43:35 AM PIT >> INFO : 0 tests took longer than 2000 ms
-12:43:35 AM PIT >> INFO : Slowest test ([engine:junit-jupiter]/[class:org.springframework.samples.petclinic.owner.ControllerBinderMutationTests]/[method:ownerControllerDisallowsIdBinding()]) took 1291 ms
-12:43:35 AM PIT >> INFO : Largest test ([engine:junit-jupiter]/[class:org.springframework.samples.petclinic.owner.PetControllerTests]/[nested-class:ProcessUpdateFormHasErrors]/[method:processUpdateFormWithDataIntegrityViolation()]) covered 224 blocks
-12:43:35 AM PIT >> INFO : Created 8 mutation test units
-/-\|/-\|12:45:18 AM PIT >> INFO : Completed in 111 seconds
+10:17:10 AM PIT >> INFO : Verbose logging is disabled. If you encounter a problem, please enable it before reporting an issue.
+10:17:10 AM PIT >> INFO : Created 8 mutation test units in pre scan
+10:17:11 AM PIT >> INFO : Sending 28 test classes to minion
+10:17:11 AM PIT >> INFO : Sent tests to minion
+10:17:11 AM PIT >> INFO : MINION : OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|/-10:17:15 AM PIT >> INFO : Calculated coverage in 4 seconds.
+10:17:15 AM PIT >> INFO : 0 tests took longer than 2000 ms
+10:17:15 AM PIT >> INFO : Slowest test ([engine:junit-jupiter]/[class:org.springframework.samples.petclinic.owner.ControllerBinderMutationTests]/[method:ownerControllerDisallowsIdBinding()]) took 720 ms
+10:17:15 AM PIT >> INFO : Largest test ([engine:junit-jupiter]/[class:org.springframework.samples.petclinic.owner.PetControllerTests]/[nested-class:ProcessUpdateFormHasErrors]/[method:processUpdateFormWithDataIntegrityViolation()]) covered 224 blocks
+10:17:15 AM PIT >> INFO : Created 8 mutation test units
+/-\|/-\|10:17:57 AM PIT >> INFO : Completed in 46 seconds
 ================================================================================
 - Mutators
 ================================================================================
@@ -244,23 +240,23 @@
 ================================================================================
 > pre-scan for mutations : < 1 second
 > scan classpath : < 1 second
-> coverage and dependency analysis : 7 seconds
+> coverage and dependency analysis : 4 seconds
 > build mutation tests : < 1 second
-> run mutation analysis : 1 minutes and 42 seconds
+> run mutation analysis : 42 seconds
 --------------------------------------------------------------------------------
-> Total  : 1 minutes and 51 seconds
+> Total  : 46 seconds
 --------------------------------------------------------------------------------
 > 0 tests took longer than 2000 ms
-> Slowest test ([engine:junit-jupiter]/[class:org.springframework.samples.petclinic.owner.ControllerBinderMutationTests]/[method:ownerControllerDisallowsIdBinding()]) took 1291 ms
+> Slowest test ([engine:junit-jupiter]/[class:org.springframework.samples.petclinic.owner.ControllerBinderMutationTests]/[method:ownerControllerDisallowsIdBinding()]) took 720 ms
 > Largest test ([engine:junit-jupiter]/[class:org.springframework.samples.petclinic.owner.PetControllerTests]/[nested-class:ProcessUpdateFormHasErrors]/[method:processUpdateFormWithDataIntegrityViolation()]) covered 224 blocks
 ================================================================================
 - Statistics
 ================================================================================
 >> Line Coverage (for mutated classes only): 250/250 (100%)
->> 27 tests examined
+>> 28 tests examined
 >> Generated 195 mutations Killed 192 (98%)
 >> Mutations with no coverage 0. Test strength 98%
->> Ran 588 tests (3.02 tests per mutation)
+>> Ran 589 tests (3.02 tests per mutation)
 Enhanced functionality available at https://www.arcmutate.com/
 
 Build messages:- 
@@ -268,6 +264,6 @@ Build messages:-
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time:  02:15 min
-[INFO] Finished at: 2026-10-19T00:45:18+07:00
+[INFO] Total time:  51.816 s
+[INFO] Finished at: 2026-10-19T10:17:57+07:00
 [INFO] ------------------------------------------------------------------------

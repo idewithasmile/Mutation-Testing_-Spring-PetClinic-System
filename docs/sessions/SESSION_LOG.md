@@ -295,64 +295,51 @@ F10B2D71BEE70527D4D46E647F50574CF059F2451E4AC0A56C5A24BDC6F2DB29
 ### 5. ĐIỂM CÒN MỞ & KẾ HOẠCH CHO SESSION TIẾP THEO (SESSION S3)
 
 - **Điểm còn mở:** Toàn bộ tiêu chí nghiệm thu của Session S2 đã hoàn thành xuất sắc 100%, không còn blocker nào.
-- **Kế hoạch cho Session S3 & S4:** Tiếp tục thực hiện các nhiệm vụ nghiên cứu và phân tích sâu cho Phần G báo cáo.
+- **Kế hoạch cho Session S3:** Đã hoàn thành trong Session S3 dưới đây.
 
 ---
 ---
 
-## SESSION S4: Chứng minh hình thức Đột biến tương đương (Equivalent Mutant Proofs)
+## SESSION S3: Phân tích nguyên nhân cốt lõi (RCA) & Khiếm khuyết mã nguồn (Code Smell)
 - **Ngày thực hiện:** 2026-10-19
-- **Nhánh làm việc:** `VietLinh/Session4`
+- **Nhánh làm việc:** `docs/metrics-rca-final-report`
 - **Mục tiêu:**
-  1. Trích xuất nguyên văn mã nguồn thực tế tại commit đã khóa `500158f732419217507c7656904b8e6aa1bcc0d6` cho:
-     - `BaseEntity.java` (dòng 37–49: `id`, `getId()`, `setId()`, `isNew()`).
-     - `Owner.java` (dòng 100–113: phương thức `addPet`).
-     - `OwnerController.java` (dòng 153–171: phương thức `processUpdateOwnerForm`).
-  2. Đối chiếu chi tiết 03 mutant sống sót duy nhất từ tệp [`reports/data/final_mutations.xml`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/reports/data/final_mutations.xml):
-     - M1: `Owner.java:108` (index 39) — `RemoveConditionalMutator_EQUAL_IF` (`!existingPet.isNew()`).
-     - M2: `Owner.java:108` (index 42) — `RemoveConditionalMutator_EQUAL_IF` (`!pet.isNew()`).
-     - M3: `OwnerController.java:167` (index 50) — `VoidMethodCallMutator` (xóa `owner.setId(ownerId)`).
-  3. Xây dựng chứng minh toán học hình thức chặt chẽ:
-     - Ký hiệu hóa mệnh đề Boolean ($a = \text{existingPet.isNew()}$, $b = \text{pet.isNew()}$, $e = \text{Objects.equals(existingPet.getId(), pet.getId())}$).
-     - Ràng buộc quan hệ miền giá trị: $a \iff (x == \text{null})$, $b \iff (y == \text{null})$.
-     - Lập Bảng chân trị toàn diện (Truth Table) bao quát toàn bộ 5 lớp tương đương trong không gian trạng thái $\{ \text{null}, 1, 2 \} \times \{ \text{null}, 1, 2 \}$. Chứng minh $C_{\text{orig}} \equiv C_{\text{M1}} \equiv C_{\text{M2}}$ trên 100% tổ hợp.
-     - Chứng minh luồng điều khiển (CFG) và bất biến tiền điều kiện cho M3: khối guard dòng 161 đảm bảo tuyệt đối $owner.\text{getId}() == ownerId$, chứng minh lệnh gán dòng 167 là Dead-store / Redundant assignment không tạo ra bất kỳ sai lệch trạng thái nào.
-  4. Phát triển công cụ kiểm chứng thực nghiệm tự động bằng Python: [`scripts/verify_equivalence.py`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/scripts/verify_equivalence.py) duyệt vét cạn toàn bộ không gian trạng thái, kiểm chứng $9/9$ tổ hợp ($100.0\%$) đồng nhất ngữ nghĩa.
-  5. Đánh giá khách quan các biên giả định kỹ thuật (không ghi đè `isNew()`, không can thiệp Reflection, mô hình đơn luồng).
-  6. Tính toán điểm số đột biến hiệu chỉnh (Adjusted Mutation Score) loại trừ các đột biến tương đương đạt **192/192 (100.00%)**, phân biệt rõ với điểm PIT chính thức (**98.46%**).
-  7. Soạn thảo kịch bản phản xạ nhanh Q&A (30 giây) chuẩn học thuật phục vụ bảo vệ đề tài trước Hội đồng.
-  8. Xuất bản báo cáo Markdown chuyên sâu tại [`reports/G4_equivalent_mutants.md`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/reports/G4_equivalent_mutants.md).
+  1. Phân nhóm toàn bộ 64 mutant sống sót ở Baseline (`reports/data/survivors_baseline.csv`) thành các nguyên nhân gốc rễ cụ thể theo chuẩn IEEE 1044 / IEEE 610.12 (**Error – Fault – Failure**).
+  2. Đảm bảo tính toàn vẹn toán học: tổng số mutant trong các nhóm RCA đúng bằng 64, không sót, không trùng (100% được chứng minh bằng script kiểm chứng `scripts/verify_rca.py`).
+  3. Lập bảng đối chiếu chi tiết 64 mutants: vị trí file:dòng trong `src/main/java`, phương thức, toán tử đột biến, mô tả thay đổi, test case tương ứng của TV3/TV4 đã tiêu diệt và kỹ thuật kiểm thử được áp dụng (POJO Unit Test, ArgumentCaptor, BVA, Decision Table, Exception Testing, Mockito verify).
+  4. Phân tích 06 Code Smells / Defect đặc thù trong mã nguồn `src/main/java/org/springframework/samples/petclinic/owner/*` có bằng chứng trích dẫn mã nguồn thực tế và số dòng chính xác (Smell 1: Dead-store `OwnerController:167`; Smell 2: Defensive guard `Owner:108`; Smell 3: Double query `OwnerController:68, 182`; Smell 4: Model binding aliasing `PetController:186-200`; Smell 5: Magic number `OwnerController:142`; Smell 6: DB vendor tight coupling `PetController:204`).
+  5. Xuất báo cáo Markdown học thuật hoàn chỉnh tại `reports/G3_RCA.md`.
+  6. Xây dựng công cụ kiểm chứng tự động `scripts/verify_rca.py` kiểm tra đối chiếu tính hợp lệ của mọi trích dẫn mã nguồn và tính toán mã băm SHA-256.
 
 ---
 
-### 1. KẾT QUẢ THỰC HIỆN CHECKLIST SESSION S4
+### 1. KẾT QUẢ THỰC HIỆN CHECKLIST SESSION S3
 
 | Mục tiêu / Tiêu chí nghiệm thu | Yêu cầu kỹ thuật | Kết quả thực tế đạt được | Trạng thái | Nguồn kiểm chứng |
 | :--- | :--- | :--- | :---: | :--- |
-| **1. Trích dẫn nguyên văn mã nguồn** | Trích đúng từ source thật trong `src/main/java` | Trích dẫn chính xác từng số dòng của `BaseEntity`, `Owner` và `OwnerController` | **ĐẠT (✓)** | `src/main/java`<br>`reports/G4_equivalent_mutants.md` |
-| **2. Bảng chân trị & chứng minh Boolean** | Ký hiệu mệnh đề, ràng buộc miền, bảng chân trị đầy đủ | Lập bảng chân trị 5 lớp tương đương; chứng minh đẳng thức $C_{\text{orig}} \equiv C_{\text{M1}} \equiv C_{\text{M2}}$ | **ĐẠT (✓)** | Mục 3 `reports/G4_equivalent_mutants.md` |
-| **3. Chứng minh luồng điều khiển CFG** | Chứng minh tiền điều kiện guard cho M3 | Đồ thị CFG và phân tích bất biến chứng minh $owner.\text{getId}() \equiv ownerId$ trước dòng 167 | **ĐẠT (✓)** | Mục 4 `reports/G4_equivalent_mutants.md` |
-| **4. Script kiểm chứng tự động** | Viết `verify_equivalence.py` vét cạn tổ hợp | Script chạy thành công, xác nhận 9/9 tổ hợp (100%) khớp tuyệt đối | **ĐẠT (✓)** | `scripts/verify_equivalence.py` |
-| **5. Nêu hạn chế & giả định trung thực** | Đưa ra các giả định kỹ thuật một cách khoa học | Nêu rõ 3 giả định: không polymorphic override, không Reflection, đơn luồng chuẩn | **ĐẠT (✓)** | Mục 6 `reports/G4_equivalent_mutants.md` |
-| **6. Điểm số hiệu chỉnh** | Phân biệt điểm PIT chính thức vs điểm hiệu chỉnh | Nêu rõ điểm PIT chính thức là **98.46% (192/195)** và điểm hiệu chỉnh là **100.00% (192/192)** | **ĐẠT (✓)** | Mục 7 `reports/G4_equivalent_mutants.md` |
-| **7. Kịch bản Q&A 30 giây** | Đoạn trả lời hội đồng đanh thép, học thuật | Soạn sẵn câu trả lời súc tích giải thích vì sao còn 3 mutants và khẳng định chất lượng | **ĐẠT (✓)** | Mục 8 `reports/G4_equivalent_mutants.md` |
+| **1. Tổng số mutant RCA = 64** | Phân loại 64 survivors không sót, không trùng | **Đúng 64/64 mutants** (5+14+6+3+9+27 = 64), tỷ lệ 100.0% | **ĐẠT (✓)** | `reports/G3_RCA.md`<br>`scripts/verify_rca.py` |
+| **2. Chuẩn phân tích IEEE** | Mô hình 3 tầng Error -> Fault -> Failure | Đã xây dựng hoàn chỉnh cho cả 6 nhóm nguyên nhân gốc rễ | **ĐẠT (✓)** | Mục 1 & 2 `reports/G3_RCA.md` |
+| **3. Trích dẫn file:dòng chính xác** | Mọi mutant và smell đều tồn tại trong `src/main/java` | **100% 64 mutants** và **6 Code Smells** khớp chính xác từng số dòng và trích đoạn code | **ĐẠT (✓)** | `scripts/verify_rca.py`<br>`src/main/java` |
+| **4. Bằng chứng Code Smell** | Không nêu smell chung chung, phải có code trích dẫn | Đã phân tích chi tiết 6 code smell kèm trích đoạn code và đề xuất tái cấu trúc (không sửa code) | **ĐẠT (✓)** | Mục 4 `reports/G3_RCA.md` |
+| **5. Báo cáo Markdown G.3** | Xuất `reports/G3_RCA.md` văn phong học thuật | Báo cáo chi tiết, chuyên nghiệp, bảng biểu rõ ràng, kèm ma trận truy vết test TV3/TV4 | **ĐẠT (✓)** | `reports/G3_RCA.md` |
+| **6. Tính toàn vẹn dữ liệu** | Kiểm chứng tự động bằng script Python | Script `scripts/verify_rca.py` chạy thành công không lỗi, xuất mã băm SHA-256 | **ĐẠT (✓)** | Console output `scripts/verify_rca.py` |
 
 ---
 
-### 2. KẾT QUẢ ĐỐI CHIẾU VÀ ĐIỂM SỐ ĐỘT BIẾN
+### 2. PHÂN BỔ 64 MUTANTS THEO 6 NHÓM NGUYÊN NHÂN CỐT LÕI (RCA)
 
 ```text
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│               TỔNG HỢP HIỆU SUẤT KIỂM THỬ ĐỘT BIẾN (MUTATION SCORE)         │
+│                   CƠ CẤU 64 MUTANT BASELINE THEO NGUYÊN NHÂN GỐC RỄ          │
 └─────────────────────────────────────────────────────────────────────────────┘
-  • Tổng số mutants sinh ra bởi PIT (STRONGER):  195 mutants
-  • Số mutants bị tiêu diệt (Killed):             192 mutants
-  • Số mutants sống sót (Survived):                 3 mutants (100% Equivalent)
-  • Độ bao phủ dòng (Line Coverage):             250/250 lines (100.00%)
-  • Mutations with no coverage:                    0 mutants (  0.00%)
+  1. MockMvc che khuất cập nhật thực thể & gán dư thừa:   5 mutants ( 7.81%)
+  2. Thiếu kiểm chứng tác dụng phụ & phương thức void:   14 mutants (21.88%)
+  3. Thiếu kiểm thử giá trị biên & tính toán số học:       6 mutants ( 9.38%)
+  4. Thiếu assert nội dung sâu & giá trị trả về:          3 mutants ( 4.69%)
+  5. Nhánh ngoại lệ & luồng rẽ thiếu độ bao phủ (NO_COV): 9 mutants (14.06%)
+  6. Thiếu bảng quyết định cho tổ hợp điều kiện logic:   27 mutants (42.19%)
 ───────────────────────────────────────────────────────────────────────────────
-  ► Điểm đột biến thô chính thức của PIT:        192 / 195 =  98.46% (≈ 98%)
-  ► Điểm đột biến hiệu chỉnh (Adjusted Score):   192 / 192 = 100.00%
+  TỔNG CỘNG:                                             64 mutants (100.0%)
 ```
 
 ---
@@ -360,30 +347,34 @@ F10B2D71BEE70527D4D46E647F50574CF059F2451E4AC0A56C5A24BDC6F2DB29
 ### 3. BẢNG MÃ BĂM DỮ LIỆU ĐÃ KIỂM CHỨNG (SHA-256 INTEGRITY)
 
 ```text
-reports/G4_equivalent_mutants.md:
-2AC740D474B0C447B76DF8882C44B6CA59B7131AE4757CEA75191697AD46EC06
+reports/G3_RCA.md:
+96EFE5513AA8174F204DBD9D6890BB3C517EA57248D1A3BA5DBAD6A69AA6B733
 
-scripts/verify_equivalence.py:
-E36B372E33DBCBE88C7FAAF3696C5A7E3D10F121D3FD1DCDC793E50526A34F5C
+scripts/analyze_rca.py:
+CF9F34027471F8C5815EF45A253457D25DAE7227448B5C036F26DDFE05A42921
+
+scripts/verify_rca.py:
+8B70A06B923B280783F418939768B4B489E530BD9ED73B1BF5122BA3659A5A41
 ```
 
 ---
 
-### 4. DANH MỤC TỆP TIN TẠO / CẬP NHẬT TRONG SESSION S4
+### 4. DANH MỤC TỆP TIN TẠO / CẬP NHẬT TRONG SESSION S3
 
-1. [`reports/G4_equivalent_mutants.md`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/reports/G4_equivalent_mutants.md): Báo cáo chứng minh toán học hình thức và luồng điều khiển cho 3 Equivalent Mutants, kèm điểm hiệu chỉnh và kịch bản Q&A 30 giây.
-2. [`scripts/verify_equivalence.py`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/scripts/verify_equivalence.py): Script Python kiểm chứng thực nghiệm vét cạn toàn bộ không gian trạng thái.
-3. [`docs/sessions/SESSION_LOG.md`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/docs/sessions/SESSION_LOG.md): Ghi nhận toàn bộ nhật ký phiên làm việc Session S4.
+1. [`reports/G3_RCA.md`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/reports/G3_RCA.md): Báo cáo chuyên sâu về RCA và Code Smell (Phần G.2 & G.3) gồm 6 nhóm RCA và 6 Code Smells trích dẫn mã nguồn thực tế.
+2. [`scripts/analyze_rca.py`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/scripts/analyze_rca.py): Script Python phân tích đối chiếu 64 baseline survivors với final mutations.
+3. [`scripts/verify_rca.py`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/scripts/verify_rca.py): Công cụ kiểm chứng tự động tính toàn vẹn của báo cáo và vị trí mã nguồn.
+4. [`docs/sessions/SESSION_LOG.md`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/docs/sessions/SESSION_LOG.md): Ghi nhận chi tiết kết quả thực hiện Session S3.
 
 *(Ràng buộc bất biến tuân thủ 100%: Không chỉnh sửa `src/main/java`, `src/test/java`, hay `pom.xml`).*
 
 ---
 
-### 5. ĐIỂM CÒN MỞ & KẾ HOẠCH CHO PHIÊN TIẾP THEO
+### 5. ĐIỂM CÒN MỞ & KẾ HOẠCH CHO SESSION TIẾP THEO (SESSION S4)
 
-- **Điểm còn mở:** Toàn bộ tiêu chí nghiệm thu của Session S4 đã hoàn thành xuất sắc 100%, không phát hiện thêm mutant nào có thể kill được, không có blocker kỹ thuật.
-- **Kế hoạch cho phiên tiếp theo:**
-  - Hoàn thiện tổng thể tài liệu báo cáo lớn [`REPORT_R01_K03.docx`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/REPORT_R01_K03.md) tích hợp các phần A đến H.
-  - Chuẩn bị slide thuyết minh đề tài và rà soát chéo bảng phân công đánh giá thành viên (Peer Evaluation).
+- **Điểm còn mở:** Toàn bộ tiêu chí nghiệm thu của Session S3 đã hoàn thành xuất sắc 100%, không còn blocker nào.
+- **Kế hoạch cho Session S4:**
+  1. **Phần G.4 (Boolean Algebraic Proof):** Thực hiện chứng minh hình thức bằng đại số Boolean cho 3 Equivalent Mutants (`Owner.java:108` x2 và `OwnerController.java:167`).
+  2. **Tổng hợp báo cáo Phần G:** Tích hợp G.1, G.2, G.3, G.4 thành báo cáo hoàn chỉnh phục vụ biên tập `REPORT_R01_K03.docx`.
 
 
