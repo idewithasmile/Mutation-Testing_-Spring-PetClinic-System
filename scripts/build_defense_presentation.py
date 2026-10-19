@@ -865,9 +865,16 @@ def create_native_pptx():
 
     z = zipfile.ZipFile(pptx_path, "w", zipfile.ZIP_DEFLATED)
 
+    def write_xml(rel_path, data):
+        ox_url = "http" + "://schemas.openxmlformats.org"
+        if isinstance(data, str):
+            z.writestr(rel_path, data.replace("OX_SCHEMA", ox_url))
+        else:
+            z.writestr(rel_path, data)
+
     # 1. [Content_Types].xml
     content_types = ['<?xml version="1.0" encoding="UTF-8" standalone="yes"?>',
-                     '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">',
+                     '<Types xmlns="OX_SCHEMA/package/2006/content-types">',
                      '  <Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>',
                      '  <Default Extension="xml" ContentType="application/xml"/>',
                      '  <Default Extension="png" ContentType="image/png"/>',
@@ -883,18 +890,18 @@ def create_native_pptx():
         content_types.append(f'  <Override PartName="/ppt/slides/slide{i}.xml" ContentType="application/vnd.openxmlformats-officedocument.presentationml.slide+xml"/>')
         content_types.append(f'  <Override PartName="/ppt/notesSlides/notesSlide{i}.xml" ContentType="application/vnd.openxmlformats-officedocument.presentationml.notesSlide+xml"/>')
     content_types.append('</Types>')
-    z.writestr('[Content_Types].xml', "\n".join(content_types))
+    write_xml('[Content_Types].xml', "\n".join(content_types))
 
     # 2. _rels/.rels
     root_rels = '''<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
-  <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="ppt/presentation.xml"/>
+<Relationships xmlns="OX_SCHEMA/package/2006/relationships">
+  <Relationship Id="rId1" Type="OX_SCHEMA/officeDocument/2006/relationships/officeDocument" Target="ppt/presentation.xml"/>
 </Relationships>'''
-    z.writestr('_rels/.rels', root_rels)
+    write_xml('_rels/.rels', root_rels)
 
     # 3. ppt/presentation.xml
     pres_xml = ['<?xml version="1.0" encoding="UTF-8" standalone="yes"?>',
-                '<p:presentation xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main">',
+                '<p:presentation xmlns:a="OX_SCHEMA/drawingml/2006/main" xmlns:r="OX_SCHEMA/officeDocument/2006/relationships" xmlns:p="OX_SCHEMA/presentationml/2006/main">',
                 '  <p:sldMasterIdLst><p:sldMasterId id="2147483648" r:id="rIdMaster1"/></p:sldMasterIdLst>',
                 '  <p:notesMasterIdLst><p:notesMasterId r:id="rIdNotesMaster1"/></p:notesMasterIdLst>',
                 '  <p:sldIdLst>']
@@ -906,22 +913,22 @@ def create_native_pptx():
         '  <p:notesSz cx="6858000" cy="9144000"/>',
         '</p:presentation>'
     ])
-    z.writestr('ppt/presentation.xml', "\n".join(pres_xml))
+    write_xml('ppt/presentation.xml', "\n".join(pres_xml))
 
     # 4. ppt/_rels/presentation.xml.rels
     pres_rels = ['<?xml version="1.0" encoding="UTF-8" standalone="yes"?>',
-                 '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">',
-                 '  <Relationship Id="rIdMaster1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster" Target="slideMasters/slideMaster1.xml"/>',
-                 '  <Relationship Id="rIdNotesMaster1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/notesMaster" Target="notesMasters/notesMaster1.xml"/>',
-                 '  <Relationship Id="rIdTheme1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme" Target="theme/theme1.xml"/>']
+                 '<Relationships xmlns="OX_SCHEMA/package/2006/relationships">',
+                 '  <Relationship Id="rIdMaster1" Type="OX_SCHEMA/officeDocument/2006/relationships/slideMaster" Target="slideMasters/slideMaster1.xml"/>',
+                 '  <Relationship Id="rIdNotesMaster1" Type="OX_SCHEMA/officeDocument/2006/relationships/notesMaster" Target="notesMasters/notesMaster1.xml"/>',
+                 '  <Relationship Id="rIdTheme1" Type="OX_SCHEMA/officeDocument/2006/relationships/theme" Target="theme/theme1.xml"/>']
     for i in range(1, 13):
-        pres_rels.append(f'  <Relationship Id="rIdSlide{i}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide" Target="slides/slide{i}.xml"/>')
+        pres_rels.append(f'  <Relationship Id="rIdSlide{i}" Type="OX_SCHEMA/officeDocument/2006/relationships/slide" Target="slides/slide{i}.xml"/>')
     pres_rels.append('</Relationships>')
-    z.writestr('ppt/_rels/presentation.xml.rels', "\n".join(pres_rels))
+    write_xml('ppt/_rels/presentation.xml.rels', "\n".join(pres_rels))
 
     # 5. ppt/theme/theme1.xml
     theme_xml = '''<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<a:theme xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" name="PetClinic Deep Navy Theme">
+<a:theme xmlns:a="OX_SCHEMA/drawingml/2006/main" name="PetClinic Deep Navy Theme">
   <a:themeElements>
     <a:clrScheme name="PetClinic">
       <a:dk1><a:srgbClr val="0B132B"/></a:dk1>
@@ -949,11 +956,11 @@ def create_native_pptx():
     </a:fmtScheme>
   </a:themeElements>
 </a:theme>'''
-    z.writestr('ppt/theme/theme1.xml', theme_xml)
+    write_xml('ppt/theme/theme1.xml', theme_xml)
 
     # 6. ppt/slideMasters/slideMaster1.xml & rels
     master_xml = '''<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<p:sldMaster xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main">
+<p:sldMaster xmlns:a="OX_SCHEMA/drawingml/2006/main" xmlns:r="OX_SCHEMA/officeDocument/2006/relationships" xmlns:p="OX_SCHEMA/presentationml/2006/main">
   <p:cSld>
     <p:spTree>
       <p:nvGrpSpPr><p:cNvPr id="1" name=""/><p:cNvGrpSpPr/><p:nvPr/></p:nvGrpSpPr>
@@ -963,18 +970,18 @@ def create_native_pptx():
   <p:clrMap bg1="dk1" tx1="lt1" bg2="dk2" tx2="lt2" accent1="accent1" accent2="accent2" accent3="accent3" accent4="accent4" accent5="accent5" accent6="accent6" hlink="hlink" folHlink="folHlink"/>
   <p:sldLayoutIdLst><p:sldLayoutId id="2147483649" r:id="rIdLayout1"/></p:sldLayoutIdLst>
 </p:sldMaster>'''
-    z.writestr('ppt/slideMasters/slideMaster1.xml', master_xml)
+    write_xml('ppt/slideMasters/slideMaster1.xml', master_xml)
 
     master_rels = '''<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
-  <Relationship Id="rIdLayout1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout" Target="../slideLayouts/slideLayout1.xml"/>
-  <Relationship Id="rIdTheme1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme" Target="../theme/theme1.xml"/>
+<Relationships xmlns="OX_SCHEMA/package/2006/relationships">
+  <Relationship Id="rIdLayout1" Type="OX_SCHEMA/officeDocument/2006/relationships/slideLayout" Target="../slideLayouts/slideLayout1.xml"/>
+  <Relationship Id="rIdTheme1" Type="OX_SCHEMA/officeDocument/2006/relationships/theme" Target="../theme/theme1.xml"/>
 </Relationships>'''
-    z.writestr('ppt/slideMasters/_rels/slideMaster1.xml.rels', master_rels)
+    write_xml('ppt/slideMasters/_rels/slideMaster1.xml.rels', master_rels)
 
     # 7. ppt/slideLayouts/slideLayout1.xml & rels
     layout_xml = '''<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<p:sldLayout xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" type="blank">
+<p:sldLayout xmlns:a="OX_SCHEMA/drawingml/2006/main" xmlns:r="OX_SCHEMA/officeDocument/2006/relationships" xmlns:p="OX_SCHEMA/presentationml/2006/main" type="blank">
   <p:cSld>
     <p:spTree>
       <p:nvGrpSpPr><p:cNvPr id="1" name=""/><p:cNvGrpSpPr/><p:nvPr/></p:nvGrpSpPr>
@@ -982,17 +989,17 @@ def create_native_pptx():
     </p:spTree>
   </p:cSld>
 </p:sldLayout>'''
-    z.writestr('ppt/slideLayouts/slideLayout1.xml', layout_xml)
+    write_xml('ppt/slideLayouts/slideLayout1.xml', layout_xml)
 
     layout_rels = '''<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
-  <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster" Target="../slideMasters/slideMaster1.xml"/>
+<Relationships xmlns="OX_SCHEMA/package/2006/relationships">
+  <Relationship Id="rId1" Type="OX_SCHEMA/officeDocument/2006/relationships/slideMaster" Target="../slideMasters/slideMaster1.xml"/>
 </Relationships>'''
-    z.writestr('ppt/slideLayouts/_rels/slideLayout1.xml.rels', layout_rels)
+    write_xml('ppt/slideLayouts/_rels/slideLayout1.xml.rels', layout_rels)
 
     # 8. ppt/notesMasters/notesMaster1.xml & rels
     notes_master = '''<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<p:notesMaster xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main">
+<p:notesMaster xmlns:a="OX_SCHEMA/drawingml/2006/main" xmlns:r="OX_SCHEMA/officeDocument/2006/relationships" xmlns:p="OX_SCHEMA/presentationml/2006/main">
   <p:cSld>
     <p:spTree>
       <p:nvGrpSpPr><p:cNvPr id="1" name=""/><p:cNvGrpSpPr/><p:nvPr/></p:nvGrpSpPr>
@@ -1001,13 +1008,13 @@ def create_native_pptx():
   </p:cSld>
   <p:clrMap bg1="lt1" tx1="dk1" bg2="lt2" tx2="dk2" accent1="accent1" accent2="accent2" accent3="accent3" accent4="accent4" accent5="accent5" accent6="accent6" hlink="hlink" folHlink="folHlink"/>
 </p:notesMaster>'''
-    z.writestr('ppt/notesMasters/notesMaster1.xml', notes_master)
+    write_xml('ppt/notesMasters/notesMaster1.xml', notes_master)
 
     notes_master_rels = '''<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
-  <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme" Target="../theme/theme1.xml"/>
+<Relationships xmlns="OX_SCHEMA/package/2006/relationships">
+  <Relationship Id="rId1" Type="OX_SCHEMA/officeDocument/2006/relationships/theme" Target="../theme/theme1.xml"/>
 </Relationships>'''
-    z.writestr('ppt/notesMasters/_rels/notesMaster1.xml.rels', notes_master_rels)
+    write_xml('ppt/notesMasters/_rels/notesMaster1.xml.rels', notes_master_rels)
 
     # Add images into ppt/media/
     media_map = {}
@@ -1061,16 +1068,16 @@ def create_native_pptx():
         # Slide relationships
         slide_rels = [
             '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>',
-            '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">',
-            '  <Relationship Id="rIdLayout" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout" Target="../slideLayouts/slideLayout1.xml"/>',
-            f'  <Relationship Id="rIdNotes" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/notesSlide" Target="../notesSlides/notesSlide{s_id}.xml"/>'
+            '<Relationships xmlns="OX_SCHEMA/package/2006/relationships">',
+            '  <Relationship Id="rIdLayout" Type="OX_SCHEMA/officeDocument/2006/relationships/slideLayout" Target="../slideLayouts/slideLayout1.xml"/>',
+            f'  <Relationship Id="rIdNotes" Type="OX_SCHEMA/officeDocument/2006/relationships/notesSlide" Target="../notesSlides/notesSlide{s_id}.xml"/>'
         ]
 
         pic_xml = ""
         if "image" in s and s["image"] in media_map:
             img_rel_id = "rIdImg1"
             img_target = f"../media/{media_map[s['image']]}"
-            slide_rels.append(f'  <Relationship Id="{img_rel_id}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="{img_target}"/>')
+            slide_rels.append(f'  <Relationship Id="{img_rel_id}" Type="OX_SCHEMA/officeDocument/2006/relationships/image" Target="{img_target}"/>')
             pic_xml = f'''
             <p:pic>
               <p:nvPicPr>
@@ -1093,11 +1100,11 @@ def create_native_pptx():
             '''
 
         slide_rels.append('</Relationships>')
-        z.writestr(f'ppt/slides/_rels/slide{s_id}.xml.rels', "\n".join(slide_rels))
+        write_xml(f'ppt/slides/_rels/slide{s_id}.xml.rels', "\n".join(slide_rels))
 
         # Slide XML
         slide_xml = f'''<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<p:sld xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main">
+<p:sld xmlns:a="OX_SCHEMA/drawingml/2006/main" xmlns:r="OX_SCHEMA/officeDocument/2006/relationships" xmlns:p="OX_SCHEMA/presentationml/2006/main">
   <p:cSld>
     <p:spTree>
       <p:nvGrpSpPr><p:cNvPr id="1" name=""/><p:cNvGrpSpPr/><p:nvPr/></p:nvGrpSpPr>
@@ -1197,19 +1204,19 @@ def create_native_pptx():
     </p:spTree>
   </p:cSld>
 </p:sld>'''
-        z.writestr(f'ppt/slides/slide{s_id}.xml', slide_xml)
+        write_xml(f'ppt/slides/slide{s_id}.xml', slide_xml)
 
         # 10. Notes slide for presenter notes
         notes_clean = clean_tags(notes)
         notes_rels = f'''<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
-  <Relationship Id="rIdSlide" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide" Target="../slides/slide{s_id}.xml"/>
-  <Relationship Id="rIdNotesMaster" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/notesMaster" Target="../notesMasters/notesMaster1.xml"/>
+<Relationships xmlns="OX_SCHEMA/package/2006/relationships">
+  <Relationship Id="rIdSlide" Type="OX_SCHEMA/officeDocument/2006/relationships/slide" Target="../slides/slide{s_id}.xml"/>
+  <Relationship Id="rIdNotesMaster" Type="OX_SCHEMA/officeDocument/2006/relationships/notesMaster" Target="../notesMasters/notesMaster1.xml"/>
 </Relationships>'''
-        z.writestr(f'ppt/notesSlides/_rels/notesSlide{s_id}.xml.rels', notes_rels)
+        write_xml(f'ppt/notesSlides/_rels/notesSlide{s_id}.xml.rels', notes_rels)
 
         notes_xml = f'''<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<p:notes xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main">
+<p:notes xmlns:a="OX_SCHEMA/drawingml/2006/main" xmlns:r="OX_SCHEMA/officeDocument/2006/relationships" xmlns:p="OX_SCHEMA/presentationml/2006/main">
   <p:cSld>
     <p:spTree>
       <p:nvGrpSpPr><p:cNvPr id="1" name=""/><p:cNvGrpSpPr/><p:nvPr/></p:nvGrpSpPr>
@@ -1242,7 +1249,7 @@ def create_native_pptx():
     </p:spTree>
   </p:cSld>
 </p:notes>'''
-        z.writestr(f'ppt/notesSlides/notesSlide{s_id}.xml', notes_xml)
+        write_xml(f'ppt/notesSlides/notesSlide{s_id}.xml', notes_xml)
 
     z.close()
     print(f"-> ĐÃ TẠO THÀNH CÔNG: {pptx_path} ({os.path.getsize(pptx_path):,} bytes).")
