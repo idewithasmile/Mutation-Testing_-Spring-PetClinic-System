@@ -87,6 +87,20 @@ class OwnerControllerMutationTests {
 			.willReturn(new PageImpl<>(List.of(george())));
 	}
 
+	/**
+	 * Kỹ thuật: Basis Path / ArgumentCaptor Đường đi/Nhánh: BP-OC-07 (Dòng 95–100,
+	 * 107–108, 116, 122, 129 trong OwnerController.java) Mutant mục tiêu: MathMutator
+	 * dòng 144 (đổi validatedPage - 1 thành + 1) Ý đồ: ArgumentCaptor bắt Pageable truyền
+	 * vào repository để assert chính xác pageNumber = 1 (tương ứng với page 2 ở web
+	 * request), diệt MathMutator tại biểu thức tính chỉ số 0-based.
+	 */
+	/**
+	 * Kỹ thuật: Basis Path / ArgumentCaptor Đường đi/Nhánh: BP-OC-07 (Dòng 95–100,
+	 * 107–108, 116, 122, 129 trong OwnerController.java) Mutant mục tiêu: MathMutator
+	 * dòng 144 (đổi validatedPage - 1 thành + 1) Ý đồ: ArgumentCaptor bắt Pageable truyền
+	 * vào repository để assert chính xác pageNumber = 1 (tương ứng với page 2 ở web
+	 * request), diệt MathMutator tại biểu thức tính chỉ số 0-based.
+	 */
 	@Test
 	void processFindFormRequestsZeroBasedPageIndex() throws Exception {
 		Page<Owner> page = new PageImpl<>(List.of(george()), PageRequest.of(1, 5), 12);
@@ -102,6 +116,22 @@ class OwnerControllerMutationTests {
 		assertThat(captor.getValue().getPageSize()).isEqualTo(5);
 	}
 
+	/**
+	 * Kỹ thuật: Basis Path / Error Guessing Đường đi/Nhánh: BP-OC-06 (Dòng 95–100,
+	 * 107–110, 113 trong OwnerController.java) Mutant mục tiêu:
+	 * RemoveConditionalMutator_EQUAL_IF dòng 110 (thay !lastName.isEmpty() bằng true) Ý
+	 * đồ: Kiểm tra khi trang vượt biên (page=99) và lastName rỗng, URL chuyển hướng chỉ
+	 * có ?page=1 mà không bị kèm tham số lastName rỗng, diệt RemoveConditionalMutator
+	 * trên nhánh kiểm tra rỗng.
+	 */
+	/**
+	 * Kỹ thuật: Basis Path / Error Guessing Đường đi/Nhánh: BP-OC-06 (Dòng 95–100,
+	 * 107–110, 113 trong OwnerController.java) Mutant mục tiêu:
+	 * RemoveConditionalMutator_EQUAL_IF dòng 110 (thay !lastName.isEmpty() bằng true) Ý
+	 * đồ: Kiểm tra khi trang vượt biên (page=99) và lastName rỗng, URL chuyển hướng chỉ
+	 * có ?page=1 mà không bị kèm tham số lastName rỗng, diệt RemoveConditionalMutator
+	 * trên nhánh kiểm tra rỗng.
+	 */
 	@Test
 	void outOfBoundsPageWithEmptyLastNameOmitsLastNameParam() throws Exception {
 		given(this.owners.findByLastNameStartingWith(eq(""), any(Pageable.class)))
@@ -112,6 +142,20 @@ class OwnerControllerMutationTests {
 			.andExpect(redirectedUrl("/owners?page=1"));
 	}
 
+	/**
+	 * Kỹ thuật: Error Guessing / Exception Testing Đường đi/Nhánh: BP-OC-03 (Dòng 65,
+	 * 67–70 trong OwnerController.java) Mutant mục tiêu: NullReturnValsMutator dòng 68
+	 * (orElseThrow lambda cho findOwner) Ý đồ: Xác nhận khi truy cập form sửa với
+	 * ownerId=999 không tồn tại thì hệ thống ném IllegalArgumentException tường minh thay
+	 * vì trả về null hay để lỗi 500 không kiểm soát.
+	 */
+	/**
+	 * Kỹ thuật: Error Guessing / Exception Testing Đường đi/Nhánh: BP-OC-03 (Dòng 65,
+	 * 67–70 trong OwnerController.java) Mutant mục tiêu: NullReturnValsMutator dòng 68
+	 * (orElseThrow lambda cho findOwner) Ý đồ: Xác nhận khi truy cập form sửa với
+	 * ownerId=999 không tồn tại thì hệ thống ném IllegalArgumentException tường minh thay
+	 * vì trả về null hay để lỗi 500 không kiểm soát.
+	 */
 	@Test
 	void editFormWithUnknownOwnerThrowsIllegalArgument() {
 		given(this.owners.findById(999)).willReturn(Optional.empty());
@@ -121,6 +165,20 @@ class OwnerControllerMutationTests {
 			.hasStackTraceContaining("Owner not found with id: 999");
 	}
 
+	/**
+	 * Kỹ thuật: Error Guessing / Exception Testing Đường đi/Nhánh: BP-OC-16 (Dòng 179–184
+	 * trong OwnerController.java) Mutant mục tiêu: NullReturnValsMutator dòng 182
+	 * (orElseThrow lambda trong showOwner) Ý đồ: Kiểm tra showOwner trực tiếp với ID
+	 * không tồn tại (999) ném IllegalArgumentException với message chuẩn, diệt
+	 * NullReturnValsMutator.
+	 */
+	/**
+	 * Kỹ thuật: Error Guessing / Exception Testing Đường đi/Nhánh: BP-OC-16 (Dòng 179–184
+	 * trong OwnerController.java) Mutant mục tiêu: NullReturnValsMutator dòng 182
+	 * (orElseThrow lambda trong showOwner) Ý đồ: Kiểm tra showOwner trực tiếp với ID
+	 * không tồn tại (999) ném IllegalArgumentException với message chuẩn, diệt
+	 * NullReturnValsMutator.
+	 */
 	@Test
 	void showOwnerWithUnknownIdThrowsIllegalArgument() {
 		given(this.owners.findById(999)).willReturn(Optional.empty());
@@ -130,6 +188,20 @@ class OwnerControllerMutationTests {
 			.hasStackTraceContaining("Owner not found with id: 999");
 	}
 
+	/**
+	 * Kỹ thuật: Basis Path / Mock Sequence Đường đi/Nhánh: BP-OC-16 (Dòng 179–184 trong
+	 * OwnerController.java) Mutant mục tiêu: NullReturnValsMutator dòng 182, 185
+	 * (orElseThrow lambda trong showOwner) Ý đồ: Mô phỏng lần nạp @ModelAttribute
+	 * findOwner thành công nhưng lần gọi repository trong showOwner thất bại, cô lập và
+	 * diệt chính xác nhánh orElseThrow nội bộ của showOwner.
+	 */
+	/**
+	 * Kỹ thuật: Basis Path / Mock Sequence Đường đi/Nhánh: BP-OC-16 (Dòng 179–184 trong
+	 * OwnerController.java) Mutant mục tiêu: NullReturnValsMutator dòng 182, 185
+	 * (orElseThrow lambda trong showOwner) Ý đồ: Mô phỏng lần nạp @ModelAttribute
+	 * findOwner thành công nhưng lần gọi repository trong showOwner thất bại, cô lập và
+	 * diệt chính xác nhánh orElseThrow nội bộ của showOwner.
+	 */
 	@Test
 	void showOwnerFailingOnSecondLookupThrowsIllegalArgument() {
 		// the @ModelAttribute findOwner succeeds on the first repository call
@@ -142,6 +214,22 @@ class OwnerControllerMutationTests {
 			.hasStackTraceContaining("Owner not found with id: " + TEST_OWNER_ID);
 	}
 
+	/**
+	 * Kỹ thuật: Basis Path / Error Guessing Đường đi/Nhánh: BP-OC-14 (Dòng 154–157,
+	 * 161–165 trong OwnerController.java) Mutant mục tiêu:
+	 * RemoveConditionalMutator_EQUAL_ELSE dòng 161 (thay !Objects.equals bằng false) Ý
+	 * đồ: Xác minh khi ID trong Form DTO khác URL path variable, controller ghi nhận
+	 * field error "mismatch", redirect về trang edit và tuyệt đối không gọi
+	 * repository.save(owner).
+	 */
+	/**
+	 * Kỹ thuật: Basis Path / Error Guessing Đường đi/Nhánh: BP-OC-14 (Dòng 154–157,
+	 * 161–165 trong OwnerController.java) Mutant mục tiêu:
+	 * RemoveConditionalMutator_EQUAL_ELSE dòng 161 (thay !Objects.equals bằng false) Ý
+	 * đồ: Xác minh khi ID trong Form DTO khác URL path variable, controller ghi nhận
+	 * field error "mismatch", redirect về trang edit và tuyệt đối không gọi
+	 * repository.save(owner).
+	 */
 	@Test
 	void processUpdateOwnerFormMismatchRecordsIdFieldError() {
 		OwnerRepository repository = mock(OwnerRepository.class);

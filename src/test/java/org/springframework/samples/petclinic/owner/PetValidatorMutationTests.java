@@ -33,7 +33,9 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Applies Boundary Value Analysis on {@code MAX_NAME_LENGTH = 30} (targets
  * {@code ConditionalsBoundaryMutator} on {@code name.length() > 30}) and a decision table
  * over {@code pet.isNew() && pet.getType() == null} (targets
- * {@code RemoveConditionalMutator}).
+ * {@code RemoveConditionalMutator}). Test-case IDs map to
+ * {@code docs/tv3/TEST_DESIGN_TV3.md}; decision-table rows are in
+ * {@code docs/tv3/DESIGN_TABLES.md}.
  */
 @DisabledInNativeImage
 class PetValidatorMutationTests {
@@ -58,16 +60,26 @@ class PetValidatorMutationTests {
 		return pet;
 	}
 
+	/**
+	 * TV3-V01 - BVA, V-T2: valid new pets with names of length 29 or 30 have no
+	 * validation errors. Length 30 targets a boundary change from > to >=.
+	 */
 	@Test
 	void nameExactlyAtMaxLengthIsAccepted() {
-		Pet pet = validNewPet();
-		pet.setName("A".repeat(30));
+		for (int length : new int[] { 29, 30 }) {
+			Pet pet = validNewPet();
+			pet.setName("A".repeat(length));
+			Errors caseErrors = new MapBindingResult(new HashMap<>(), "pet");
 
-		this.validator.validate(pet, this.errors);
+			this.validator.validate(pet, caseErrors);
 
-		assertThat(this.errors.hasFieldErrors("name")).isFalse();
+			assertThat(caseErrors.hasErrors()).as("valid new pet with name length %s", length).isFalse();
+		}
 	}
 
+	/**
+	 * TV3-V02 - BVA: a name of length 31 produces a name error with the size code.
+	 */
 	@Test
 	void nameOneOverMaxLengthIsRejectedWithSizeCode() {
 		Pet pet = validNewPet();
@@ -79,6 +91,9 @@ class PetValidatorMutationTests {
 		assertThat(this.errors.getFieldError("name").getCode()).isEqualTo("size");
 	}
 
+	/**
+	 * TV3-V03 - EP: an empty name produces a name error with the required code.
+	 */
 	@Test
 	void emptyNameIsRejectedWithRequiredCode() {
 		Pet pet = validNewPet();
@@ -90,6 +105,9 @@ class PetValidatorMutationTests {
 		assertThat(this.errors.getFieldError("name").getCode()).isEqualTo("required");
 	}
 
+	/**
+	 * TV3-V04 - EP: a whitespace-only name produces a name/required error.
+	 */
 	@Test
 	void blankNameIsRejectedWithRequiredCode() {
 		Pet pet = validNewPet();
@@ -98,8 +116,13 @@ class PetValidatorMutationTests {
 		this.validator.validate(pet, this.errors);
 
 		assertThat(this.errors.hasFieldErrors("name")).isTrue();
+		assertThat(this.errors.getFieldError("name").getCode()).isEqualTo("required");
 	}
 
+	/**
+	 * TV3-V05 - EP: a null name produces a name/required error without dereferencing the
+	 * name.
+	 */
 	@Test
 	void nullNameIsRejectedWithRequiredCode() {
 		Pet pet = validNewPet();
@@ -108,8 +131,12 @@ class PetValidatorMutationTests {
 		this.validator.validate(pet, this.errors);
 
 		assertThat(this.errors.hasFieldErrors("name")).isTrue();
+		assertThat(this.errors.getFieldError("name").getCode()).isEqualTo("required");
 	}
 
+	/**
+	 * TV3-V06 - Decision Table V-T3: a persisted pet may omit its type.
+	 */
 	@Test
 	void persistedPetWithoutTypeIsAccepted() {
 		// decision table: isNew=false, type=null -> no "type" error
@@ -122,6 +149,9 @@ class PetValidatorMutationTests {
 		assertThat(this.errors.hasFieldErrors("type")).isFalse();
 	}
 
+	/**
+	 * TV3-V07 - Decision Table V-T1: a new pet without a type produces type/required.
+	 */
 	@Test
 	void newPetWithoutTypeIsRejected() {
 		Pet pet = validNewPet();
@@ -130,8 +160,13 @@ class PetValidatorMutationTests {
 		this.validator.validate(pet, this.errors);
 
 		assertThat(this.errors.hasFieldErrors("type")).isTrue();
+		assertThat(this.errors.getFieldError("type").getCode()).isEqualTo("required");
 	}
 
+	/**
+	 * TV3-V08 - EP, V-T4: a persisted typed pet still requires a birth date; the
+	 * birthDate/required error must not imply a type error.
+	 */
 	@Test
 	void persistedPetWithoutBirthDateIsStillRejected() {
 		Pet pet = validNewPet();
@@ -141,12 +176,22 @@ class PetValidatorMutationTests {
 		this.validator.validate(pet, this.errors);
 
 		assertThat(this.errors.hasFieldErrors("birthDate")).isTrue();
+		assertThat(this.errors.getFieldError("birthDate").getCode()).isEqualTo("required");
+		assertThat(this.errors.hasFieldErrors("type")).isFalse();
 	}
 
+	/**
+	 * TV3-V09 - EP: Pet and its subclasses are supported; unrelated classes are not.
+	 */
 	@Test
 	void supportsPetAndSubclassesOnly() {
 		assertThat(this.validator.supports(Pet.class)).isTrue();
+		assertThat(this.validator.supports(SpecialPet.class)).isTrue();
 		assertThat(this.validator.supports(String.class)).isFalse();
+	}
+
+	private static class SpecialPet extends Pet {
+
 	}
 
 }
