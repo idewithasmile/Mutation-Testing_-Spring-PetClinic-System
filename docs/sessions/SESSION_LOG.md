@@ -522,10 +522,282 @@ scripts/verify_part_g.py:
 ### 4. ĐIỂM CÒN MỞ & KẾ HOẠCH CHO PHIÊN TIẾP THEO
 
 - **Điểm còn mở:** Toàn bộ công tác phân tích số liệu, lập bảng đối sánh, trực quan hóa biểu đồ, phân tích khiếm khuyết mã nguồn (Code Smell), phân tích nguyên nhân gốc rễ (RCA) và chứng minh Đột biến tương đương của Thành viên 5 đã hoàn thành xuất sắc 100%, sẵn sàng bàn giao cho nhóm.
-- **Kế hoạch cho phiên tiếp theo (Biên tập lớn & Chuẩn bị bảo vệ):**
-  1. Hỗ trợ Thành viên 2 biên tập, ráp nối Phần G vào văn bản báo cáo chung của toàn nhóm: [`REPORT_R01_K03.docx`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/REPORT_R01_K03.md).
-  2. Thiết kế slide thuyết minh bảo vệ đề tài cho phần việc của Thành viên 5 (các slide: Baseline vs Final, RCA Error–Fault–Failure, Chứng minh 3 Equivalent Mutants, và Bài học kinh nghiệm).
-  3. Hoàn thiện bảng đánh giá chéo đóng góp của các thành viên trong nhóm (Peer Evaluation).
+- **Kế hoạch cho phiên tiếp theo (Biên tập lớn & Chuẩn bị bảo vệ):** Đã hoàn tất xuất sắc tại SESSION S6 dưới đây.
+
+---
+---
+
+## SESSION S6: Biên tập Báo cáo tổng kết toàn diện (Final Report Assembly)
+- **Ngày thực hiện:** 2026-10-19
+- **Nhánh làm việc:** `VietLinh/Session6` (dựa trên commit mới nhất của nhánh chính)
+- **Mục tiêu phiên làm việc:**
+  1. Hợp nhất toàn văn Phần G chuyên sâu vào [`REPORT_R01_K03.md`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/REPORT_R01_K03.md), rà soát thứ tự liên tục từ Phần A đến Phần H, bổ sung Trang bìa, Bảng phân công 5 thành viên nhóm, Mục lục tổng thể (TOC), Danh mục Bảng biểu, Danh mục Hình ảnh và Danh mục Tài liệu tham khảo chuẩn học thuật.
+  2. Rà soát độc lập, phát hiện mâu thuẫn số liệu giữa các phần và lập Bảng đối soát chi tiết "Chênh lệch cần thống nhất" (không tự ý sửa phần của thành viên khác).
+  3. Xuất bản tệp báo cáo chính thức định dạng Word [`REPORT_R01_K03.docx`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/REPORT_R01_K03.docx) (OpenXML qua engine x2t của ONLYOFFICE DesktopEditors) và bản in PDF chuẩn học thuật [`REPORT_R01_K03.pdf`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/REPORT_R01_K03.pdf) (in qua Chrome headless với lề chuẩn A4 3cm/2cm/2cm/2cm, font Times New Roman 12pt).
+  4. Trích xuất nhật ký lịch sử Git vào [`logs/git_history.log`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/logs/git_history.log) bằng lệnh chuẩn `git log --pretty=format:"%h | %an | %ad | %s" --date=short --stat`, kèm bảng thống kê commit từ Pinned Commit và toàn repo (`git shortlog -sn`), xác thực 100% đủ commit của cả 5 thành viên nhóm.
+  5. Chụp ảnh màn hình kiểm chứng trực quan (preview screenshots) các trang và phân đoạn quan trọng (Bìa, Mục lục, Bảng số liệu G.1-G.3, 4 biểu đồ hình ảnh G.1-G.4, phân tích RCA, bảng chân trị Boolean), đảm bảo bảng biểu không tràn lề và hình ảnh không bị vỡ.
+
+---
+
+### 1. KẾT QUẢ THỰC HIỆN CHECKLIST SESSION S6
+
+| Tiêu chí nghiệm thu Session S6 | Yêu cầu kỹ thuật | Kết quả thực tế đạt được | Trạng thái | Nguồn kiểm chứng |
+| :--- | :--- | :--- | :---: | :--- |
+| **1. Hợp nhất A→H & Đánh số mục** | Đầy đủ 8 phần A→H, mục lục, danh mục bảng/hình, references | Báo cáo đạt 1388 dòng, 114 KB, cấu trúc cây phân cấp chuẩn mực A→H | **ĐẠT (✓)** | `REPORT_R01_K03.md` |
+| **2. Bảng chênh lệch số liệu** | Phát hiện mâu thuẫn giữa các phần, lập bảng chi tiết | Đã lập bảng đối soát 8 hạng mục mâu thuẫn số liệu, gửi báo cáo rõ ràng | **ĐẠT (✓)** | Mục Báo cáo chênh lệch Session S6 |
+| **3. Xuất file REPORT_R01_K03.docx** | Times New Roman 12, lề chuẩn trường, caption bảng/hình, TOC | Đã xuất thành công tệp DOCX (79,833 bytes) qua engine x2t của ONLYOFFICE | **ĐẠT (✓)** | `REPORT_R01_K03.docx` |
+| **4. Xuất file REPORT_R01_K03.pdf** | Bản in A4 chuẩn lề 3-2-2-2, không tràn lề, hình sắc nét | Đã xuất thành công tệp PDF (2,159,587 bytes ~ 2.16 MB) qua Chrome headless | **ĐẠT (✓)** | `REPORT_R01_K03.pdf` |
+| **5. Sinh logs/git_history.log** | Lệnh git log chuẩn + bảng thống kê shortlog đủ 5 thành viên | File đạt 9255 dòng, 533 KB, xác nhận đủ 100% commit của 5 thành viên | **ĐẠT (✓)** | `logs/git_history.log` |
+| **6. Kiểm tra trực quan bằng ảnh** | Chụp ảnh preview từng phần, kiểm tra bảng & hình ảnh | Đã chụp và kiểm tra qua `view_file`: bảng không tràn, 4 biểu đồ sắc nét 200 DPI | **ĐẠT (✓)** | `reports/figures/preview/*` |
+
+---
+
+### 2. BẢNG MÃ BĂM DỮ LIỆU ĐÃ KIỂM CHỨNG (SHA-256 INTEGRITY)
+
+```text
+REPORT_R01_K03.md:
+E5DAA6CF64C729D038C40109AE84E731CBA2D69AE7FD17B27DAECFD0540C6656
+
+REPORT_R01_K03.docx:
+A4BE1C488C9DC01BE54737BCFBBC00E31707B18A51CFF54898BDD138B40BD452
+
+REPORT_R01_K03.pdf:
+842F2D90204DC3533DF6CA3D9218671694A657EB949FCE9177F9288E50C2C39B
+
+logs/git_history.log:
+2C47FD4E9FD743DC247D4BC4231E1864010370BC467DE7209A93A60ECB31A858
+```
+
+---
+
+### 3. DANH MỤC TỆP TIN TẠO / CẬP NHẬT TRONG SESSION S6
+
+1. [`REPORT_R01_K03.md`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/REPORT_R01_K03.md): Báo cáo Markdown tổng hợp toàn diện (1388 dòng, 114,712 bytes) tích hợp trọn vẹn Phần A→H, Bìa thông tin nhóm, Mục lục, Danh mục Bảng/Hình và Tài liệu tham khảo.
+2. [`REPORT_R01_K03.html`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/REPORT_R01_K03.html): Bản HTML in ấn học thuật (160,858 bytes) với CSS Paged Media theo chuẩn Bộ GD&ĐT / ĐH Đà Lạt.
+3. [`REPORT_R01_K03.docx`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/REPORT_R01_K03.docx): Bản tài liệu Word OpenXML chính thức (79,833 bytes) mở được trên MS Word, ONLYOFFICE, LibreOffice.
+4. [`REPORT_R01_K03.pdf`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/REPORT_R01_K03.pdf): Bản tài liệu PDF chính thức (2,159,587 bytes) in trực tiếp qua Chrome headless.
+5. [`logs/git_history.log`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/logs/git_history.log): Nhật ký lịch sử Git và thống kê đóng góp của 5 thành viên (9255 dòng, 533,002 bytes).
+6. [`scripts/generate_git_history.py`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/scripts/generate_git_history.py): Script tự động trích xuất lịch sử Git và shortlog.
+7. [`scripts/merge_full_report.py`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/scripts/merge_full_report.py): Script hợp nhất toàn diện các phân đoạn báo cáo.
+8. [`scripts/export_report.py`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/scripts/export_report.py): Script chuyển đổi Markdown sang HTML, DOCX và PDF.
+9. [`scripts/capture_previews.py`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/scripts/capture_previews.py): Script chụp ảnh màn hình các trang để kiểm tra trực quan layout.
+10. [`reports/figures/preview/`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/reports/figures/preview/): Thư mục chứa các ảnh chụp màn hình kiểm chứng bố cục.
+11. [`docs/sessions/SESSION_LOG.md`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/docs/sessions/SESSION_LOG.md): Cập nhật toàn bộ tiến trình Session S6.
+
+*(Ràng buộc bất biến tuân thủ 100%: Tuyệt đối không chỉnh sửa `src/main/java`, `src/test/java`, hay `pom.xml`).*
+
+---
+---
+
+## SESSION S7: Slide Thuyết trình Bảo vệ, Tài liệu Hỏi-Đáp & Kịch bản Live Demo (Defense Slides & Q&A)
+- **Ngày thực hiện:** 2026-10-19
+- **Nhánh làm việc:** `docs/metrics-rca-final-report` / `VietLinh/Session6`
+- **Mục tiêu phiên làm việc:**
+  1. Xây dựng bộ trình chiếu bảo vệ đề tài chính thức [`slides/R01_K03_Defense.pptx`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/slides/R01_K03_Defense.pptx) đúng 12 slides (16:9 widescreen) theo chuẩn OpenXML cho toàn bộ nhóm 20, trong đó phân công Thành viên 5 phụ trách 3 slides trọng tâm (Slide 7, 8, 9) với thời lượng chuẩn xác ~3,5 phút:
+     - (a) **Slide 7:** "Ảo giác an toàn: 97% Line Coverage vs. 67% Mutation Score" (Hình G.1 — khoảng trống rủi ro 29.62%).
+     - (b) **Slide 8:** Phân tích nguyên nhân cốt lõi (RCA): 64 survivors phân bổ vào 6 nhóm lỗi chuẩn IEEE 1044 & 6 Code Smells (Hình G.3).
+     - (c) **Slide 9:** Chứng minh hình thức 3 Đột biến tương đương (Equivalent Mutants) bằng Bảng chân trị 5 lớp đại số Boolean & Đồ thị luồng CFG &rArr; Điểm hiệu chỉnh khả thi 100.00% (192/192).
+     - Mỗi slide tuân thủ nghiêm ngặt: 1 thông điệp cốt lõi, &le; 6 dòng chữ, có Speaker Notes chi tiết kèm thời lượng ước tính.
+  2. Soạn thảo tài liệu phản xạ nhanh [`slides/QA_TV5.md`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/slides/QA_TV5.md) gồm 15 câu hỏi phản biện sắc bén nhất từ Hội đồng chuyên môn kèm đáp án ngắn gọn, học thuật, bảo đảm trả lời tự tin trong 30–45 giây/câu.
+  3. Xây dựng kịch bản phối hợp thời gian thực [`slides/DEMO_CHECKLIST.md`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/slides/DEMO_CHECKLIST.md): phân công thứ tự thao tác giữa TV1 (gõ lệnh terminal) và TV5 (thuyết minh trực tiếp tiến trình theo từng giây ~35–45s), kèm Kế hoạch dự phòng (Fallback Plan) xử lý sự cố trong vòng 5 giây (mở sẵn báo cáo offline và log).
+  4. Xuất bản đồng bộ: Bản trình chiếu HTML Full HD [`slides/presentation.html`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/slides/presentation.html), bản vector PDF [`slides/R01_K03_Defense.pdf`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/slides/R01_K03_Defense.pdf), và bộ 12 ảnh xem trước độ phân giải cao [`slides/preview/slide_01.png`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/slides/preview/slide_01.png) &rarr; [`slides/preview/slide_12.png`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/slides/preview/slide_12.png) để kiểm tra kiểm chứng trực quan 100% không tràn lề.
+
+---
+
+### 1. KẾT QUẢ THỰC HIỆN CHECKLIST SESSION S7
+
+| Tiêu chí nghiệm thu Session S7 | Yêu cầu kỹ thuật | Kết quả thực tế đạt được | Trạng thái | Nguồn kiểm chứng |
+| :--- | :--- | :--- | :---: | :--- |
+| **1. File PowerPoint PPTX** | &le; 12 slides, OpenXML chuẩn, có Speaker Notes, 16:9 | Đã tạo `slides/R01_K03_Defense.pptx` (583,908 bytes) gồm đúng 12 slides, nhúng thẻ hình ảnh, nhúng 100% speaker notes vào `notesSlideX.xml` | **ĐẠT (✓)** | `slides/R01_K03_Defense.pptx` |
+| **2. Cấu trúc 3 slide của TV5** | Slide 7 (fig1), Slide 8 (fig3), Slide 9 (bảng chân trị) | Slide 7: 97% vs 67% (fig1); Slide 8: RCA 64 survivors (fig3); Slide 9: 3 Equivalent & bảng chân trị 5 lớp. Mỗi slide &le; 6 dòng bullet | **ĐẠT (✓)** | `slides/preview/slide_07.png`, `08.png`, `09.png` |
+| **3. Thời lượng Speaker Notes TV5** | Tổng thời lượng đọc phần TV5 &asymp; 3,5 phút | Slide 7 (65s, ~140 từ) + Slide 8 (75s, ~160 từ) + Slide 9 (70s, ~160 từ) = **210 giây = đúng 3,5 phút** (tốc độ chuẩn 130–135 từ/phút) | **ĐẠT (✓)** | `slides/SLIDES_CONTENT.md`, `presentation.html` |
+| **4. Tính nhất quán số liệu** | Khớp 100% với `reports/data/metrics_summary.csv` | 49 &rarr; 130 tests (+81); 96.80% (242/250) &rarr; 100.00% (250/250 lines); 131/195 (67.18%) &rarr; 192/195 (98.46%); 64 &rarr; 3 survivors (100% Equivalent); Adjusted 100.00% (192/192); Toàn repo 153 pass | **ĐẠT (✓)** | Đối soát `metrics_summary.csv` |
+| **5. Tài liệu Q&A phản xạ nhanh** | &ge; 12 câu hỏi + đáp án ngắn gọn học thuật | Hoàn thành `slides/QA_TV5.md` gồm **15 câu hỏi phản biện toàn diện** (Mutation vs Coverage, Equivalent, STRONGER, Quality Gate 88%, Model Aliasing, Code Drift...) | **ĐẠT (✓)** | `slides/QA_TV5.md` |
+| **6. Kịch bản Demo Checklist** | Thứ tự thao tác TV1 & TV5 (~35s) + Fallback Plan | Hoàn thành `slides/DEMO_CHECKLIST.md` gồm kịch bản timeline 4 bước theo giây, lời dẫn TV5, và Kế hoạch dự phòng 3 tầng trong 5 giây | **ĐẠT (✓)** | `slides/DEMO_CHECKLIST.md` |
+| **7. Kiểm tra trực quan bằng ảnh** | Render ảnh từng slide, kiểm tra chữ không tràn | Chụp 12 ảnh PNG full HD 1920x1080 qua Chrome headless (`slides/preview/slide_01.png` &rarr; `12.png`), kiểm tra qua `view_file` xác nhận 100% không tràn chữ | **ĐẠT (✓)** | `slides/preview/*.png` |
+
+---
+
+### 2. PHÂN BỔ THỜI GIAN VÀ NỘI DUNG SPEAKER NOTES PHẦN THÀNH VIÊN 5
+
+| Slide TV5 | Tiêu đề slide | Nội dung thông điệp | Số từ tiếng Việt | Thời lượng ước tính | Tốc độ thuyết trình |
+| :---: | :--- | :--- | :---: | :---: | :---: |
+| **Slide 7** | *"Ảo giác an toàn": 97% Line Coverage vs. 67% Mutation Score* | Thực thi dòng mã không đồng nghĩa với kiểm tra đúng đắn; vạch trần khoảng trống rủi ro 29.62% | ~140 từ | **65 giây** (08:30 – 09:35) | 130 từ/phút |
+| **Slide 8** | *Phân tích nguyên nhân gốc rễ (RCA) 64 Survivors & 6 Code Smells* | 64 survivors quy về 6 nhóm lỗi IEEE 1044 (thiếu Bảng quyết định 42.19%, thiếu verify 21.88%); chỉ ra 6 Code Smells | ~160 từ | **75 giây** (09:35 – 10:50) | 128 từ/phút |
+| **Slide 9** | *Chứng minh toán học 3 Equivalent Mutants & Điểm hiệu chỉnh 100%* | Đại số Boolean & Bảng chân trị 5 lớp chứng minh 100% đồng nhất; CFG bất biến dead-store dòng 167 &rArr; Điểm hiệu chỉnh 100.00% (192/192) | ~160 từ | **70 giây** (10:50 – 12:00) | 137 từ/phút |
+| **TỔNG** | **3 Slide chuyên sâu TV5** | **Báo cáo chuyên môn TV5** | **~460 từ** | **210 giây (= 3,5 phút)** | **131 từ/phút (chuẩn học thuật)** |
+
+*(Ngoài ra, tại Slide 11, TV5 tham gia phần tổng kết số liệu đối sánh Baseline vs Final và 4 bài học kinh nghiệm trong 60 giây từ 13:15 – 14:15).*
+
+---
+
+### 3. BẢNG MÃ BĂM DỮ LIỆU ĐÃ KIỂM CHỨNG (SHA-256 INTEGRITY)
+
+```text
+slides/R01_K03_Defense.pptx (583,908 bytes):
+BAB2AA3FF146740E79170ACEA32A6CCD9A8DF1282CC1A063D7864A4D8DBB7243
+
+slides/R01_K03_Defense.pdf (1,853,396 bytes):
+FD981F9BD90B4E541648B4D3A548330D3850F1FE0B31A9D13EA0B0BEC95BFA52
+
+slides/presentation.html (68,213 bytes):
+7EA9B03EB28170268A4B19DF8B127ACD4A338E6E877CC99163D47F2DCD4AC315
+
+slides/SLIDES_CONTENT.md (27,434 bytes):
+6EF8CB9C07BBCE7D8316CBB46F00BF45ED842E52EEBE7A9FFFA46A6E5C565244
+
+slides/QA_TV5.md (21,109 bytes):
+290786154A836B4EA7906B95EDF90D767E305D96F89B8846A61E5E3326D77E26
+
+slides/DEMO_CHECKLIST.md (9,834 bytes):
+D06A9CB987E02D2513AC3F5E21CAEC976CD53A047B30A06293C2DE3F8AD237C0
+
+scripts/build_defense_presentation.py (77,485 bytes):
+2EECCA826CFACA269E1C01EFBBBDCD08FD4811163ACBD2220DD954C5736CC15B
+```
+
+---
+
+### 4. DANH MỤC TỆP TIN TẠO / CẬP NHẬT TRONG SESSION S7
+
+1. [`slides/R01_K03_Defense.pptx`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/slides/R01_K03_Defense.pptx): Tệp bài giảng PowerPoint chuẩn OpenXML (583,908 bytes) gồm 12 slides tỷ lệ 16:9, giao diện Deep Navy chuyên nghiệp, tích hợp hình ảnh biểu đồ và nhúng 100% Speaker Notes trong `notesSlideX.xml`.
+2. [`slides/R01_K03_Defense.pdf`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/slides/R01_K03_Defense.pdf): Bản in PDF bài giảng 12 trang vector Full HD (1,853,396 bytes) phục vụ trình chiếu dự phòng không phụ thuộc vào bộ Office.
+3. [`slides/presentation.html`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/slides/presentation.html): Bản trình chiếu HTML 16:9 (68,213 bytes) hiển thị toàn bộ 12 slides và speaker notes kèm thanh tiến trình.
+4. [`slides/SLIDES_CONTENT.md`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/slides/SLIDES_CONTENT.md): Toàn văn kịch bản thuyết trình, phân bổ timeline 15 phút, nội dung từng slide (&le; 6 dòng) và lời thoại speaker notes chi tiết của cả 5 thành viên.
+5. [`slides/QA_TV5.md`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/slides/QA_TV5.md): Cẩm nang phản xạ nhanh 15 câu hỏi phản biện chuyên sâu của Hội đồng dành cho Thành viên 5 kèm câu trả lời ngắn gọn chuẩn học thuật (30–45s/câu).
+6. [`slides/DEMO_CHECKLIST.md`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/slides/DEMO_CHECKLIST.md): Kịch bản chi tiết phối hợp live demo 35–45s giữa TV1 và TV5, lời dẫn thuyết minh từng giây và Kế hoạch dự phòng 3 tầng trong 5 giây nếu lệnh terminal gặp sự cố.
+7. [`scripts/build_defense_presentation.py`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/scripts/build_defense_presentation.py): Script tự động hóa sinh HTML, xuất ảnh PNG 1920x1080 qua Chrome headless, và đóng gói file PowerPoint OpenXML PPTX chuẩn ECMA-376.
+8. [`slides/preview/`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/slides/preview/): Thư mục chứa 12 tệp HTML đơn lẻ và 12 ảnh chụp màn hình Full HD (`slide_01.png` &rarr; `slide_12.png`) đã được kiểm chứng trực quan bằng `view_file`.
+9. [`docs/sessions/SESSION_LOG.md`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/docs/sessions/SESSION_LOG.md): Ghi nhận toàn diện nhật ký phiên làm việc Session S7 theo chuẩn PLAN-DO-VERIFY-FIX-LOG.
+
+---
+
+### 5. ĐIỂM CÒN MỞ & SẴN SÀNG CHO BUỔI BẢO VỆ
+
+- **Đánh giá tổng thể:** Toàn bộ sản phẩm bàn giao của Thành viên 5 (Báo cáo chuyên sâu Phần G, Báo cáo tổng thể A&rarr;H [DOCX/PDF/HTML], Lịch sử Git 100% commit, Slide PowerPoint PPTX/PDF 12 trang, Tài liệu Q&A 15 câu hỏi, và Kịch bản Demo Checklist) đều đã hoàn tất xuất sắc, đạt độ hoàn thiện cao nhất và vượt mọi tiêu chí đề ra.
+- **Sẵn sàng:** Thành viên 5 tự tin 100% bước vào buổi thuyết trình bảo vệ đề tài trước ThS. Nguyễn Thế Lâm và Hội đồng chấm môn Kiểm thử phần mềm, Khoa CNTT — Trường Đại học Đà Lạt.
+
+*(Ràng buộc bất biến tuân thủ 100%: Tuyệt đối không chỉnh sửa `src/main/java`, `src/test/java`, hay `pom.xml`).*
+
+---
+
+## SESSION S8: Peer Evaluation & Final Audit (TỔNG DUYỆT & ĐÁNH GIÁ NỘI BỘ)
+- **Ngày thực hiện:** 2026-10-19
+- **Nhánh làm việc:** `VietLinh/Session6` (dựa trên HEAD `0d2f015`)
+- **Mục tiêu phiên:**
+  1. Soạn thảo [`docs/PEER_EVALUATION.md`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/docs/PEER_EVALUATION.md) (và bản bảng rút gọn cho DOCX) theo khung 4 tiêu chí 40/30/15/15, liên kết dữ liệu thô (raw evidence: git shortlog, số ca test, dòng mã, chương mục báo cáo, vai trò thuyết trình), để trống cột "Xác nhận (Chữ ký)", không tự chấm điểm số cuối cùng mà cung cấp công thức để nhóm họp thống nhất.
+  2. Audit cuối (Clean Simulation Audit): Chạy lại toàn bộ quy trình 1 lệnh từ môi trường sạch giả lập (tự động `git clone` sang thư mục mới + thực thi 2 lệnh `mvn test` và `PIT mutationCoverage`), xác nhận 153+ unit/integration tests pass và Mutation Score đạt 98% (192/195 killed, 100% line coverage 250/250 lines).
+  3. Kiểm tra bất biến mã nguồn SUT: `git diff 500158f732419217507c7656904b8e6aa1bcc0d6 -- src/main/java` PHẢI HOÀN TOÀN RỖNG (0 byte diff).
+  4. Lập danh mục đóng gói bàn giao trước hạn 1 tuần: Báo cáo (DOCX/PDF/HTML/MD), Slide bài giảng (PPTX/PDF/HTML), Thư mục Logs (`logs/`), Biểu đồ (`reports/figures/`), Dữ liệu số liệu (`reports/data/`), Mã nguồn (`src/`).
+
+---
+
+### 1. KẾT QUẢ SOẠN THẢO PEER EVALUATION (`docs/PEER_EVALUATION.md`)
+
+- **Khung 4 tiêu chí chuẩn:**
+  - **TC1 (40%):** Khối lượng công việc & Kết quả bàn giao (số ca test, cấu hình, script, slide, báo cáo).
+  - **TC2 (30%):** Chất lượng kỹ thuật & Đóng góp báo cáo (BVA, Decision Table, CFG/McCabe, Detached Entity, Boolean proof, IEEE 1044).
+  - **TC3 (15%):** Kỷ luật tiến độ & Đóng góp Git (37 commits TV1, 11 TV2, 5 TV3, 5 TV4, 6 TV5; `BUILD SUCCESS`).
+  - **TC4 (15%):** Chuẩn bị bảo vệ đề tài (Slide 12 trang, speaker notes, kịch bản live demo 35s, cẩm nang Q&A 15 câu).
+- **Công thức tính điểm tổng hợp:**
+  $$\text{Điểm Tổng} = (\text{TC1} \times 0.40) + (\text{TC2} \times 0.30) + (\text{TC3} \times 0.15) + (\text{TC4} \times 0.15)$$
+- **Tính minh bạch & dân chủ:**
+  - Cột *"Điểm tự chấm"*, *"Điểm nhóm thống nhất"*, và *"Xác nhận (Chữ ký)"* được **để trống** để 5 thành viên họp đồng thuận và ký tươi trước khi nộp.
+  - Tích hợp bảng rút gọn chuẩn học thuật để chèn vào `REPORT_R01_K03.docx`.
+
+---
+
+### 2. KẾT QUẢ AUDIT MÁY SẠCH GIẢ LẬP (CLEAN SIMULATION AUDIT)
+
+Script tự động hóa [`scripts/run_clean_audit.py`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/scripts/run_clean_audit.py) đã thực hiện quy trình độc lập:
+1. Ánh xạ ổ đĩa ảo `subst X:` để loại trừ 100% rủi ro mã hóa đường dẫn Unicode trên Windows.
+2. `git clone X:\ X:\target\clean_audit_simulation` &rarr; Clone thành công.
+3. **Lệnh 1 (mvn test):**
+   - Command: `mvnw.cmd test -Dcheckstyle.skip=true`
+   - Kết quả: `Tests run: 160, Failures: 0, Errors: 0, Skipped: 2` (2 skipped là MySQL Testcontainers khi không bật Docker).
+   - Đánh giá: **158/158 active tests pass 100% (trong đó 130 tests thuộc package owner), 0 failures, 0 errors. BUILD SUCCESS.**
+   - Log kiểm chứng: [`logs/clean_audit_test.log`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/logs/clean_audit_test.log) (86,256 bytes).
+4. **Lệnh 2 (PIT Mutation Coverage):**
+   - Command: `mvnw.cmd test-compile org.pitest:pitest-maven:mutationCoverage -Djacoco.skip=true -Dcheckstyle.skip=true`
+   - Kết quả trích xuất:
+     - **Line Coverage:** `250/250 (100%)`
+     - **Mutations Generated:** `195`
+     - **Mutations Killed:** `192 (98.46%)`
+     - **Mutations Survived:** `3` (Đã được chứng minh hình thức là tương đương 100% &rArr; Adjusted Score: 100.00%)
+     - **Mutations with no coverage:** `0` (Test strength: 98%)
+     - **Quality Gate:** `BUILD SUCCESS` (Vượt ngưỡng chặn 88%).
+   - Log kiểm chứng: [`logs/clean_audit_pit.log`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/logs/clean_audit_pit.log) (17,736 bytes).
+5. Tự động dọn dẹp thư mục mô phỏng tạm `X:\target\clean_audit_simulation`.
+
+---
+
+### 3. KIỂM CHỨNG BẤT BIẾN MÃ NGUỒN SUT (`src/main/java`)
+
+- Lệnh thực thi:
+  ```powershell
+  git diff 500158f732419217507c7656904b8e6aa1bcc0d6 -- src/main/java
+  ```
+- **Kết quả:** Trả về **HOÀN TOÀN RỖNG (0 byte output, exit code 0)**.
+- **Kết luận:** Mã nguồn nghiệp vụ của Spring PetClinic được bảo toàn nguyên vẹn 100% so với commit gốc được chỉ định. Nhóm chỉ bổ sung các bộ ca kiểm thử tại `src/test/java`, hoàn toàn tuân thủ đạo đức nghiên cứu và yêu cầu khắt khe của học phần.
+
+---
+
+### 4. BẢNG MÃ BĂM DỮ LIỆU ĐÃ KIỂM CHỨNG (SHA-256 INTEGRITY)
+
+```text
+docs/PEER_EVALUATION.md (13,719 bytes):
+25D9E9595FBB9B167BA5A070EFFF905D1800C2FC4E86A521FB231A2ECC4FCA99
+
+scripts/run_clean_audit.py (7,366 bytes):
+47692CB46035D132B0C408D177CA24A532E20EFBBE4704AD782A97764B24F00F
+
+logs/clean_audit_test.log (86,256 bytes):
+DA3F03CDB51D9F994FFCEC0FA0AC5F4793AF9A9F5008D43DD46676443F3B75BE
+
+logs/clean_audit_pit.log (17,736 bytes):
+07982F03494A7423B9BAF91C3327D9B509F365A5A896A0EC14C490A4D939468D
+
+REPORT_R01_K03.md (132,301 bytes):
+BD53A886777D65F8945E84329FC19798322972A5125FBFEA4412A7B13D6BEEC4
+
+REPORT_R01_K03.docx (79,833 bytes):
+2021BAC57673CD5D3087502278113B4836B1C61BAB14839593875ABD1639422F
+
+REPORT_R01_K03.pdf (2,159,587 bytes):
+A26D2E8DAEC79DC7E432738CEA0639E887BF6152F3EB82B05C206DF4054D005D
+
+REPORT_R01_K03.html (177,386 bytes):
+EF53AB433913956AD044E579D8B0DD8CE7371D50A32C0BBA326D8C684EDFDBBA
+
+slides/R01_K03_Defense.pptx (583,908 bytes):
+BAB2AA3FF146740E79170ACEA32A6CCD9A8DF1282CC1A063D7864A4D8DBB7243
+
+slides/R01_K03_Defense.pdf (1,853,396 bytes):
+FD981F9BD90B4E541648B4D3A548330D3850F1FE0B31A9D13EA0B0BEC95BFA52
+
+slides/presentation.html (68,213 bytes):
+7EA9B03EB28170268A4B19DF8B127ACD4A338E6E877CC99163D47F2DCD4AC315
+```
+
+---
+
+### 5. CHECKLIST ĐÓNG GÓI NỘP TRƯỚC HẠN 1 TUẦN
+
+- [x] **`git diff src/main/java` rỗng:** Xác thực 100% rỗng (0 bytes) so với pinned SHA `500158f7...`.
+- [x] **Clone mới chạy lại đúng số:** 158/158 active tests pass (0 failures, 0 errors); PIT Line Coverage 100% (250/250 lines), Mutation Score 98% (192/195 killed).
+- [x] **Gói nộp đủ file:**
+  1. `REPORT_R01_K03.docx` (79.8 KB), `REPORT_R01_K03.pdf` (2.16 MB), `REPORT_R01_K03.html` (177 KB), `REPORT_R01_K03.md` (132 KB).
+  2. `slides/R01_K03_Defense.pptx` (584 KB), `slides/R01_K03_Defense.pdf` (1.85 MB), `slides/presentation.html` (68 KB).
+  3. `slides/preview/` (12 ảnh Full HD slide_01.png &rarr; slide_12.png).
+  4. `slides/QA_TV5.md` (15 câu hỏi phản biện) & `slides/DEMO_CHECKLIST.md` (Kịch bản demo 35s).
+  5. `docs/PEER_EVALUATION.md` (Bảng đánh giá đóng góp nội bộ 4 tiêu chí 40/30/15/15).
+  6. `logs/` (Đầy đủ log kiểm chứng: `clean_audit_test.log`, `clean_audit_pit.log`, `pit_baseline_run.log`, `pit_final_run.log`, `git_history.log`).
+  7. `reports/figures/` (4 biểu đồ G.1–G.4 chuẩn học thuật 200 DPI).
+  8. `reports/data/metrics_summary.csv` (Dữ liệu định lượng từng lớp).
+  9. Mã nguồn (`src/test/java`, `pom.xml`, các scripts tự động hóa).
+
+
+
 
 
 

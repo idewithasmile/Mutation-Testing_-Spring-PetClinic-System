@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Slide 10: Đường ống CI/CD GitHub Actions & Tính khả tái 1-lệnh</title>
+    <style>
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        background: #0B132B;
+        color: #E2E8F0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+    }
+    .slide {
+        width: 1920px;
+        height: 1080px;
+        padding: 50px 70px 40px 70px;
+        background: radial-gradient(circle at top right, #1C2541 0%, #0B132B 100%);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        position: relative;
+    }
+    .slide-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 44px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding-bottom: 12px;
+    }
+    .header-left { display: flex; align-items: center; gap: 14px; }
+    .role-badge {
+        background: #3A86FF;
+        color: #FFFFFF;
+        font-weight: 700;
+        font-size: 15px;
+        padding: 6px 14px;
+        border-radius: 20px;
+        letter-spacing: 0.5px;
+    }
+    .time-badge {
+        background: rgba(255, 255, 255, 0.1);
+        color: #CBD5E1;
+        font-size: 14px;
+        padding: 6px 12px;
+        border-radius: 20px;
+    }
+    .project-tag { color: #94A3B8; font-size: 14px; font-weight: 500; }
+    .school-tag { color: #94A3B8; font-size: 14px; font-weight: 600; }
+
+    .slide-title-block { margin-top: 18px; margin-bottom: 10px; }
+    .slide-title {
+        font-size: 38px;
+        font-weight: 800;
+        color: #FFFFFF;
+        line-height: 1.25;
+        letter-spacing: -0.5px;
+    }
+    .slide-subtitle {
+        font-size: 20px;
+        color: #94A3B8;
+        margin-top: 6px;
+        font-weight: 400;
+    }
+
+    .message-banner {
+        background: rgba(58, 134, 255, 0.15);
+        border-left: 5px solid #3A86FF;
+        padding: 12px 20px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 18px;
+    }
+    .msg-icon { font-size: 20px; }
+    .msg-text {
+        font-size: 18px;
+        font-weight: 600;
+        color: #93C5FD;
+    }
+
+    .slide-content-grid {
+        display: grid;
+        grid-template-columns: 1.05fr 0.95fr;
+        gap: 40px;
+        flex: 1;
+        align-items: center;
+        min-height: 0;
+    }
+    .content-pane {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    .bullet-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+    .bullet-list li {
+        font-size: 19px;
+        line-height: 1.5;
+        color: #E2E8F0;
+        position: relative;
+        padding-left: 28px;
+    }
+    .bullet-list li::before {
+        content: "■";
+        position: absolute;
+        left: 0;
+        color: #3A86FF;
+        font-size: 14px;
+        top: 3px;
+    }
+    .bullet-list code {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-family: Consolas, monospace;
+        font-size: 17px;
+        color: #F8FAFC;
+    }
+    .bullet-list strong { color: #FFFFFF; font-weight: 700; }
+
+    .visual-pane {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        max-height: 580px;
+    }
+    .slide-fig {
+        max-width: 100%;
+        max-height: 560px;
+        object-fit: contain;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+        background: #FFFFFF;
+        padding: 10px;
+    }
+
+    .badges-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        width: 100%;
+    }
+    .metric-card {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        padding: 28px 20px;
+        text-align: center;
+        transition: transform 0.2s;
+    }
+    .card-emerald { border-color: #10B981; background: rgba(16, 185, 129, 0.1); }
+    .card-blue { border-color: #3A86FF; background: rgba(58, 134, 255, 0.1); }
+    .card-gold { border-color: #F59E0B; background: rgba(245, 158, 11, 0.1); }
+    .metric-val { font-size: 44px; font-weight: 900; color: #FFFFFF; margin-bottom: 6px; }
+    .metric-lbl { font-size: 18px; color: #94A3B8; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+    .metric-sub { font-size: 15px; color: #CBD5E1; margin-top: 4px; }
+
+    .info-stack { display: flex; flex-direction: column; gap: 16px; width: 100%; }
+    .info-card {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-left: 4px solid #3A86FF;
+        border-radius: 12px;
+        padding: 18px 24px;
+    }
+    .info-title { font-size: 19px; font-weight: 700; color: #FFFFFF; margin-bottom: 6px; }
+    .info-desc { font-size: 16px; color: #CBD5E1; line-height: 1.45; }
+
+    .card-table {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        overflow: hidden;
+        padding: 16px;
+    }
+    .card-header {
+        font-size: 18px;
+        font-weight: 700;
+        color: #93C5FD;
+        margin-bottom: 12px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding-bottom: 8px;
+    }
+    .truth-tbl {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 15px;
+    }
+    .truth-tbl th {
+        background: rgba(255, 255, 255, 0.08);
+        color: #FFFFFF;
+        padding: 8px 10px;
+        text-align: center;
+    }
+    .truth-tbl td {
+        padding: 7px 10px;
+        text-align: center;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .hl-row { background: rgba(58, 134, 255, 0.15); font-weight: 700; }
+    .res-0 { color: #94A3B8; font-weight: 700; }
+    .res-1 { color: #10B981; font-weight: 900; }
+    .eq-badge {
+        background: #10B981;
+        color: #FFFFFF;
+        font-size: 12px;
+        font-weight: 700;
+        padding: 3px 8px;
+        border-radius: 10px;
+    }
+    .badge-kill {
+        background: #10B981;
+        color: #FFFFFF;
+        font-size: 13px;
+        font-weight: 700;
+        padding: 4px 10px;
+        border-radius: 12px;
+        display: inline-block;
+    }
+    .score-formula {
+        margin-top: 14px;
+        background: rgba(16, 185, 129, 0.15);
+        border: 1px solid #10B981;
+        border-radius: 8px;
+        padding: 10px;
+        text-align: center;
+        font-size: 17px;
+        color: #A7F3D0;
+    }
+
+    .rip-card {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        padding: 20px;
+    }
+    .rip-step {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 8px;
+        padding: 12px 16px;
+        font-size: 16px;
+    }
+    .step-badge {
+        background: #3A86FF;
+        color: #FFFFFF;
+        font-weight: 900;
+        font-size: 18px;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .rip-arrow { text-align: center; font-size: 22px; color: #3A86FF; margin: 4px 0; }
+    .rip-outcome { text-align: center; margin-top: 14px; }
+
+    .gate-card {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        padding: 20px;
+    }
+    .code-box {
+        background: #000000;
+        border-radius: 8px;
+        padding: 16px;
+        color: #A7F3D0;
+        font-family: Consolas, monospace;
+        font-size: 15px;
+        overflow-x: auto;
+    }
+    .gate-status {
+        margin-top: 14px;
+        padding: 12px;
+        border-radius: 8px;
+        background: rgba(16, 185, 129, 0.15);
+        color: #A7F3D0;
+        text-align: center;
+        font-size: 18px;
+    }
+
+    .qa-hero {
+        text-align: center;
+        padding: 40px;
+        background: rgba(58, 134, 255, 0.1);
+        border: 2px dashed #3A86FF;
+        border-radius: 20px;
+        width: 100%;
+    }
+    .qa-icon { font-size: 72px; margin-bottom: 16px; }
+    .qa-text { font-size: 32px; font-weight: 900; color: #FFFFFF; }
+    .qa-sub { font-size: 18px; color: #93C5FD; margin-top: 8px; }
+
+    .slide-footer {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding-top: 12px;
+    }
+    .progress-bar-container {
+        width: 100%;
+        height: 4px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 2px;
+        overflow: hidden;
+    }
+    .progress-bar { height: 100%; background: #3A86FF; border-radius: 2px; }
+    .footer-info {
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+        color: #64748B;
+        font-weight: 500;
+    }
+
+    </style>
+</head>
+<body>
+
+    <div class="slide" id="slide-10">
+        <header class="slide-header">
+            <div class="header-left">
+                <span class="role-badge">TV1 (Trịnh Trung Hiếu)</span>
+                <span class="time-badge">75s (12:00 - 13:15)</span>
+                <span class="project-tag">Program_R01-K03 &bull; Slide 10/12</span>
+            </div>
+            <div class="header-right">
+                <span class="school-tag">ĐH Đà Lạt &bull; Khoa CNTT</span>
+            </div>
+        </header>
+
+        <div class="slide-title-block">
+            <h1 class="slide-title">Đường ống CI/CD GitHub Actions & Tính khả tái 1-lệnh</h1>
+            <p class="slide-subtitle">Tự động hóa toàn diện 6 bước Fail-Fast và kiểm chứng thực nghiệm trong 35–45 giây</p>
+        </div>
+
+        <div class="message-banner">
+            <span class="msg-icon">&#128161;</span>
+            <span class="msg-text">Đóng gói toàn diện kịch bản CI/CD trên cloud và lệnh thực thi tức thì trên máy trạm</span>
+        </div>
+
+        <div class="slide-content-grid">
+            <div class="content-pane">
+                <ul class="bullet-list">
+                    <li><strong>Đường ống CI/CD 6 bước Fail-Fast (<code>.github/workflows/mutation-test.yml</code>):</strong><br>&bull; Bước 1 &amp; 2: Checkout mã nguồn <code>actions/checkout@v4</code> &amp; Setup JDK 17 Temurin + Maven Cache.<br>&bull; Bước 3: Cổng kiểm thử nhanh: Chạy 153 Unit Tests (ngắt ngay lập tức nếu phát sinh hồi quy).<br>&bull; Bước 4: Cổng chất lượng K03: Thực thi PIT Mutation Testing &amp; chặn build nếu score &lt; 88%.<br>&bull; Bước 5: Xuất bảng tóm tắt trực quan <code>$GITHUB_STEP_SUMMARY</code> lên giao diện GitHub Actions.<br>&bull; Bước 6: Đóng gói và lưu trữ Artifacts báo cáo HTML/XML trong 30 ngày.</li><li><strong>Tính khả tái thực nghiệm 1-lệnh (One-Liner Reproducibility):</strong><br>&bull; PowerShell: <code>./mvnw.cmd test-compile org.pitest:pitest-maven:mutationCoverage '-Djacoco.skip=true'</code><br>&bull; Thời gian chạy thực tế: ~35–45 giây trên máy trạm thông thường.</li>
+                </ul>
+            </div>
+            
+        <div class="visual-pane">
+            <div class="info-card" style="border-left: 4px solid #10B981;">
+                <div class="info-title">Kiến trúc CI/CD Fail-Fast 6 bước</div>
+                <div class="info-desc" style="line-height: 1.8;">
+                    &bull; <strong>1. Checkout:</strong> Fetch source full-depth.<br>
+                    &bull; <strong>2. Setup:</strong> JDK 17 Temurin + Maven Cache.<br>
+                    &bull; <strong>3. Fast Gate:</strong> 153 Unit Tests (15 giây).<br>
+                    &bull; <strong>4. K03 Gate:</strong> PIT Mutation Testing (&ge; 88%).<br>
+                    &bull; <strong>5. Summary:</strong> Xuất báo cáo Markdown trực quan.<br>
+                    &bull; <strong>6. Artifacts:</strong> Lưu trữ HTML/XML 30 ngày.
+                </div>
+            </div>
+        </div>
+        
+        </div>
+
+        <footer class="slide-footer">
+            <div class="progress-bar-container">
+                <div class="progress-bar" style="width: 83.33333333333334%;"></div>
+            </div>
+            <div class="footer-info">
+                <span>Mutation Testing bằng PIT trên Spring PetClinic</span>
+                <span>GVHD: ThS. Nguyễn Thế Lâm &bull; Nhóm 20</span>
+            </div>
+        </footer>
+    </div>
+    
+</body>
+</html>
