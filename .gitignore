@@ -103,3 +103,8 @@ out/
 _site/
 *.css
 !petclinic.css
+
+.venv/
+venv/
+__pycache__/
+*.pyc
