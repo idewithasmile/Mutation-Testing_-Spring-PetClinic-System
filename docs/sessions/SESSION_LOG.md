@@ -370,11 +370,162 @@ scripts/verify_rca.py:
 
 ---
 
-### 5. ĐIỂM CÒN MỞ & KẾ HOẠCH CHO SESSION TIẾP THEO (SESSION S4)
+### 5. ĐIỂM CÒN MỞ & KẾ HOẠCH CHO PHIÊN TIẾP THEO
 
 - **Điểm còn mở:** Toàn bộ tiêu chí nghiệm thu của Session S3 đã hoàn thành xuất sắc 100%, không còn blocker nào.
-- **Kế hoạch cho Session S4:**
-  1. **Phần G.4 (Boolean Algebraic Proof):** Thực hiện chứng minh hình thức bằng đại số Boolean cho 3 Equivalent Mutants (`Owner.java:108` x2 và `OwnerController.java:167`).
-  2. **Tổng hợp báo cáo Phần G:** Tích hợp G.1, G.2, G.3, G.4 thành báo cáo hoàn chỉnh phục vụ biên tập `REPORT_R01_K03.docx`.
+- **Kế hoạch cho Session S4:** Đã thực hiện hoàn chỉnh trong Session S4 dưới đây.
+
+---
+---
+
+## SESSION S4: Chứng minh hình thức các Đột biến tương đương (Equivalent Mutants)
+- **Ngày thực hiện:** 2026-10-19
+- **Nhánh làm việc:** `docs/metrics-rca-final-report`
+- **Mục tiêu:**
+  1. Trích xuất nguyên văn mã nguồn thực tế tại commit đã khóa `500158f732419217507c7656904b8e6aa1bcc0d6` cho:
+     - `BaseEntity.java` (dòng 37–49: `id`, `getId()`, `setId()`, `isNew()`).
+     - `Owner.java` (dòng 100–113: phương thức `addPet`).
+     - `OwnerController.java` (dòng 153–171: phương thức `processUpdateOwnerForm`).
+  2. Đối chiếu chi tiết 03 mutant sống sót duy nhất từ tệp [`reports/data/final_mutations.xml`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/reports/data/final_mutations.xml):
+     - M1: `Owner.java:108` (index 39) — `RemoveConditionalMutator_EQUAL_IF` (`!existingPet.isNew()`).
+     - M2: `Owner.java:108` (index 42) — `RemoveConditionalMutator_EQUAL_IF` (`!pet.isNew()`).
+     - M3: `OwnerController.java:167` (index 50) — `VoidMethodCallMutator` (xóa `owner.setId(ownerId)`).
+  3. Xây dựng chứng minh toán học hình thức chặt chẽ:
+     - Ký hiệu hóa mệnh đề Boolean ($a = \text{existingPet.isNew()}$, $b = \text{pet.isNew()}$, $e = \text{Objects.equals(existingPet.getId(), pet.getId())}$).
+     - Ràng buộc quan hệ miền giá trị: $a \iff (x == \text{null})$, $b \iff (y == \text{null})$.
+     - Lập Bảng chân trị toàn diện (Truth Table) bao quát toàn bộ 5 lớp tương đương trong không gian trạng thái $\{ \text{null}, 1, 2 \} \times \{ \text{null}, 1, 2 \}$. Chứng minh $C_{\text{orig}} \equiv C_{\text{M1}} \equiv C_{\text{M2}}$ trên 100% tổ hợp.
+     - Chứng minh luồng điều khiển (CFG) và bất biến tiền điều kiện cho M3: khối guard dòng 161 đảm bảo tuyệt đối $owner.\text{getId}() == ownerId$, chứng minh lệnh gán dòng 167 là Dead-store / Redundant assignment không tạo ra bất kỳ sai lệch trạng thái nào.
+  4. Phát triển công cụ kiểm chứng thực nghiệm tự động bằng Python: [`scripts/verify_equivalence.py`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/scripts/verify_equivalence.py) duyệt vét cạn toàn bộ không gian trạng thái, kiểm chứng $9/9$ tổ hợp ($100.0\%$) đồng nhất ngữ nghĩa.
+  5. Đánh giá khách quan các biên giả định kỹ thuật (không ghi đè `isNew()`, không can thiệp Reflection, mô hình đơn luồng).
+  6. Tính toán điểm số đột biến hiệu chỉnh (Adjusted Mutation Score) loại trừ các đột biến tương đương đạt **192/192 (100.00%)**, phân biệt rõ với điểm PIT chính thức (**98.46%**).
+  7. Soạn thảo kịch bản phản xạ nhanh Q&A (30 giây) chuẩn học thuật phục vụ bảo vệ đề tài trước Hội đồng.
+  8. Xuất bản báo cáo Markdown chuyên sâu tại [`reports/G4_equivalent_mutants.md`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/reports/G4_equivalent_mutants.md).
+
+---
+
+### 1. KẾT QUẢ THỰC HIỆN CHECKLIST SESSION S4
+
+| Mục tiêu / Tiêu chí nghiệm thu | Yêu cầu kỹ thuật | Kết quả thực tế đạt được | Trạng thái | Nguồn kiểm chứng |
+| :--- | :--- | :--- | :---: | :--- |
+| **1. Trích dẫn nguyên văn mã nguồn** | Trích đúng từ source thật trong `src/main/java` | Trích dẫn chính xác từng số dòng của `BaseEntity`, `Owner` và `OwnerController` | **ĐẠT (✓)** | `src/main/java`<br>`reports/G4_equivalent_mutants.md` |
+| **2. Bảng chân trị & chứng minh Boolean** | Ký hiệu mệnh đề, ràng buộc miền, bảng chân trị đầy đủ | Lập bảng chân trị 5 lớp tương đương; chứng minh đẳng thức $C_{\text{orig}} \equiv C_{\text{M1}} \equiv C_{\text{M2}}$ | **ĐẠT (✓)** | Mục 3 `reports/G4_equivalent_mutants.md` |
+| **3. Chứng minh luồng điều khiển CFG** | Chứng minh tiền điều kiện guard cho M3 | Đồ thị CFG và phân tích bất biến chứng minh $owner.\text{getId}() \equiv ownerId$ trước dòng 167 | **ĐẠT (✓)** | Mục 4 `reports/G4_equivalent_mutants.md` |
+| **4. Script kiểm chứng tự động** | Viết `verify_equivalence.py` vét cạn tổ hợp | Script chạy thành công, xác nhận 9/9 tổ hợp (100%) khớp tuyệt đối | **ĐẠT (✓)** | `scripts/verify_equivalence.py` |
+| **5. Nêu hạn chế & giả định trung thực** | Đưa ra các giả định kỹ thuật một cách khoa học | Nêu rõ 3 giả định: không polymorphic override, không Reflection, đơn luồng chuẩn | **ĐẠT (✓)** | Mục 6 `reports/G4_equivalent_mutants.md` |
+| **6. Điểm số hiệu chỉnh** | Phân biệt điểm PIT chính thức vs điểm hiệu chỉnh | Nêu rõ điểm PIT chính thức là **98.46% (192/195)** và điểm hiệu chỉnh là **100.00% (192/192)** | **ĐẠT (✓)** | Mục 7 `reports/G4_equivalent_mutants.md` |
+| **7. Kịch bản Q&A 30 giây** | Đoạn trả lời hội đồng đanh thép, học thuật | Soạn sẵn câu trả lời súc tích giải thích vì sao còn 3 mutants và khẳng định chất lượng | **ĐẠT (✓)** | Mục 8 `reports/G4_equivalent_mutants.md` |
+
+---
+
+### 2. KẾT QUẢ ĐỐI CHIẾU VÀ ĐIỂM SỐ ĐỘT BIẾN
+
+```text
+┌─────────────────────────────────────────────────────────────────────────────┐
+│               TỔNG HỢP HIỆU SUẤT KIỂM THỬ ĐỘT BIẾN (MUTATION SCORE)         │
+└─────────────────────────────────────────────────────────────────────────────┘
+  • Tổng số mutants sinh ra bởi PIT (STRONGER):  195 mutants
+  • Số mutants bị tiêu diệt (Killed):             192 mutants
+  • Số mutants sống sót (Survived):                 3 mutants (100% Equivalent)
+  • Độ bao phủ dòng (Line Coverage):             250/250 lines (100.00%)
+  • Mutations with no coverage:                    0 mutants (  0.00%)
+───────────────────────────────────────────────────────────────────────────────
+  ► Điểm đột biến thô chính thức của PIT:        192 / 195 =  98.46% (≈ 98%)
+  ► Điểm đột biến hiệu chỉnh (Adjusted Score):   192 / 192 = 100.00%
+```
+
+---
+
+### 3. BẢNG MÃ BĂM DỮ LIỆU ĐÃ KIỂM CHỨNG (SHA-256 INTEGRITY)
+
+```text
+reports/G4_equivalent_mutants.md:
+2AC740D474B0C447B76DF8882C44B6CA59B7131AE4757CEA75191697AD46EC06
+
+scripts/verify_equivalence.py:
+E36B372E33DBCBE88C7FAAF3696C5A7E3D10F121D3FD1DCDC793E50526A34F5C
+```
+
+---
+
+### 4. DANH MỤC TỆP TIN TẠO / CẬP NHẬT TRONG SESSION S4
+
+1. [`reports/G4_equivalent_mutants.md`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/reports/G4_equivalent_mutants.md): Báo cáo chứng minh toán học hình thức và luồng điều khiển cho 3 Equivalent Mutants, kèm điểm hiệu chỉnh và kịch bản Q&A 30 giây.
+2. [`scripts/verify_equivalence.py`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/scripts/verify_equivalence.py): Script Python kiểm chứng thực nghiệm vét cạn toàn bộ không gian trạng thái.
+3. [`docs/sessions/SESSION_LOG.md`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/docs/sessions/SESSION_LOG.md): Ghi nhận toàn bộ nhật ký phiên làm việc Session S4.
+
+*(Ràng buộc bất biến tuân thủ 100%: Không chỉnh sửa `src/main/java`, `src/test/java`, hay `pom.xml`).*
+
+---
+
+### 5. ĐIỂM CÒN MỞ & KẾ HOẠCH CHO PHIÊN TIẾP THEO
+
+- **Điểm còn mở:** Toàn bộ tiêu chí nghiệm thu của Session S4 đã hoàn thành xuất sắc 100%, không còn blocker kỹ thuật.
+- **Kế hoạch cho Session S5:** Đã thực hiện hoàn chỉnh trong Session S5 dưới đây.
+
+---
+---
+
+## SESSION S5: Biên tập hoàn chỉnh Báo cáo Phần G (Compose Part G of REPORT_R01_K03)
+- **Ngày thực hiện:** 2026-10-19
+- **Nhánh làm việc:** `docs/metrics-rca-final-report`
+- **Mục tiêu:**
+  1. Hợp nhất toàn bộ các tài liệu phân tích thành phần được lập từ Session S1 đến Session S4 thành một báo cáo duy nhất, chuyên nghiệp và chuẩn mực học thuật: [`reports/PART_G.md`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/reports/PART_G.md).
+  2. Chuẩn hóa cấu trúc 5 đề mục chính quy theo đúng đề cương báo cáo đề tài:
+     - **G.1: Log & Metrics** (trích xuất nhật ký thực thi thực tế từ `logs/*.log`, Bảng đối sánh Baseline vs Final, phân rã theo lớp và toán tử đột biến, nhúng 4 biểu đồ 200 DPI).
+     - **G.2: Phân tích Code Smell / Defect** (phân tích chi tiết 6 khiếm khuyết mã nguồn kèm trích dẫn source code thực tế và số dòng chính xác, đề xuất giải pháp tái cấu trúc).
+     - **G.3: RCA Error – Fault – Failure** (mô hình IEEE 1044 / IEEE 610.12, phân bổ 64 mutants baseline vào 6 nhóm nguyên nhân gốc rễ, ma trận truy vết ca kiểm thử TV3/TV4).
+     - **G.4: Chứng minh Equivalent Mutants & điểm số hiệu chỉnh** (chứng minh đại số Boolean M1 & M2, chứng minh CFG và bất biến M3, kết quả script thực nghiệm, điểm hiệu chỉnh 100.00%, kịch bản Q&A 30 giây).
+     - **G.5: Kết luận & Bài học kinh nghiệm** (vì sao Line Coverage cao nhưng Mutation Score thấp, cạm bẫy MockMvc, vai trò kiểm thử hộp trắng).
+  3. Chuẩn hóa danh mục Bảng (Bảng G.1 đến Bảng G.7) và Hình ảnh (Hình G.1 đến Hình G.4) với chú thích nguồn dữ liệu minh bạch.
+  4. Thiết lập liên kết chéo (cross-references) chặt chẽ tới Phần E (TV3: "xem mục E.1", TV4: "xem mục E.2") và Phần G.4 ("xem mục G.4").
+  5. Xây dựng công cụ kiểm chứng tự động [`scripts/verify_part_g.py`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/scripts/verify_part_g.py) để rà soát toàn bộ các tỷ lệ phần trăm (%), chỉ số kiểm thử đối chiếu với CSVs, kiểm tra tính liên tục của bảng/hình và đảm bảo không sót bất kỳ TODO hay placeholder nào.
+  6. Lập danh mục các điểm cần phối hợp xác nhận với các thành viên khác trong nhóm (TV1, TV2, TV3, TV4).
+
+---
+
+### 1. KẾT QUẢ THỰC HIỆN CHECKLIST SESSION S5
+
+| Mục tiêu / Tiêu chí nghiệm thu | Yêu cầu kỹ thuật | Kết quả thực tế đạt được | Trạng thái | Nguồn kiểm chứng |
+| :--- | :--- | :--- | :---: | :--- |
+| **1. Không còn TODO / Placeholder** | Quét toàn bộ file không có TODO, FIXME, TBD, XXX | 0 lỗi placeholder, nội dung hoàn chỉnh 100% | **ĐẠT (✓)** | `scripts/verify_part_g.py` (Mục 1) |
+| **2. Mọi số liệu khớp CSV 100%** | Đối chiếu toàn bộ chỉ số với `metrics_summary.csv` | Khớp tuyệt đối từng số: 49, 130, 96.80%, 100.00%, 242, 250, 195, 131, 192, 55, 3, 9, 0, 67.18%, 98.46% | **ĐẠT (✓)** | `scripts/verify_part_g.py` (Mục 2) |
+| **3. Đánh số Bảng và Hình liên tục** | Bảng G.1 -> G.7; Hình G.1 -> G.4 | Đánh số liên tục, không nhảy cóc, không trùng lặp | **ĐẠT (✓)** | `scripts/verify_part_g.py` (Mục 3) |
+| **4. Liên kết chéo tới Phần E** | Tham chiếu "xem mục E.1" (TV3) và "xem mục E.2" (TV4) | 18 lượt trích dẫn mục E.1, 24 lượt trích dẫn mục E.2, 4 lượt trích dẫn mục G.4 | **ĐẠT (✓)** | `scripts/verify_part_g.py` (Mục 4) |
+| **5. Cấu trúc đầy đủ 5 đề mục** | G.1 đến G.5 + Danh mục phối hợp TV khác | Đầy đủ 100% các đề mục chính quy theo yêu cầu | **ĐẠT (✓)** | `scripts/verify_part_g.py` (Mục 5) |
+| **6. Công cụ kiểm chứng tự động** | Viết và chạy `scripts/verify_part_g.py` | Script thực thi thành công xuất sắc (Exit code 0, Pass 100%) | **ĐẠT (✓)** | Console output `verify_part_g.py` |
+| **7. Danh mục phối hợp TV khác** | Liệt kê chi tiết đầu việc cần xác nhận với TV1, TV2, TV3, TV4 | Đầy đủ 4 mục phối hợp chi tiết tại cuối báo cáo | **ĐẠT (✓)** | Cuối tệp `reports/PART_G.md` |
+
+---
+
+### 2. BẢNG MÃ BĂM DỮ LIỆU ĐÃ KIỂM CHỨNG (SHA-256 INTEGRITY)
+
+```text
+reports/PART_G.md:
+1BDE1681094E63B1A32BB10AFAAA5093D7FA76ECEA75EF3A8DA47BE97CB42B84
+
+scripts/verify_part_g.py:
+3C925CFD6D50B2640F5849688FD7A7D93C2471E62877DA343049E9B00F6290BC
+```
+
+---
+
+### 3. DANH MỤC TỆP TIN TẠO / CẬP NHẬT TRONG SESSION S5
+
+1. [`reports/PART_G.md`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/reports/PART_G.md): Báo cáo Markdown tổng hợp hoàn chỉnh của Phần G (18,485 bytes, 461 dòng) bao gồm đầy đủ 5 đề mục G.1 đến G.5, 7 bảng số liệu, 4 biểu đồ hình ảnh và danh mục phối hợp xác nhận.
+2. [`scripts/verify_part_g.py`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/scripts/verify_part_g.py): Công cụ Python tự động kiểm chứng tính toàn vẹn và tính nhất quán dữ liệu của Phần G với hệ thống CSV nguồn.
+3. [`docs/sessions/SESSION_LOG.md`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/docs/sessions/SESSION_LOG.md): Cập nhật toàn diện tiến độ của Session S4 và Session S5.
+
+*(Ràng buộc bất biến tuân thủ 100%: Tuyệt đối không chỉnh sửa `src/main/java`, `src/test/java`, hay `pom.xml`).*
+
+---
+
+### 4. ĐIỂM CÒN MỞ & KẾ HOẠCH CHO PHIÊN TIẾP THEO
+
+- **Điểm còn mở:** Toàn bộ công tác phân tích số liệu, lập bảng đối sánh, trực quan hóa biểu đồ, phân tích khiếm khuyết mã nguồn (Code Smell), phân tích nguyên nhân gốc rễ (RCA) và chứng minh Đột biến tương đương của Thành viên 5 đã hoàn thành xuất sắc 100%, sẵn sàng bàn giao cho nhóm.
+- **Kế hoạch cho phiên tiếp theo (Biên tập lớn & Chuẩn bị bảo vệ):**
+  1. Hỗ trợ Thành viên 2 biên tập, ráp nối Phần G vào văn bản báo cáo chung của toàn nhóm: [`REPORT_R01_K03.docx`](file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/REPORT_R01_K03.md).
+  2. Thiết kế slide thuyết minh bảo vệ đề tài cho phần việc của Thành viên 5 (các slide: Baseline vs Final, RCA Error–Fault–Failure, Chứng minh 3 Equivalent Mutants, và Bài học kinh nghiệm).
+  3. Hoàn thiện bảng đánh giá chéo đóng góp của các thành viên trong nhóm (Peer Evaluation).
+
 
 
