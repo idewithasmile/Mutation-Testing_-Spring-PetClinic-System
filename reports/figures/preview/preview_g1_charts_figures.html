@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>BÁO CÁO TỔNG KẾT HỌC PHẦN: ĐỀ TÀI R01 (SPRING PETCLINIC) + K03 (MUTATION TESTING)</title>
+<style>
+  @page {
+    size: A4 portrait;
+    margin-top: 20mm;
+    margin-bottom: 20mm;
+    margin-left: 30mm;
+    margin-right: 20mm;
+    @bottom-right {
+      content: "Trang " counter(page);
+      font-family: "Times New Roman", Times, serif;
+      font-size: 10pt;
+    }
+  }
+
+  *, *:before, *:after {
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 12pt;
+    line-height: 1.35;
+    color: #111;
+    background-color: #fff;
+    margin: 0;
+    padding: 0;
+  }
+
+  h1.report-title {
+    font-size: 18pt;
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+    color: #0d3b66;
+    margin-top: 20px;
+    margin-bottom: 25px;
+    line-height: 1.3;
+  }
+
+  h2 {
+    font-size: 14pt;
+    font-weight: bold;
+    color: #1d3557;
+    margin-top: 28px;
+    margin-bottom: 12px;
+    border-bottom: 1.5px solid #1d3557;
+    padding-bottom: 4px;
+  }
+
+  h2.section-break {
+    page-break-before: always;
+    margin-top: 15px;
+  }
+
+  h3 {
+    font-size: 13pt;
+    font-weight: bold;
+    color: #2b2d42;
+    margin-top: 20px;
+    margin-bottom: 8px;
+  }
+
+  h4 {
+    font-size: 12pt;
+    font-weight: bold;
+    color: #333;
+    margin-top: 14px;
+    margin-bottom: 6px;
+  }
+
+  h5 {
+    font-size: 11.5pt;
+    font-weight: bold;
+    font-style: italic;
+    color: #444;
+    margin-top: 10px;
+    margin-bottom: 4px;
+  }
+
+  p {
+    text-align: justify;
+    margin-top: 0;
+    margin-bottom: 8px;
+    text-indent: 0;
+  }
+
+  /* Table styling */
+  .table-container {
+    width: 100%;
+    margin: 14px 0;
+    overflow-x: auto;
+    page-break-inside: avoid;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10pt;
+    line-height: 1.25;
+    margin: 0 auto;
+    page-break-inside: avoid;
+  }
+
+  th, td {
+    border: 1px solid #555;
+    padding: 5px 7px;
+    text-align: left;
+    vertical-align: top;
+    word-break: break-word;
+  }
+
+  th {
+    background-color: #e9ecef;
+    font-weight: bold;
+    color: #111;
+    text-align: center;
+  }
+
+  tr:nth-child(even) td {
+    background-color: #fbfbfb;
+  }
+
+  /* Callout styling */
+  .callout {
+    margin: 12px 0;
+    padding: 10px 14px;
+    border-left: 4px solid #0077b6;
+    background-color: #f0f7fb;
+    border-radius: 2px;
+    page-break-inside: avoid;
+    font-size: 11pt;
+  }
+
+  .callout-header {
+    font-weight: bold;
+    color: #0077b6;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    font-size: 9.5pt;
+  }
+
+  .callout-tip {
+    border-left-color: #2a9d8f;
+    background-color: #eef8f6;
+  }
+  .callout-tip .callout-header { color: #2a9d8f; }
+
+  .callout-important {
+    border-left-color: #e76f51;
+    background-color: #fdf2ef;
+  }
+  .callout-important .callout-header { color: #e76f51; }
+
+  .callout-warning {
+    border-left-color: #e63946;
+    background-color: #fdf0f0;
+  }
+  .callout-warning .callout-header { color: #e63946; }
+
+  /* Code block */
+  pre.code-block {
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 9pt;
+    line-height: 1.25;
+    background-color: #f6f8fa;
+    border: 1px solid #d0d7de;
+    border-radius: 4px;
+    padding: 8px 12px;
+    margin: 10px 0;
+    overflow-x: auto;
+    page-break-inside: avoid;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  code.inline-code {
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 10pt;
+    background-color: #eff1f3;
+    padding: 1px 4px;
+    border-radius: 3px;
+    color: #c7254e;
+  }
+
+  /* Figures */
+  figure.report-figure {
+    text-align: center;
+    margin: 16px 0;
+    page-break-inside: avoid;
+  }
+
+  figure.report-figure img {
+    max-width: 95%;
+    max-height: 480px;
+    height: auto;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+
+  figcaption {
+    font-size: 10pt;
+    font-style: italic;
+    color: #444;
+    margin-top: 6px;
+    text-align: center;
+  }
+
+  /* Lists */
+  li.ul-item, li.ol-item {
+    margin-bottom: 4px;
+    line-height: 1.3;
+    text-align: justify;
+  }
+
+  hr.section-divider {
+    border: 0;
+    height: 1px;
+    background: #ccc;
+    margin: 20px 0;
+  }
+
+  .math-block {
+    text-align: center;
+    font-family: "Times New Roman", Times, serif;
+    font-style: italic;
+    font-size: 12pt;
+    margin: 12px 0;
+    color: #0b3954;
+  }
+
+  .math-tex {
+    font-style: italic;
+    color: #0b3954;
+  }
+
+  .doc-link {
+    color: #0d3b66;
+    text-decoration: underline;
+  }
+</style>
+</head>
+<body>G.1.5. Trực quan hóa số liệu kiểm thử (Data Visualizations)</h4>
+<p>Nhóm đã xây dựng công cụ đồ họa <span class="doc-link"><code class="inline-code">scripts/make_charts.py</code></span> dựa trên thư viện <code class="inline-code">matplotlib</code>, xuất 4 biểu đồ độ phân giải cao 200 DPI tại thư mục <span class="doc-link"><code class="inline-code">reports/figures/</code></span>. Các hình ảnh sử dụng vân sọc (hatch patterns) và nhãn trực tiếp đảm bảo tính phân biệt cao kể cả khi in ấn đen trắng:</p>
+<h5>1. So sánh Line Coverage vs Mutation Score và Khoảng trống kiểm thử (Hình G.1)</h5>
+<p><figure class="report-figure"><img src="file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/reports/figures/fig1_coverage_vs_mutation.png" alt="Hình G.1: So sánh Line Coverage vs Mutation Score" /><figcaption>Hình G.1: So sánh Line Coverage vs Mutation Score</figcaption></figure></p>
+<p><em>Hình G.1: Đối sánh Line Coverage vs Mutation Score giữa Baseline và Final. Làm nổi bật Khoảng trống kiểm thử 29.62% tại Baseline và sự hội tụ hoàn hảo tại Final (Nguồn: <span class="doc-link"><code class="inline-code">reports/figures/fig1_coverage_vs_mutation.png</code></span>).</em></p>
+<li class="ul-item"><strong>Ý nghĩa biểu đồ:</strong> Hình G.1 phơi bày trực quan "Ảo giác an toàn" của độ bao phủ dòng. Ở Baseline, dù Line Coverage đạt tới 96.80% (242/250 lines), Mutation Score chỉ đạt 67.18% (131/195 killed), tạo ra một <strong>Khoảng trống kiểm thử (Test Gap) lên tới 29.62%</strong>. Tại Final, Line Coverage đạt 100.00% và Mutation Score đạt 98.46% (hiệu chỉnh 100.00%), triệt tiêu hoàn toàn khoảng trống rủi ro.</li>
+<h5>2. Cơ cấu phân bổ trạng thái đột biến (Hình G.2)</h5>
+<p><figure class="report-figure"><img src="file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/reports/figures/fig2_mutant_status.png" alt="Hình G.2: Cơ cấu trạng thái Mutant" /><figcaption>Hình G.2: Cơ cấu trạng thái Mutant</figcaption></figure></p>
+<p><em>Hình G.2: Phân bổ 195 mutants theo 3 trạng thái: Killed, Survived và No Coverage (Nguồn: <span class="doc-link"><code class="inline-code">reports/figures/fig2_mutant_status.png</code></span>).</em></p>
+<li class="ul-item"><strong>Ý nghĩa biểu đồ:</strong> Biểu đồ cột chồng thể hiện sự dịch chuyển chất lượng: tại Baseline có 131 Killed (67.2%), 55 Survived (28.2%), và 9 No Coverage (4.6%). Tại Final, số lượng Killed tăng vọt lên 192 (98.5%), No Coverage bị triệt tiêu hoàn toàn về 0 (0.0%), và Survived chỉ còn 3 mutants (1.5% - toàn bộ là Equivalent Mutants).</li>
+<h5>3. Phân bố 64 mutants chưa diệt ở Baseline theo Toán tử (Hình G.3)</h5>
+<p><figure class="report-figure"><img src="file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/reports/figures/fig3_survivors_by_mutator.png" alt="Hình G.3: Phân bố 64 mutant sống sót ở Baseline theo Toán tử" /><figcaption>Hình G.3: Phân bố 64 mutant sống sót ở Baseline theo Toán tử</figcaption></figure></p>
+<p><em>Hình G.3: Phân rã 64 mutants chưa diệt tại Baseline trên 8 nhóm toán tử đột biến (Nguồn: <span class="doc-link"><code class="inline-code">reports/figures/fig3_survivors_by_mutator.png</code></span>).</em></p>
+<li class="ul-item"><strong>Ý nghĩa biểu đồ:</strong> Xác định rõ các "điểm đen" kiểm thử của bộ test gốc. Chiếm tỷ trọng cao nhất là <code class="inline-code">RemoveConditionalMutator_EQUAL_IF</code> (20 mutants: 19 Survived, 1 No Coverage) và <code class="inline-code">VoidMethodCallMutator</code> (20 mutants: 18 Survived, 2 No Coverage), kế tiếp là <code class="inline-code">RemoveConditionalMutator_EQUAL_ELSE</code> (12 mutants) và <code class="inline-code">NullReturnValsMutator</code> (6 mutants).</li>
+<h5>4. Tăng trưởng số lượng ca kiểm thử theo từng file (Hình G.4)</h5>
+<p><figure class="report-figure"><img src="file:///d:/Kiểm%20Thử%20Phần%20Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/reports/figures/fig4_tests_growth.png" alt="Hình G.4: Tăng trưởng Test Case theo từng file kiểm thử" /><figcaption>Hình G.4: Tăng trưởng Test Case theo từng file kiểm thử</figcaption></figure></p>
+<p><em>Hình G.4: So sánh quy mô test case giữa 6 file gốc (49 tests) và 7 file đột biến mới (+81 tests, tổng 130 tests) (Nguồn: <span class="doc-link"><code class="inline-code">reports/figures/fig4_tests_growth.png</code></span>).</em></p>
+<li class="ul-item"><strong>Ý nghĩa biểu đồ:</strong> Minh họa nỗ lực thiết kế kiểm thử của nhóm: từ 6 file gốc phục vụ kiểm thử danh định (happy path), nhóm đã bổ sung 7 file chuyên biệt tập trung vào kiểm thử hộp trắng chuyên sâu: <code class="inline-code">OwnerMutationTests</code> (+27 tests), <code class="inline-code">PetControllerMutationTests</code> (+19 tests), <code class="inline-code">PetValidatorMutationTests</code> (+9 tests), <code class="inline-code">PetVisitModelMutationTests</code> (+9 tests), <code class="inline-code">OwnerControllerMutationTests</code> (+6 tests), <code class="inline-code">VisitControllerMutationTests</code> (+6 tests), và <code class="inline-code">ControllerBinderMutationTests</code> (+5 tests).</li>
+<hr class="section-divider" />
+<h3></body></html>

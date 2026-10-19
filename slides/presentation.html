@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Presentation R01-K03: Mutation Testing trên Spring PetClinic</title>
+    <style>
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        background: #0B132B;
+        color: #E2E8F0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+    }
+    .slide {
+        width: 1920px;
+        height: 1080px;
+        padding: 50px 70px 40px 70px;
+        background: radial-gradient(circle at top right, #1C2541 0%, #0B132B 100%);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        position: relative;
+    }
+    .slide-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 44px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding-bottom: 12px;
+    }
+    .header-left { display: flex; align-items: center; gap: 14px; }
+    .role-badge {
+        background: #3A86FF;
+        color: #FFFFFF;
+        font-weight: 700;
+        font-size: 15px;
+        padding: 6px 14px;
+        border-radius: 20px;
+        letter-spacing: 0.5px;
+    }
+    .time-badge {
+        background: rgba(255, 255, 255, 0.1);
+        color: #CBD5E1;
+        font-size: 14px;
+        padding: 6px 12px;
+        border-radius: 20px;
+    }
+    .project-tag { color: #94A3B8; font-size: 14px; font-weight: 500; }
+    .school-tag { color: #94A3B8; font-size: 14px; font-weight: 600; }
+
+    .slide-title-block { margin-top: 18px; margin-bottom: 10px; }
+    .slide-title {
+        font-size: 38px;
+        font-weight: 800;
+        color: #FFFFFF;
+        line-height: 1.25;
+        letter-spacing: -0.5px;
+    }
+    .slide-subtitle {
+        font-size: 20px;
+        color: #94A3B8;
+        margin-top: 6px;
+        font-weight: 400;
+    }
+
+    .message-banner {
+        background: rgba(58, 134, 255, 0.15);
+        border-left: 5px solid #3A86FF;
+        padding: 12px 20px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 18px;
+    }
+    .msg-icon { font-size: 20px; }
+    .msg-text {
+        font-size: 18px;
+        font-weight: 600;
+        color: #93C5FD;
+    }
+
+    .slide-content-grid {
+        display: grid;
+        grid-template-columns: 1.05fr 0.95fr;
+        gap: 40px;
+        flex: 1;
+        align-items: center;
+        min-height: 0;
+    }
+    .content-pane {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    .bullet-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+    .bullet-list li {
+        font-size: 19px;
+        line-height: 1.5;
+        color: #E2E8F0;
+        position: relative;
+        padding-left: 28px;
+    }
+    .bullet-list li::before {
+        content: "■";
+        position: absolute;
+        left: 0;
+        color: #3A86FF;
+        font-size: 14px;
+        top: 3px;
+    }
+    .bullet-list code {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-family: Consolas, monospace;
+        font-size: 17px;
+        color: #F8FAFC;
+    }
+    .bullet-list strong { color: #FFFFFF; font-weight: 700; }
+
+    .visual-pane {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        max-height: 580px;
+    }
+    .slide-fig {
+        max-width: 100%;
+        max-height: 560px;
+        object-fit: contain;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+        background: #FFFFFF;
+        padding: 10px;
+    }
+
+    .badges-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        width: 100%;
+    }
+    .metric-card {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        padding: 28px 20px;
+        text-align: center;
+        transition: transform 0.2s;
+    }
+    .card-emerald { border-color: #10B981; background: rgba(16, 185, 129, 0.1); }
+    .card-blue { border-color: #3A86FF; background: rgba(58, 134, 255, 0.1); }
+    .card-gold { border-color: #F59E0B; background: rgba(245, 158, 11, 0.1); }
+    .metric-val { font-size: 44px; font-weight: 900; color: #FFFFFF; margin-bottom: 6px; }
+    .metric-lbl { font-size: 18px; color: #94A3B8; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+    .metric-sub { font-size: 15px; color: #CBD5E1; margin-top: 4px; }
+
+    .info-stack { display: flex; flex-direction: column; gap: 16px; width: 100%; }
+    .info-card {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-left: 4px solid #3A86FF;
+        border-radius: 12px;
+        padding: 18px 24px;
+    }
+    .info-title { font-size: 19px; font-weight: 700; color: #FFFFFF; margin-bottom: 6px; }
+    .info-desc { font-size: 16px; color: #CBD5E1; line-height: 1.45; }
+
+    .card-table {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        overflow: hidden;
+        padding: 16px;
+    }
+    .card-header {
+        font-size: 18px;
+        font-weight: 700;
+        color: #93C5FD;
+        margin-bottom: 12px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding-bottom: 8px;
+    }
+    .truth-tbl {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 15px;
+    }
+    .truth-tbl th {
+        background: rgba(255, 255, 255, 0.08);
+        color: #FFFFFF;
+        padding: 8px 10px;
+        text-align: center;
+    }
+    .truth-tbl td {
+        padding: 7px 10px;
+        text-align: center;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .hl-row { background: rgba(58, 134, 255, 0.15); font-weight: 700; }
+    .res-0 { color: #94A3B8; font-weight: 700; }
+    .res-1 { color: #10B981; font-weight: 900; }
+    .eq-badge {
+        background: #10B981;
+        color: #FFFFFF;
+        font-size: 12px;
+        font-weight: 700;
+        padding: 3px 8px;
+        border-radius: 10px;
+    }
+    .badge-kill {
+        background: #10B981;
+        color: #FFFFFF;
+        font-size: 13px;
+        font-weight: 700;
+        padding: 4px 10px;
+        border-radius: 12px;
+        display: inline-block;
+    }
+    .score-formula {
+        margin-top: 14px;
+        background: rgba(16, 185, 129, 0.15);
+        border: 1px solid #10B981;
+        border-radius: 8px;
+        padding: 10px;
+        text-align: center;
+        font-size: 17px;
+        color: #A7F3D0;
+    }
+
+    .rip-card {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        padding: 20px;
+    }
+    .rip-step {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 8px;
+        padding: 12px 16px;
+        font-size: 16px;
+    }
+    .step-badge {
+        background: #3A86FF;
+        color: #FFFFFF;
+        font-weight: 900;
+        font-size: 18px;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .rip-arrow { text-align: center; font-size: 22px; color: #3A86FF; margin: 4px 0; }
+    .rip-outcome { text-align: center; margin-top: 14px; }
+
+    .gate-card {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        padding: 20px;
+    }
+    .code-box {
+        background: #000000;
+        border-radius: 8px;
+        padding: 16px;
+        color: #A7F3D0;
+        font-family: Consolas, monospace;
+        font-size: 15px;
+        overflow-x: auto;
+    }
+    .gate-status {
+        margin-top: 14px;
+        padding: 12px;
+        border-radius: 8px;
+        background: rgba(16, 185, 129, 0.15);
+        color: #A7F3D0;
+        text-align: center;
+        font-size: 18px;
+    }
+
+    .qa-hero {
+        text-align: center;
+        padding: 40px;
+        background: rgba(58, 134, 255, 0.1);
+        border: 2px dashed #3A86FF;
+        border-radius: 20px;
+        width: 100%;
+    }
+    .qa-icon { font-size: 72px; margin-bottom: 16px; }
+    .qa-text { font-size: 32px; font-weight: 900; color: #FFFFFF; }
+    .qa-sub { font-size: 18px; color: #93C5FD; margin-top: 8px; }
+
+    .slide-footer {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding-top: 12px;
+    }
+    .progress-bar-container {
+        width: 100%;
+        height: 4px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 2px;
+        overflow: hidden;
+    }
+    .progress-bar { height: 100%; background: #3A86FF; border-radius: 2px; }
+    .footer-info {
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+        color: #64748B;
+        font-weight: 500;
+    }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: auto;
+            overflow-y: auto;
+            background: #000000;
+            gap: 40px;
+            padding: 40px 0;
+            align-items: center;
+        }
+        .slide-wrapper {
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .deck-notes {
+            width: 1920px;
+            background: #111827;
+            border: 1px solid #374151;
+            border-top: none;
+            padding: 20px 40px;
+            color: #9CA3AF;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        .deck-notes strong { color: #F3F4F6; }
+    </style>
+</head>
+<body>
+
+    <div class="slide-wrapper">
+        
+    <div class="slide" id="slide-1">
+        <header class="slide-header">
+            <div class="header-left">
+                <span class="role-badge">TV1 (Trịnh Trung Hiếu)</span>
+                <span class="time-badge">60s (00:00 - 01:00)</span>
+                <span class="project-tag">Program_R01-K03 &bull; Slide 1/12</span>
+            </div>
+            <div class="header-right">
+                <span class="school-tag">ĐH Đà Lạt &bull; Khoa CNTT</span>
+            </div>
+        </header>
+
+        <div class="slide-title-block">
+            <h1 class="slide-title">KIỂM THỬ ĐỘT BIẾN (MUTATION TESTING) BẰNG PIT TRÊN SPRING PETCLINIC</h1>
+            <p class="slide-subtitle">Học phần: Kiểm thử phần mềm | Mã đề tài: R01 (Spring PetClinic) + K03 (Mutation Testing)</p>
+        </div>
+
+        <div class="message-banner">
+            <span class="msg-icon">&#128161;</span>
+            <span class="msg-text">Nâng cao năng lực bộ kiểm thử từ 67% lên 98.46% Mutation Score và 100% Line Coverage</span>
+        </div>
+
+        <div class="slide-content-grid">
+            <div class="content-pane">
+                <ul class="bullet-list">
+                    <li><strong>SUT & Đề tài:</strong> Hệ thống Spring PetClinic trên nền tảng Java 17, Spring Boot 4.1.0, H2 In-Memory.</li><li><strong>Phạm vi K03:</strong> Tập trung toàn diện gói nghiệp vụ cốt lõi <code>org.springframework.samples.petclinic.owner.*</code>.</li><li><strong>Cam kết khoa học:</strong> Đóng băng 100% mã nguồn <code>src/main/java</code>, chỉ nâng cấp tối ưu bộ test.</li><li><strong>Cổng chất lượng (Quality Gate):</strong> Thiết lập ngưỡng chặn tự động <strong>&ge; 88%</strong> trong Maven.</li><li><strong>Kết quả xuất sắc:</strong> Diệt <strong>192/195 mutants (98.46%)</strong>, độ bao phủ dòng đạt <strong>250/250 lines (100.00%)</strong>.</li>
+                </ul>
+            </div>
+            <div class="visual-pane"><div class="badges-grid">
+            <div class="metric-card card-emerald">
+                <div class="metric-val">98.46%</div>
+                <div class="metric-lbl">Mutation Score</div>
+                <div class="metric-sub">192/195 killed</div>
+            </div>
+        
+            <div class="metric-card card-emerald">
+                <div class="metric-val">100.00%</div>
+                <div class="metric-lbl">Line Coverage</div>
+                <div class="metric-sub">250/250 lines</div>
+            </div>
+        
+            <div class="metric-card card-blue">
+                <div class="metric-val">130 Tests</div>
+                <div class="metric-lbl">Test Suite</div>
+                <div class="metric-sub">153/153 pass repo</div>
+            </div>
+        
+            <div class="metric-card card-gold">
+                <div class="metric-val">PASS (&ge;88%)</div>
+                <div class="metric-lbl">Quality Gate</div>
+                <div class="metric-sub">Adjusted 100%</div>
+            </div>
+        </div></div>
+        </div>
+
+        <footer class="slide-footer">
+            <div class="progress-bar-container">
+                <div class="progress-bar" style="width: 8.333333333333332%;"></div>
+            </div>
+            <div class="footer-info">
+                <span>Mutation Testing bằng PIT trên Spring PetClinic</span>
+                <span>GVHD: ThS. Nguyễn Thế Lâm &bull; Nhóm 20</span>
+            </div>
+        </footer>
+    </div>
+    
+        <div class="deck-notes">
+            <strong>[SPEAKER NOTES — TV1 (Trịnh Trung Hiếu) &bull; 60s (00:00 - 01:00)]:</strong><br>
+            Kính thưa Thầy Nguyễn Thế Lâm và toàn thể Hội đồng, hôm nay nhóm 20 xin trân trọng báo cáo kết quả thực hiện đề tài kết hợp R01 và K03: Kiểm thử đột biến bằng PIT trên hệ thống Spring PetClinic. Nhóm chúng em gồm 5 thành viên được phân công chuyên biệt theo đúng quy trình công nghệ phần mềm chuyên nghiệp. Với cam kết khoa học nghiêm ngặt: không sửa đổi bất kỳ dòng mã nguồn sản phẩm nào, nhóm đã tối ưu hóa toàn diện bộ kiểm thử, nâng Mutation Score từ mức ban đầu 67% lên 98.46%, đạt độ bao phủ dòng tuyệt đối 100% và chứng minh 3 đột biến còn lại là tương đương. Sau đây, xin mời bạn Việt Huy bắt đầu với kiến trúc hệ thống SUT.
+        </div>
+    </div>
+        
+    <div class="slide-wrapper">
+        
+    <div class="slide" id="slide-2">
+        <header class="slide-header">
+            <div class="header-left">
+                <span class="role-badge">TV2 (Trần Đình Việt Huy)</span>
+                <span class="time-badge">90s (01:00 - 02:30)</span>
+                <span class="project-tag">Program_R01-K03 &bull; Slide 2/12</span>
+            </div>
+            <div class="header-right">
+                <span class="school-tag">ĐH Đà Lạt &bull; Khoa CNTT</span>
+            </div>
+        </header>
+
+        <div class="slide-title-block">
+            <h1 class="slide-title">Bài toán nghiệp vụ SUT & Phạm vi đột biến gói owner.*</h1>
+            <p class="slide-subtitle">Khóa cứng commit khả tái và kiểm chứng 3 luồng nghiệp vụ cốt lõi trên runtime thật</p>
+        </div>
+
+        <div class="message-banner">
+            <span class="msg-icon">&#128161;</span>
+            <span class="msg-text">Tập trung tối đa tài nguyên vào gói nghiệp vụ phức tạp nhất gồm 8 thực thể & controllers</span>
+        </div>
+
+        <div class="slide-content-grid">
+            <div class="content-pane">
+                <ul class="bullet-list">
+                    <li><strong>SUT chuẩn hóa:</strong> Spring PetClinic khóa cứng commit SHA <code>500158f732419217507c7656904b8e6aa1bcc0d6</code>.</li><li><strong>Ngăn xếp công nghệ:</strong> Java 17 LTS, Spring Boot 4.1.0, Spring Data JPA, Thymeleaf, CSDL H2.</li><li><strong>Phạm vi cô lập K03:</strong> Gói <code>owner.*</code> gồm 8 lớp nghiệp vụ trọng yếu (Owner, Pet, Visit, các Controllers).</li><li><strong>03 Luồng nghiệp vụ cốt lõi đã xác minh HTTP 200 trên runtime thật:</strong><br>&bull; <em>Luồng 1:</em> Tìm kiếm và phân trang chủ nuôi (<code>OwnerController.processFindForm</code>).<br>&bull; <em>Luồng 2:</em> Thêm mới thú cưng kèm kiểm chuẩn (<code>PetController</code> + <code>PetValidator</code>).<br>&bull; <em>Luồng 3:</em> Đặt lịch khám và lưu hồ sơ bệnh án thú cưng (<code>VisitController</code>).</li><li><strong>Bảo toàn kiến trúc:</strong> Toàn bộ 153 unit tests của cả repo luôn PASS (zero regression).</li>
+                </ul>
+            </div>
+            <div class="visual-pane"><div class="info-stack">
+            <div class="info-card">
+                <div class="info-title">Owner Entity & Lifecycle</div>
+                <div class="info-desc">Quản lý quan hệ 1-N với Pets, phân trang tìm kiếm theo họ, validate số điện thoại và địa chỉ.</div>
+            </div>
+        
+            <div class="info-card">
+                <div class="info-title">Pet & Custom Validator</div>
+                <div class="info-desc">Kiểm chuẩn độ dài tên thú cưng (&le; 30 ký tự), bắt buộc loại pet và ngày sinh hợp lệ.</div>
+            </div>
+        
+            <div class="info-card">
+                <div class="info-title">Visit & Medical Records</div>
+                <div class="info-desc">Lưu vết lịch sử khám bệnh, liên kết chặt chẽ Pet-Visit, phục vụ chẩn đoán lâm sàng.</div>
+            </div>
+        </div></div>
+        </div>
+
+        <footer class="slide-footer">
+            <div class="progress-bar-container">
+                <div class="progress-bar" style="width: 16.666666666666664%;"></div>
+            </div>
+            <div class="footer-info">
+                <span>Mutation Testing bằng PIT trên Spring PetClinic</span>
+                <span>GVHD: ThS. Nguyễn Thế Lâm &bull; Nhóm 20</span>
+            </div>
+        </footer>
+    </div>
+    
+        <div class="deck-notes">
+            <strong>[SPEAKER NOTES — TV2 (Trần Đình Việt Huy) &bull; 90s (01:00 - 02:30)]:</strong><br>
+            Kính thưa Thầy, đối tượng SUT của nhóm là Spring PetClinic, một ứng dụng chuẩn mực trong hệ sinh thái Spring. Để đảm bảo tính khả tái khoa học, nhóm đã khóa cứng commit SHA ngày 29/09/2026. Thay vì chạy đột biến toàn repo gây lãng phí tính toán, nhóm tập trung toàn lực vào gói nghiệp vụ phức tạp nhất là owner.* gồm 8 lớp thực thể, validator và controller. Nhóm đã dựng môi trường thực tế và xác minh thành công cả 3 luồng nghiệp vụ chạy mượt mà trên cổng 8090 với mã HTTP 200. Sau đây xin mời bạn Trung Hiếu trình bày về cơ sở lý thuyết kiểm thử đột biến.
+        </div>
+    </div>
+        
+    <div class="slide-wrapper">
+        
+    <div class="slide" id="slide-3">
+        <header class="slide-header">
+            <div class="header-left">
+                <span class="role-badge">TV1 (Trịnh Trung Hiếu)</span>
+                <span class="time-badge">75s (02:30 - 03:45)</span>
+                <span class="project-tag">Program_R01-K03 &bull; Slide 3/12</span>
+            </div>
+            <div class="header-right">
+                <span class="school-tag">ĐH Đà Lạt &bull; Khoa CNTT</span>
+            </div>
+        </header>
+
+        <div class="slide-title-block">
+            <h1 class="slide-title">Mô hình lý thuyết IEEE Error – Fault – Failure và Chuỗi RIP</h1>
+            <p class="slide-subtitle">Đo lường năng lực phát hiện khiếm khuyết (Fault Detection Power) trong Bytecode JVM</p>
+        </div>
+
+        <div class="message-banner">
+            <span class="msg-icon">&#128161;</span>
+            <span class="msg-text">Chạy qua dòng mã (Line Coverage) không đủ để bắt lỗi — Phải thỏa mãn chuỗi RIP!</span>
+        </div>
+
+        <div class="slide-content-grid">
+            <div class="content-pane">
+                <ul class="bullet-list">
+                    <li><strong>Cơ sở lý thuyết:</strong> Giả thuyết lập trình viên có năng lực (CPH) và Hiệu ứng khớp lệnh (Coupling Effect).</li><li><strong>Toán tử đột biến (Mutant):</strong> PIT tiêm lỗi cú pháp giả lập trực tiếp vào Bytecode <code>.class</code>.</li><li><strong>Chuỗi điều kiện chuyển hóa RIP bắt buộc:</strong><br>&bull; <strong>Reachability (R):</strong> Test case thực thi chạy qua dòng mã chứa mutant (tránh NO_COVERAGE).<br>&bull; <strong>Infection (I):</strong> Lệnh đột biến làm biến đổi trạng thái nội bộ bộ nhớ JVM (sinh <strong>Error</strong>).<br>&bull; <strong>Propagation (P):</strong> Trạng thái sai lệch lan truyền ra ngõ ra/kết quả quan sát được (<strong>Failure</strong>).</li><li><strong>Tiêu diệt Mutant (Killed):</strong> Test Assertion bắt được Failure và báo đỏ <strong>FAIL/ERROR</strong>.</li><li><strong>Mutant sống sót (Survived):</strong> Test case yếu hoặc thiếu assert, test vẫn <strong>PASS</strong> (lọt lưới).</li>
+                </ul>
+            </div>
+            
+        <div class="visual-pane">
+            <div class="rip-card">
+                <div class="card-header">Chuỗi chuyển hóa lỗi IEEE & Chuỗi RIP</div>
+                <div class="rip-step step-r">
+                    <span class="step-badge">R</span>
+                    <div><strong>Reachability:</strong> Test case thực thi chạm tới dòng mã có đột biến.</div>
+                </div>
+                <div class="rip-arrow">&darr;</div>
+                <div class="rip-step step-i">
+                    <span class="step-badge">I</span>
+                    <div><strong>Infection:</strong> Lỗi thay đổi trạng thái nội bộ JVM (sinh ra Error).</div>
+                </div>
+                <div class="rip-arrow">&darr;</div>
+                <div class="rip-step step-p">
+                    <span class="step-badge">P</span>
+                    <div><strong>Propagation:</strong> Trạng thái sai lệch lan truyền ra ngõ ra (Failure).</div>
+                </div>
+                <div class="rip-outcome">
+                    <span class="badge-kill">ASSERTION BẮT ĐƯỢC &rarr; KILLED!</span>
+                </div>
+            </div>
+        </div>
+        
+        </div>
+
+        <footer class="slide-footer">
+            <div class="progress-bar-container">
+                <div class="progress-bar" style="width: 25.0%;"></div>
+            </div>
+            <div class="footer-info">
+                <span>Mutation Testing bằng PIT trên Spring PetClinic</span>
+                <span>GVHD: ThS. Nguyễn Thế Lâm &bull; Nhóm 20</span>
+            </div>
+        </footer>
+    </div>
+    
+        <div class="deck-notes">
+            <strong>[SPEAKER NOTES — TV1 (Trịnh Trung Hiếu) &bull; 75s (02:30 - 03:45)]:</strong><br>
+            Kỹ thuật Mutation Testing là phương pháp kiểm thử hộp trắng hướng lỗi khắt khe nhất hiện nay. Khác với kiểm thử thông thường chỉ đo xem code có chạy qua không, PIT vận hành theo chuỗi chuyển hóa chặt chẽ theo chuẩn IEEE: Từ khiếm khuyết nhân tạo tiêm vào bytecode, ca kiểm thử phải thỏa mãn đồng thời 3 điều kiện RIP: Phải chạm tới dòng mã (Reachability), làm thay đổi giá trị trong bộ nhớ (Infection), và sai lệch đó bắt buộc phải lan truyền ra ngõ ra quan sát được (Propagation). Nếu câu lệnh Assertion của bài test nhạy bén, bài test sẽ Fail và mutant được coi là KILLED. Ngược lại, nếu test chỉ assert hời hợt hoặc nuốt lỗi, bài test vẫn xanh và mutant sẽ SURVIVED. Đây chính là thước đo vàng cho chất lượng bộ kiểm thử.
+        </div>
+    </div>
+        
+    <div class="slide-wrapper">
+        
+    <div class="slide" id="slide-4">
+        <header class="slide-header">
+            <div class="header-left">
+                <span class="role-badge">TV1 (Trịnh Trung Hiếu)</span>
+                <span class="time-badge">75s (03:45 - 05:00)</span>
+                <span class="project-tag">Program_R01-K03 &bull; Slide 4/12</span>
+            </div>
+            <div class="header-right">
+                <span class="school-tag">ĐH Đà Lạt &bull; Khoa CNTT</span>
+            </div>
+        </header>
+
+        <div class="slide-title-block">
+            <h1 class="slide-title">Xử lý xung đột JUnit 6 / PIT 1.30.0 & Cổng chất lượng Quality Gate</h1>
+            <p class="slide-subtitle">Giải quyết dứt điểm crash Minion và thiết lập rào cản chất lượng tự động &ge; 88%</p>
+        </div>
+
+        <div class="message-banner">
+            <span class="msg-icon">&#128161;</span>
+            <span class="msg-text">Nâng cấp bộ đôi pitest-maven 1.30.0 + junit5-plugin 1.2.3 và chặn đứng JaCoCo agent</span>
+        </div>
+
+        <div class="slide-content-grid">
+            <div class="content-pane">
+                <ul class="bullet-list">
+                    <li><strong>Sự cố JUnit 6:</strong> Spring Boot 4.1.0 kéo theo JUnit Platform 6.0.3 làm sập minion PIT 1.2.1 (<code>UNKNOWN_ERROR</code>).</li><li><strong>Nâng cấp đồng bộ:</strong> Chuyển dịch lên <code>pitest-maven:1.30.0</code> + <code>pitest-junit5-plugin:1.2.3</code> ổn định tuyệt đối.</li><li><strong>Khử xung đột Bytecode:</strong> Thêm cờ <code>-Djacoco.skip=true</code> ngăn JaCoCo Java Agent can thiệp méo mó bytecode.</li><li><strong>Tập toán tử khắt khe STRONGER:</strong> Kích hoạt 11 mutators nâng cao (Boundary, VoidCall, Math, NegateConditionals...).</li><li><strong>Cổng chất lượng tự động (Quality Gate) khóa trong pom.xml:</strong><br>&bull; <code>&lt;mutationThreshold&gt;88&lt;/mutationThreshold&gt;</code> (Ngưỡng đạt đề tài: &ge; 88%).<br>&bull; <code>&lt;coverageThreshold&gt;95&lt;/coverageThreshold&gt;</code> (Bảo đảm bao phủ dòng &ge; 95%).<br>&bull; Tự động đánh trượt tiến trình build (<strong>BUILD FAILURE</strong>) nếu vi phạm bất kỳ ngưỡng nào.</li>
+                </ul>
+            </div>
+            
+        <div class="visual-pane">
+            <div class="gate-card">
+                <div class="card-header">Thiết lập Cổng chất lượng trong pom.xml</div>
+                <pre class="code-box"><code>&lt;plugin&gt;
+  &lt;groupId&gt;org.pitest&lt;/groupId&gt;
+  &lt;artifactId&gt;pitest-maven&lt;/artifactId&gt;
+  &lt;version&gt;1.30.0&lt;/version&gt;
+  &lt;configuration&gt;
+    &lt;mutators&gt;
+      &lt;mutator&gt;STRONGER&lt;/mutator&gt;
+    &lt;/mutators&gt;
+    &lt;mutationThreshold&gt;88&lt;/mutationThreshold&gt;
+    &lt;coverageThreshold&gt;95&lt;/coverageThreshold&gt;
+  &lt;/configuration&gt;
+&lt;/plugin&gt;</code></pre>
+                <div class="gate-status">Trạng thái hiện tại: <strong>PASS (98.46% &ge; 88%)</strong></div>
+            </div>
+        </div>
+        
+        </div>
+
+        <footer class="slide-footer">
+            <div class="progress-bar-container">
+                <div class="progress-bar" style="width: 33.33333333333333%;"></div>
+            </div>
+            <div class="footer-info">
+                <span>Mutation Testing bằng PIT trên Spring PetClinic</span>
+                <span>GVHD: ThS. Nguyễn Thế Lâm &bull; Nhóm 20</span>
+            </div>
+        </footer>
+    </div>
+    
+        <div class="deck-notes">
+            <strong>[SPEAKER NOTES — TV1 (Trịnh Trung Hiếu) &bull; 75s (03:45 - 05:00)]:</strong><br>
+            Trong quá trình triển khai, nhóm gặp sự cố kỹ thuật lớn: Spring Boot 4 kéo theo JUnit Platform 6.0.3, khiến phiên bản PIT gợi ý trong syllabus bị crash minion ngay khi khởi động. Em đã nghiên cứu tài liệu kỹ thuật của PIT và nâng cấp lên bộ đôi pitest-maven 1.30.0 và pitest-junit5-plugin 1.2.3, đồng thời vô hiệu hóa JaCoCo agent để tránh xung đột bytecode. Nhóm cũng kích hoạt nhóm mutator STRONGER toàn diện nhất và cài đặt trực tiếp Cổng chất lượng Quality Gate vào pom.xml với ngưỡng 88% đột biến và 95% độ bao phủ. Bất kỳ commit nào làm điểm số tụt dưới 88% đều bị hủy bỏ ngay lập tức. Sau đây, xin mời bạn Minh Tài trình bày về chiến lược kiểm thử hộp đen.
+        </div>
+    </div>
+        
+    <div class="slide-wrapper">
+        
+    <div class="slide" id="slide-5">
+        <header class="slide-header">
+            <div class="header-left">
+                <span class="role-badge">TV3 (Trần Minh Tài)</span>
+                <span class="time-badge">90s (05:00 - 06:30)</span>
+                <span class="project-tag">Program_R01-K03 &bull; Slide 5/12</span>
+            </div>
+            <div class="header-right">
+                <span class="school-tag">ĐH Đà Lạt &bull; Khoa CNTT</span>
+            </div>
+        </header>
+
+        <div class="slide-title-block">
+            <h1 class="slide-title">Thiết kế kiểm thử Hộp đen: BVA & Bảng quyết định (45 tests)</h1>
+            <p class="slide-subtitle">Vét cạn giá trị biên và tổ hợp điều kiện logic trên Domain Model và Validator</p>
+        </div>
+
+        <div class="message-banner">
+            <span class="msg-icon">&#128161;</span>
+            <span class="msg-text">Áp dụng kỹ thuật BVA 2-point và Decision Table 8 quy tắc diệt sạch 100% mutants domain</span>
+        </div>
+
+        <div class="slide-content-grid">
+            <div class="content-pane">
+                <ul class="bullet-list">
+                    <li><strong>Phân công TV3:</strong> 45 ca kiểm thử độc lập, tất định trên <code>Owner</code>, <code>Pet</code>, <code>Visit</code>, <code>PetValidator</code>.</li><li><strong>Phân tích giá trị biên BVA (2-point boundary):</strong><br>&bull; Kiểm chuẩn độ dài tên pet tại ngưỡng biên 30 và 31 ký tự (<code>MAX_NAME_LENGTH = 30</code>).<br>&bull; Tiêu diệt triệt để <code>ConditionalsBoundaryMutator</code> tại <code>PetValidator:58</code> (đổi <code>&gt;</code> thành <code>&ge;</code>).</li><li><strong>Bảng quyết định (Decision Table 8 rules):</strong><br>&bull; 8 tổ hợp điều kiện: <code>hasText &amp;&amp; isNew &amp;&amp; getPet() != null</code> trong <code>PetController</code>.<br>&bull; Bảng quyết định 2 chiều cho <code>Owner.addPet</code>: kiểm tra thực thể mới vs đã lưu và trùng ID.</li><li><strong>Assert nội dung sâu (Deep Assertion):</strong> So khớp chuỗi <code>toString()</code>, xác minh <code>print(null)</code> trả về <code>"&lt;null&gt;"</code>.</li><li><strong>Kết quả:</strong> Diệt sạch 100% mutants trên các lớp Domain Model và Validator.</li>
+                </ul>
+            </div>
+            
+        <div class="visual-pane">
+            <div class="card-table">
+                <div class="card-header">Chiến lược Hộp đen TV3</div>
+                <table class="truth-tbl">
+                    <thead><tr><th>Kỹ thuật</th><th>Target Code</th><th>Toán tử PIT</th><th>Kết quả</th></tr></thead>
+                    <tbody><tr><td>BVA Biên 30/31</td><td><code>PetValidator:58</code></td><td>ConditionalsBoundary</td><td class="badge-kill">KILLED (100%)</td></tr><tr><td>Decision Table (8 rules)</td><td><code>PetController logic</code></td><td>NegateConditionals</td><td class="badge-kill">KILLED (100%)</td></tr><tr><td>Deep Assert toString</td><td><code>NamedEntity / Base</code></td><td>EmptyObjectReturn</td><td class="badge-kill">KILLED (100%)</td></tr></tbody>
+                </table>
+            </div>
+        </div>
+        
+        </div>
+
+        <footer class="slide-footer">
+            <div class="progress-bar-container">
+                <div class="progress-bar" style="width: 41.66666666666667%;"></div>
+            </div>
+            <div class="footer-info">
+                <span>Mutation Testing bằng PIT trên Spring PetClinic</span>
+                <span>GVHD: ThS. Nguyễn Thế Lâm &bull; Nhóm 20</span>
+            </div>
+        </footer>
+    </div>
+    
+        <div class="deck-notes">
+            <strong>[SPEAKER NOTES — TV3 (Trần Minh Tài) &bull; 90s (05:00 - 06:30)]:</strong><br>
+            Kính thưa Thầy, em chịu trách nhiệm thiết kế 45 ca kiểm thử hộp đen tập trung vào tầng Domain và Validator. Điểm yếu lớn của bộ test ban đầu là chỉ test tên pet 31 ký tự mà không test biên 30 ký tự, khiến PIT đổi dấu lớn hơn thành lớn hơn hoặc bằng mà test cũ vẫn Pass. Em đã áp dụng kỹ thuật Phân tích giá trị biên BVA, viết ca test chấp nhận tên đúng 30 ký tự để diệt gọn mutant này. Đồng thời, em xây dựng các Bảng quyết định toàn diện cho hàm addPet và getPet của Owner để vét cạn mọi tổ hợp cờ isNew và ID trùng nhau. Nhờ vậy, toàn bộ 45 test của em đều đạt tính tất định cao và diệt sạch các mutant trên domain model. Tiếp theo, xin mời bạn Bảo Bảo trình bày về kiểm thử hộp trắng tầng Controller.
+        </div>
+    </div>
+        
+    <div class="slide-wrapper">
+        
+    <div class="slide" id="slide-6">
+        <header class="slide-header">
+            <div class="header-left">
+                <span class="role-badge">TV4 (Trương Bảo Bảo)</span>
+                <span class="time-badge">120s (06:30 - 08:30)</span>
+                <span class="project-tag">Program_R01-K03 &bull; Slide 6/12</span>
+            </div>
+            <div class="header-right">
+                <span class="school-tag">ĐH Đà Lạt &bull; Khoa CNTT</span>
+            </div>
+        </header>
+
+        <div class="slide-title-block">
+            <h1 class="slide-title">Đồ thị luồng điều khiển, McCabe V(G)=3 & Detached Entity (36 tests)</h1>
+            <p class="slide-subtitle">Hóa giải điểm mù Model Aliasing của Spring MockMvc bằng POJO Unit Test và ArgumentCaptor</p>
+        </div>
+
+        <div class="message-banner">
+            <span class="msg-icon">&#128161;</span>
+            <span class="msg-text">Phát hiện lỗ hổng Form Binder ghi đè thực thể trong bộ nhớ và giải quyết triệt để</span>
+        </div>
+
+        <div class="slide-content-grid">
+            <div class="content-pane">
+                <ul class="bullet-list">
+                    <li><strong>Phân công TV4:</strong> 36 test methods trên <code>OwnerController</code>, <code>PetController</code>, <code>VisitController</code>.</li><li><strong>Giải phẫu Đồ thị luồng phương thức updatePetDetails:</strong><br>&bull; Cấu trúc: 7 đỉnh, 8 cạnh, 2 điểm quyết định rẽ nhánh &rArr; Độ phức tạp Cyclomatic <strong>V(G) = 3</strong>.<br>&bull; 3 đường cơ sở McCabe: BP23 (fail-fast ID null), BP24 (update fields đỉnh N4), BP25 (add mới).</li><li><strong>Tử huyệt đỉnh N4 & Điểm mù Spring MockMvc:</strong><br>&bull; Form DataBinder tự động gán dữ liệu trước khi chạy, biến 3 lệnh copy <code>setName</code>, <code>setBirthDate</code>, <code>setType</code> thành gán dư thừa (<code>x = x</code>). Test cũ vẫn xanh khi PIT xóa 3 dòng này!</li><li><strong>Giải pháp đột phá Detached Entity:</strong><br>&bull; Tạo POJO unit test, truyền thực thể tách rời (<code>detached</code> mang tên "Betty" vs <code>managed</code> mang tên "petty").<br>&bull; Dùng Mockito <code>ArgumentCaptor&lt;Owner&gt;</code> bắt thực thể tại <code>saveAndFlush</code> để assert từng trường &rArr; Diệt 100% mutants!</li>
+                </ul>
+            </div>
+            
+        <div class="visual-pane">
+            <div class="info-card" style="border-left: 4px solid #3A86FF;">
+                <div class="info-title">Đồ thị luồng updatePetDetails [V(G)=3]</div>
+                <div class="info-desc">
+                    &bull; N1: Vào hàm kiểm tra ownerId &amp; petId null.<br>
+                    &bull; N2: Rẽ nhánh <code>isNew()</code>.<br>
+                    &bull; N3: Tìm kiếm pet trong danh sách.<br>
+                    &bull; <strong>N4 (Tử huyệt):</strong> 3 lệnh sao chép field.<br>
+                    &bull; N5: <code>owner.save(owner)</code> lưu CSDL.<br>
+                    &bull; N6: Redirect về trang hiển thị.<br>
+                    &bull; N7: Kết thúc hàm.
+                </div>
+                <div class="score-formula" style="margin-top:12px;">
+                    <strong>Vũ khí:</strong> Detached Entity + ArgumentCaptor
+                </div>
+            </div>
+        </div>
+        
+        </div>
+
+        <footer class="slide-footer">
+            <div class="progress-bar-container">
+                <div class="progress-bar" style="width: 50.0%;"></div>
+            </div>
+            <div class="footer-info">
+                <span>Mutation Testing bằng PIT trên Spring PetClinic</span>
+                <span>GVHD: ThS. Nguyễn Thế Lâm &bull; Nhóm 20</span>
+            </div>
+        </footer>
+    </div>
+    
+        <div class="deck-notes">
+            <strong>[SPEAKER NOTES — TV4 (Trương Bảo Bảo) &bull; 120s (06:30 - 08:30)]:</strong><br>
+            Tiếp nối phần TV3, em phụ trách kiểm thử hộp trắng cho 3 Controller. Như Thầy thấy trên đồ thị luồng phương thức updatePetDetails, độ phức tạp McCabe là 3 tương ứng 3 đường cơ sở. Tại đỉnh N4 có 3 lệnh sao chép trường dữ liệu. Điểm mù cực lớn của MockMvc là cơ chế Form Binder đã tự động ghi đè dữ liệu lên chính entity trong bộ nhớ, khiến các lệnh copy này thành gán dư thừa. Khi PIT xóa sạch 3 dòng này, test MockMvc cũ vẫn xanh! Để diệt tận gốc tử huyệt này, em đã đưa test về tầng POJO thuần, truyền một đối tượng detached riêng biệt và dùng Mockito ArgumentCaptor để chặn bắt thực thể tại hàm saveAndFlush. Nếu mutant xóa lệnh gán, dữ liệu cũ giữ nguyên và test sẽ đánh trượt ngay lập tức. Sau đây, xin kính mời bạn Việt Linh trình bày phân tích số liệu RCA và chứng minh đột biến tương đương.
+        </div>
+    </div>
+        
+    <div class="slide-wrapper">
+        
+    <div class="slide" id="slide-7">
+        <header class="slide-header">
+            <div class="header-left">
+                <span class="role-badge">TV5 (Hoàng Việt Linh)</span>
+                <span class="time-badge">65s (08:30 - 09:35)</span>
+                <span class="project-tag">Program_R01-K03 &bull; Slide 7/12</span>
+            </div>
+            <div class="header-right">
+                <span class="school-tag">ĐH Đà Lạt &bull; Khoa CNTT</span>
+            </div>
+        </header>
+
+        <div class="slide-title-block">
+            <h1 class="slide-title">"Ảo giác an toàn": 97% Line Coverage vs. 67% Mutation Score</h1>
+            <p class="slide-subtitle">Vạch trần khoảng trống kiểm thử (Test Gap) 29.62% giữa việc chạy qua lệnh và bắt lỗi</p>
+        </div>
+
+        <div class="message-banner">
+            <span class="msg-icon">&#128161;</span>
+            <span class="msg-text">Thực thi dòng mã (Execution) không đồng nghĩa với kiểm tra đúng đắn (Assertion & Propagation)!</span>
+        </div>
+
+        <div class="slide-content-grid">
+            <div class="content-pane">
+                <ul class="bullet-list">
+                    <li><strong>Hiện tượng thực nghiệm tại gói owner.* (Hình G.1):</strong><br>&bull; Bộ test gốc của Spring PetClinic đạt độ bao phủ dòng rất cao: <strong>96.80% (242/250 lines)</strong>.<br>&bull; Tuy nhiên, điểm Mutation Score ban đầu chỉ đạt khiêm tốn: <strong>67.18% (131/195 killed)</strong>.</li><li><strong>Khoảng trống kiểm thử nguy hiểm (Test Gap):</strong> Chênh lệch lên tới <strong>29.62%</strong>!</li><li><strong>Vạch trần bản chất khoa học:</strong><br>&bull; Line Coverage chỉ đo lường nạp lệnh vào CPU (<strong>Execution / Reachability</strong>).<br>&bull; Line Coverage hoàn toàn bỏ qua năng lực của Assertion và sự lan truyền lỗi (<strong>Propagation</strong>).</li><li><strong>Kết quả bứt phá của nhóm:</strong><br>&bull; Đưa Line Coverage đạt tuyệt đối <strong>100.00% (250/250 lines)</strong>.<br>&bull; Đưa Mutation Score đạt <strong>98.46% (192/195 killed)</strong>, triệt tiêu hoàn toàn khoảng trống rủi ro!</li>
+                </ul>
+            </div>
+            <div class="visual-pane"><img src="file:///D:/Kiểm Thử Phần Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/reports/figures/fig1_coverage_vs_mutation.png" alt="fig1_coverage_vs_mutation.png" class="slide-fig" /></div>
+        </div>
+
+        <footer class="slide-footer">
+            <div class="progress-bar-container">
+                <div class="progress-bar" style="width: 58.333333333333336%;"></div>
+            </div>
+            <div class="footer-info">
+                <span>Mutation Testing bằng PIT trên Spring PetClinic</span>
+                <span>GVHD: ThS. Nguyễn Thế Lâm &bull; Nhóm 20</span>
+            </div>
+        </footer>
+    </div>
+    
+        <div class="deck-notes">
+            <strong>[SPEAKER NOTES — TV5 (Hoàng Việt Linh) &bull; 65s (08:30 - 09:35)]:</strong><br>
+            Kính thưa Thầy và Hội đồng, tiếp nối phần trình bày của bạn Bảo Bảo, em xin đại diện nhóm phân tích chuyên sâu về chất lượng kiểm thử. Trên màn hình là Hình G.1 — biểu đồ minh chứng cho phát hiện học thuật quan trọng nhất của đề tài: 'Ảo giác an toàn' của độ bao phủ dòng. Khi tiếp nhận mã nguồn gốc của Spring PetClinic, JaCoCo báo cáo một con số rất ấn tượng: 96.80% Line Coverage, chỉ sót đúng 8 dòng mã. Thế nhưng khi tiêm đột biến bằng PIT, điểm số thực tế chỉ đạt 67.18%, để lọt lưới tới 64 mutants nguy hiểm. Khoảng trống kiểm thử lên tới gần 30%! Điều này chứng minh rằng code được thực thi không đồng nghĩa với code được kiểm tra đúng đắn. Nhờ 81 test case bổ sung được thiết kế bài bản, nhóm đã đưa Line Coverage lên tuyệt đối 100% và Mutation Score đạt 98.46%, xóa bỏ hoàn toàn khoảng trống rủi ro này.
+        </div>
+    </div>
+        
+    <div class="slide-wrapper">
+        
+    <div class="slide" id="slide-8">
+        <header class="slide-header">
+            <div class="header-left">
+                <span class="role-badge">TV5 (Hoàng Việt Linh)</span>
+                <span class="time-badge">75s (09:35 - 10:50)</span>
+                <span class="project-tag">Program_R01-K03 &bull; Slide 8/12</span>
+            </div>
+            <div class="header-right">
+                <span class="school-tag">ĐH Đà Lạt &bull; Khoa CNTT</span>
+            </div>
+        </header>
+
+        <div class="slide-title-block">
+            <h1 class="slide-title">Phân tích nguyên nhân gốc rễ (RCA) 64 Survivors & 6 Code Smells</h1>
+            <p class="slide-subtitle">Chuẩn hóa mô hình IEEE 1044 / IEEE 610.12 và giải mã 6 nhóm nguyên nhân khiếm khuyết</p>
+        </div>
+
+        <div class="message-banner">
+            <span class="msg-icon">&#128161;</span>
+            <span class="msg-text">Hơn 64% mutants sống sót xuất phát từ thiếu Bảng quyết định và thiếu verify tương tác void</span>
+        </div>
+
+        <div class="slide-content-grid">
+            <div class="content-pane">
+                <ul class="bullet-list">
+                    <li><strong>Chuẩn hóa mô hình RCA:</strong> Áp dụng chuỗi chuyển hóa IEEE 1044 (Human Error &rarr; Fault &rarr; Failure).</li><li><strong>Phân bổ 64 Mutants sống sót ở Baseline vào 6 nhóm nguyên nhân (Bảng G.5, Hình G.3):</strong><br>&bull; 1. Thiếu Bảng quyết định cho logic phức tạp: <strong>27 mutants (42.19%)</strong>.<br>&bull; 2. Thiếu verify tương tác hàm void/binder: <strong>14 mutants (21.88%)</strong>.<br>&bull; 3. Nhánh ngoại lệ & luồng rẽ thiếu độ bao phủ: <strong>9 mutants (14.06%)</strong>.<br>&bull; 4. Phân tích giá trị biên BVA & tính toán số học: <strong>6 mutants (9.38%)</strong>.<br>&bull; 5. MockMvc che giấu cập nhật & gán dư thừa: <strong>5 mutants (7.81%)</strong>.<br>&bull; 6. Thiếu assert nội dung sâu & giá trị trả về: <strong>3 mutants (4.69%)</strong>.</li><li><strong>Phát hiện 6 Code Smells trong PetClinic:</strong> Dead-Store dòng 167, điều kiện dư dòng 108, truy vấn lặp dòng 181... Ghi nhận độc lập mà không can thiệp mã nguồn.</li>
+                </ul>
+            </div>
+            <div class="visual-pane"><img src="file:///D:/Kiểm Thử Phần Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/reports/figures/fig3_survivors_by_mutator.png" alt="fig3_survivors_by_mutator.png" class="slide-fig" /></div>
+        </div>
+
+        <footer class="slide-footer">
+            <div class="progress-bar-container">
+                <div class="progress-bar" style="width: 66.66666666666666%;"></div>
+            </div>
+            <div class="footer-info">
+                <span>Mutation Testing bằng PIT trên Spring PetClinic</span>
+                <span>GVHD: ThS. Nguyễn Thế Lâm &bull; Nhóm 20</span>
+            </div>
+        </footer>
+    </div>
+    
+        <div class="deck-notes">
+            <strong>[SPEAKER NOTES — TV5 (Hoàng Việt Linh) &bull; 75s (09:35 - 10:50)]:</strong><br>
+            Để tìm hiểu vì sao 64 mutant ở Baseline sống sót, em đã thực hiện phân tích nguyên nhân gốc rễ RCA theo chuẩn IEEE 1044 và IEEE 610.12. Kết quả bóc tách cho thấy nguyên nhân lớn nhất chiếm hơn 42% là do bài test cũ thiếu Bảng quyết định, dẫn đến bỏ sót các tổ hợp rẽ nhánh lồng nhau. Nguyên nhân thứ hai chiếm gần 22% là do thiếu lệnh verify kiểm tra các hàm void, đặc biệt là cấu hình bảo mật cấm bind trường ID trong Controller. Bên cạnh việc chỉ ra điểm yếu của test suite, kiểm thử đột biến còn hoạt động như một kính hiển vi vạch trần 6 Code Smells trong mã nguồn PetClinic. Điển hình như lệnh gán dead-store tại OwnerController dòng 167 hay biểu thức điều kiện phòng vệ cực đoan tại Owner dòng 108. Tuân thủ nghiêm ngặt ràng buộc đóng băng mã nguồn sản phẩm, nhóm không sửa code mà chuyển hóa các phát hiện này thành ma trận truy vết và khuyến nghị tái cấu trúc.
+        </div>
+    </div>
+        
+    <div class="slide-wrapper">
+        
+    <div class="slide" id="slide-9">
+        <header class="slide-header">
+            <div class="header-left">
+                <span class="role-badge">TV5 (Hoàng Việt Linh)</span>
+                <span class="time-badge">70s (10:50 - 12:00)</span>
+                <span class="project-tag">Program_R01-K03 &bull; Slide 9/12</span>
+            </div>
+            <div class="header-right">
+                <span class="school-tag">ĐH Đà Lạt &bull; Khoa CNTT</span>
+            </div>
+        </header>
+
+        <div class="slide-title-block">
+            <h1 class="slide-title">Chứng minh toán học 3 Equivalent Mutants & Điểm hiệu chỉnh 100%</h1>
+            <p class="slide-subtitle">Đại số Boolean, Bảng chân trị 5 lớp tương đương và Đồ thị luồng CFG bất biến</p>
+        </div>
+
+        <div class="message-banner">
+            <span class="msg-icon">&#128161;</span>
+            <span class="msg-text">3 mutants sống sót cuối cùng là đột biến tương đương &rArr; Điểm hiệu chỉnh đạt tuyệt đối 100.00%!</span>
+        </div>
+
+        <div class="slide-content-grid">
+            <div class="content-pane">
+                <ul class="bullet-list">
+                    <li><strong>Định nghĩa toán học:</strong> &forall; I &isin; D, P(I) &equiv; M(I) &rArr; Bất khả tiêu diệt bởi bất kỳ ca test nào!</li><li><strong>Mutant M1 &amp; M2 (<code>Owner.java:108</code> — ép <code>!isNew()</code> thành <code>true</code>):</strong><br>&bull; Vì <code>isNew() &hArr; id == null</code>, khi ID khác null điều kiện phụ thuộc hoàn toàn vào <code>Objects.equals(id1, id2)</code>.<br>&bull; Bảng chân trị 5 lớp tương đương chứng minh C_orig &equiv; C_M1 &equiv; C_M2 trên 100% không gian trạng thái (đã kiểm chứng tự động bằng script Python 9/9 case).</li><li><strong>Mutant M3 (<code>OwnerController.java:167</code> — xóa <code>owner.setId(ownerId)</code>):</strong><br>&bull; Đồ thị luồng CFG chứng minh khối guard dòng 161 đã bảo toàn bất biến <code>owner.getId() == ownerId</code> trước khi chạm dòng 167 &rArr; Lệnh gán là dead-store thuần túy.</li><li><strong>Điểm số hiệu chỉnh học thuật (Adjusted Mutation Score):</strong><br>&bull; Điểm thô chính thức của PIT: <strong>192 / 195 = 98.46%</strong>.<br>&bull; Điểm hiệu chỉnh khả thi: <strong>192 / (195 - 3) = 192 / 192 = 100.00% (Hoàn hảo)</strong>.</li>
+                </ul>
+            </div>
+            
+        <div class="visual-pane">
+            <div class="card-table">
+                <div class="card-header">Bảng chân trị 5 lớp tương đương (Owner.java:108)</div>
+                <table class="truth-tbl">
+                    <thead>
+                        <tr>
+                            <th>Lớp đầu vào (x, y)</th>
+                            <th>&not;a</th>
+                            <th>&not;b</th>
+                            <th>e (x=y)</th>
+                            <th>C_orig</th>
+                            <th>C_M1</th>
+                            <th>C_M2</th>
+                            <th>Kết quả</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>1. (null, null)</td><td>0</td><td>0</td><td>1</td><td class="res-0">0</td><td class="res-0">0</td><td class="res-0">0</td><td class="eq-badge">ĐỒNG NHẤT</td></tr>
+                        <tr><td>2. (null, 1)</td><td>0</td><td>1</td><td>0</td><td class="res-0">0</td><td class="res-0">0</td><td class="res-0">0</td><td class="eq-badge">ĐỒNG NHẤT</td></tr>
+                        <tr><td>3. (1, null)</td><td>1</td><td>0</td><td>0</td><td class="res-0">0</td><td class="res-0">0</td><td class="res-0">0</td><td class="eq-badge">ĐỒNG NHẤT</td></tr>
+                        <tr><td>4. (1, 2)</td><td>1</td><td>1</td><td>0</td><td class="res-0">0</td><td class="res-0">0</td><td class="res-0">0</td><td class="eq-badge">ĐỒNG NHẤT</td></tr>
+                        <tr class="hl-row"><td>5. (1, 1)</td><td>1</td><td>1</td><td>1</td><td class="res-1">1</td><td class="res-1">1</td><td class="res-1">1</td><td class="eq-badge">ĐỒNG NHẤT</td></tr>
+                    </tbody>
+                </table>
+                <div class="score-formula">
+                    <strong>Adjusted Score:</strong> 192 / (195 - 3) = <strong>100.00%</strong>
+                </div>
+            </div>
+        </div>
+        
+        </div>
+
+        <footer class="slide-footer">
+            <div class="progress-bar-container">
+                <div class="progress-bar" style="width: 75.0%;"></div>
+            </div>
+            <div class="footer-info">
+                <span>Mutation Testing bằng PIT trên Spring PetClinic</span>
+                <span>GVHD: ThS. Nguyễn Thế Lâm &bull; Nhóm 20</span>
+            </div>
+        </footer>
+    </div>
+    
+        <div class="deck-notes">
+            <strong>[SPEAKER NOTES — TV5 (Hoàng Việt Linh) &bull; 70s (10:50 - 12:00)]:</strong><br>
+            Điểm nhấn học thuật đặc sắc nhất trong phần việc của em là chứng minh hình thức cho 3 mutants sống sót cuối cùng. Đây không phải là điểm yếu của bộ test, mà là 3 Đột biến tương đương về mặt ngữ nghĩa: Tại Owner dòng 108, hai mutant ép các mệnh đề isNew thành true. Em đã mô hình hóa đại số Boolean và lập bảng chân trị trên toàn bộ 5 lớp tương đương của không gian trạng thái. Kết quả chứng minh giá trị logic của mutant luôn đồng nhất tuyệt đối 100% với code gốc, và đã được xác thực tự động bằng script Python duyệt vét cạn. Tương tự tại OwnerController dòng 167, phân tích đồ thị luồng chứng minh khối guard phía trước đã đảm bảo hai ID chắc chắn bằng nhau. Lệnh setId chỉ là một dead-store phòng thủ, việc xóa nó không làm thay đổi bất kỳ hành vi nào của hệ thống. Vì vậy, khi loại trừ 3 mutant tương đương khỏi không gian đột biến khả thi, điểm số hiệu chỉnh thực tế của nhóm đạt tuyệt đối 100%. Sau đây, xin mời bạn Trung Hiếu trình bày về đường ống CI/CD.
+        </div>
+    </div>
+        
+    <div class="slide-wrapper">
+        
+    <div class="slide" id="slide-10">
+        <header class="slide-header">
+            <div class="header-left">
+                <span class="role-badge">TV1 (Trịnh Trung Hiếu)</span>
+                <span class="time-badge">75s (12:00 - 13:15)</span>
+                <span class="project-tag">Program_R01-K03 &bull; Slide 10/12</span>
+            </div>
+            <div class="header-right">
+                <span class="school-tag">ĐH Đà Lạt &bull; Khoa CNTT</span>
+            </div>
+        </header>
+
+        <div class="slide-title-block">
+            <h1 class="slide-title">Đường ống CI/CD GitHub Actions & Tính khả tái 1-lệnh</h1>
+            <p class="slide-subtitle">Tự động hóa toàn diện 6 bước Fail-Fast và kiểm chứng thực nghiệm trong 35–45 giây</p>
+        </div>
+
+        <div class="message-banner">
+            <span class="msg-icon">&#128161;</span>
+            <span class="msg-text">Đóng gói toàn diện kịch bản CI/CD trên cloud và lệnh thực thi tức thì trên máy trạm</span>
+        </div>
+
+        <div class="slide-content-grid">
+            <div class="content-pane">
+                <ul class="bullet-list">
+                    <li><strong>Đường ống CI/CD 6 bước Fail-Fast (<code>.github/workflows/mutation-test.yml</code>):</strong><br>&bull; Bước 1 &amp; 2: Checkout mã nguồn <code>actions/checkout@v4</code> &amp; Setup JDK 17 Temurin + Maven Cache.<br>&bull; Bước 3: Cổng kiểm thử nhanh: Chạy 153 Unit Tests (ngắt ngay lập tức nếu phát sinh hồi quy).<br>&bull; Bước 4: Cổng chất lượng K03: Thực thi PIT Mutation Testing &amp; chặn build nếu score &lt; 88%.<br>&bull; Bước 5: Xuất bảng tóm tắt trực quan <code>$GITHUB_STEP_SUMMARY</code> lên giao diện GitHub Actions.<br>&bull; Bước 6: Đóng gói và lưu trữ Artifacts báo cáo HTML/XML trong 30 ngày.</li><li><strong>Tính khả tái thực nghiệm 1-lệnh (One-Liner Reproducibility):</strong><br>&bull; PowerShell: <code>./mvnw.cmd test-compile org.pitest:pitest-maven:mutationCoverage '-Djacoco.skip=true'</code><br>&bull; Thời gian chạy thực tế: ~35–45 giây trên máy trạm thông thường.</li>
+                </ul>
+            </div>
+            
+        <div class="visual-pane">
+            <div class="info-card" style="border-left: 4px solid #10B981;">
+                <div class="info-title">Kiến trúc CI/CD Fail-Fast 6 bước</div>
+                <div class="info-desc" style="line-height: 1.8;">
+                    &bull; <strong>1. Checkout:</strong> Fetch source full-depth.<br>
+                    &bull; <strong>2. Setup:</strong> JDK 17 Temurin + Maven Cache.<br>
+                    &bull; <strong>3. Fast Gate:</strong> 153 Unit Tests (15 giây).<br>
+                    &bull; <strong>4. K03 Gate:</strong> PIT Mutation Testing (&ge; 88%).<br>
+                    &bull; <strong>5. Summary:</strong> Xuất báo cáo Markdown trực quan.<br>
+                    &bull; <strong>6. Artifacts:</strong> Lưu trữ HTML/XML 30 ngày.
+                </div>
+            </div>
+        </div>
+        
+        </div>
+
+        <footer class="slide-footer">
+            <div class="progress-bar-container">
+                <div class="progress-bar" style="width: 83.33333333333334%;"></div>
+            </div>
+            <div class="footer-info">
+                <span>Mutation Testing bằng PIT trên Spring PetClinic</span>
+                <span>GVHD: ThS. Nguyễn Thế Lâm &bull; Nhóm 20</span>
+            </div>
+        </footer>
+    </div>
+    
+        <div class="deck-notes">
+            <strong>[SPEAKER NOTES — TV1 (Trịnh Trung Hiếu) &bull; 75s (12:00 - 13:15)]:</strong><br>
+            Để đảm bảo tính liên tục và kiểm soát chất lượng tự động, nhóm đã thiết lập đường ống CI/CD hoàn chỉnh trên GitHub Actions theo kiến trúc 6 bước Fail-Fast. Hệ thống sẽ ưu tiên chạy 153 unit test trong 15 giây đầu; nếu có lỗi hồi quy, quy trình sẽ ngắt ngay để tiết kiệm tài nguyên. Tiếp theo, bước phân tích đột biến PIT sẽ thực thi và áp dụng Cổng chất lượng 88%. Nhóm cũng tối ưu hóa khả năng tái hiện với duy nhất 1 câu lệnh Maven Wrapper, giúp bất kỳ ai cũng có thể tự mình kiểm chứng kết quả trong vòng 35 đến 45 giây. Sau đây, xin mời bạn Việt Linh tổng kết kết quả và bài học kinh nghiệm của nhóm.
+        </div>
+    </div>
+        
+    <div class="slide-wrapper">
+        
+    <div class="slide" id="slide-11">
+        <header class="slide-header">
+            <div class="header-left">
+                <span class="role-badge">TV5 (Hoàng Việt Linh)</span>
+                <span class="time-badge">60s (13:15 - 14:15)</span>
+                <span class="project-tag">Program_R01-K03 &bull; Slide 11/12</span>
+            </div>
+            <div class="header-right">
+                <span class="school-tag">ĐH Đà Lạt &bull; Khoa CNTT</span>
+            </div>
+        </header>
+
+        <div class="slide-title-block">
+            <h1 class="slide-title">Tổng kết đối sánh Baseline vs Final & 4 Bài học kinh nghiệm</h1>
+            <p class="slide-subtitle">Bứt phá toàn diện mọi chỉ số kiểm thử và đúc kết 4 bài học thực tiễn vô giá</p>
+        </div>
+
+        <div class="message-banner">
+            <span class="msg-icon">&#128161;</span>
+            <span class="msg-text">Số test tăng từ 49 lên 130, triệt tiêu 100% vùng mã mù và đạt điểm hiệu chỉnh 100.00%</span>
+        </div>
+
+        <div class="slide-content-grid">
+            <div class="content-pane">
+                <ul class="bullet-list">
+                    <li><strong>Bảng đối sánh chỉ số cốt lõi (Khớp 100% <code>metrics_summary.csv</code>):</strong><br>&bull; Số lượng test gói owner: <strong>49 &rarr; 130 tests (+81 tests)</strong> | Toàn dự án: <strong>153 pass</strong>.<br>&bull; Line Coverage: <strong>96.80% (242/250) &rarr; 100.00% (250/250 lines)</strong>.<br>&bull; Mutants Killed: <strong>131 / 195 (67.18%) &rarr; 192 / 195 (98.46%)</strong> (&ge; 88%).<br>&bull; Mutants Survived: <strong>55 &rarr; 3 mutants</strong> (100% Equivalent Mutants).<br>&bull; Mutants No Coverage: <strong>9 &rarr; 0 mutants</strong> (Triệt tiêu hoàn toàn vùng mù).<br>&bull; Điểm số hiệu chỉnh: <strong>68.23% &rarr; 100.00% (192/192)</strong>.</li><li><strong>4 Bài học kinh nghiệm thực tiễn:</strong><br>1. Line Coverage cao tạo an tâm giả tạo; Mutation Testing là thước đo chất lượng thực sự.<br>2. Cảnh giác cạm bẫy Model Aliasing của Spring MockMvc; bắt buộc có POJO Unit Test.<br>3. Bắt buộc kiểm tra tương tác (Interaction Testing) bằng <code>verify</code> cho các phương thức void.<br>4. Kỹ thuật hộp trắng (BVA, Decision Table, Basis Path) là vũ khí tối thượng diệt mutant.</li>
+                </ul>
+            </div>
+            <div class="visual-pane"><img src="file:///D:/Kiểm Thử Phần Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/reports/figures/fig4_tests_growth.png" alt="fig4_tests_growth.png" class="slide-fig" /></div>
+        </div>
+
+        <footer class="slide-footer">
+            <div class="progress-bar-container">
+                <div class="progress-bar" style="width: 91.66666666666666%;"></div>
+            </div>
+            <div class="footer-info">
+                <span>Mutation Testing bằng PIT trên Spring PetClinic</span>
+                <span>GVHD: ThS. Nguyễn Thế Lâm &bull; Nhóm 20</span>
+            </div>
+        </footer>
+    </div>
+    
+        <div class="deck-notes">
+            <strong>[SPEAKER NOTES — TV5 (Hoàng Việt Linh) &bull; 60s (13:15 - 14:15)]:</strong><br>
+            Nhìn lại toàn bộ hành trình, Bảng tổng kết trên slide đã minh chứng sự bứt phá vượt bậc của dự án: Số lượng test tăng từ 49 lên 130 bài, độ phủ dòng đạt tuyệt đối 100%, và điểm đột biến tăng ngoạn mục từ 67.18% lên 98.46%, loại bỏ hoàn toàn các vùng mã mù kiểm thử. Bốn bài học kinh nghiệm lớn nhất mà nhóm đúc kết được là: Không bao giờ tin tưởng mù quáng vào Code Coverage; luôn cảnh giác trước cạm bẫy che giấu lỗi của MockMvc; bắt buộc phải verify tương tác cho các hàm void bảo mật; và áp dụng bài bản các kỹ thuật hộp trắng kinh điển như BVA và Bảng quyết định. Đây chính là hành trang chuyên môn vô giá cho chúng em trong ngành kiểm thử phần mềm chuyên nghiệp.
+        </div>
+    </div>
+        
+    <div class="slide-wrapper">
+        
+    <div class="slide" id="slide-12">
+        <header class="slide-header">
+            <div class="header-left">
+                <span class="role-badge">Toàn nhóm (Nhóm 20)</span>
+                <span class="time-badge">45s (14:15 - 15:00)</span>
+                <span class="project-tag">Program_R01-K03 &bull; Slide 12/12</span>
+            </div>
+            <div class="header-right">
+                <span class="school-tag">ĐH Đà Lạt &bull; Khoa CNTT</span>
+            </div>
+        </header>
+
+        <div class="slide-title-block">
+            <h1 class="slide-title">LỜI CẢM ƠN VÀ SẴN SÀNG CHO PHIÊN HỎI ĐÁP (Q&A)</h1>
+            <p class="slide-subtitle">Chân thành cảm ơn ThS. Nguyễn Thế Lâm và Hội đồng chấm đề tài Kiểm thử phần mềm</p>
+        </div>
+
+        <div class="message-banner">
+            <span class="msg-icon">&#128161;</span>
+            <span class="msg-text">Toàn thể 5 thành viên Nhóm 20 sẵn sàng đón nhận câu hỏi phản biện từ Hội đồng!</span>
+        </div>
+
+        <div class="slide-content-grid">
+            <div class="content-pane">
+                <ul class="bullet-list">
+                    <li><strong>Lời cảm ơn:</strong> Nhóm 20 xin chân thành cảm ơn ThS. Nguyễn Thế Lâm đã tận tình định hướng, hỗ trợ và truyền cảm hứng trong suốt học phần.</li><li><strong>Cam kết chất lượng:</strong> Đề tài đã hoàn thành xuất sắc toàn bộ mục tiêu với tinh thần khoa học trung thực, minh bạch.</li><li><strong>Lưu trữ mã nguồn:</strong> Toàn bộ source code, bộ test, tài liệu báo cáo và nhật ký thực nghiệm được lưu trữ đầy đủ tại GitHub Repository của nhóm.</li><li><strong>SẴN SÀNG CHO PHIÊN PHẢN BIỆN:</strong> Kính mời quý Thầy Cô và Hội đồng đặt câu hỏi!</li>
+                </ul>
+            </div>
+            
+        <div class="visual-pane">
+            <div class="qa-hero">
+                <div class="qa-icon">&#10067;&#10068;</div>
+                <div class="qa-text">SẴN SÀNG CHO PHIÊN Q&amp;A</div>
+                <div class="qa-sub">15 câu hỏi phản biện đã chuẩn bị kỹ lưỡng</div>
+            </div>
+        </div>
+        
+        </div>
+
+        <footer class="slide-footer">
+            <div class="progress-bar-container">
+                <div class="progress-bar" style="width: 100.0%;"></div>
+            </div>
+            <div class="footer-info">
+                <span>Mutation Testing bằng PIT trên Spring PetClinic</span>
+                <span>GVHD: ThS. Nguyễn Thế Lâm &bull; Nhóm 20</span>
+            </div>
+        </footer>
+    </div>
+    
+        <div class="deck-notes">
+            <strong>[SPEAKER NOTES — Toàn nhóm (Nhóm 20) &bull; 45s (14:15 - 15:00)]:</strong><br>
+            Kính thưa Thầy Nguyễn Thế Lâm và quý Thầy Cô trong Hội đồng, phần báo cáo của nhóm 20 về đề tài R01 kết hợp K03 đến đây là hoàn tất. Chúng em xin chân thành cảm ơn sự hướng dẫn tận tâm của Thầy trong suốt học phần Kiểm thử phần mềm. Giờ đây, toàn thể 5 thành viên của nhóm đã sẵn sàng đón nhận những câu hỏi, nhận xét và đóng góp quý báu từ Thầy và Hội đồng. Chúng em xin trân trọng cảm ơn!
+        </div>
+    </div>
+        </body></html>

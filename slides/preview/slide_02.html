@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Slide 2: Bài toán nghiệp vụ SUT & Phạm vi đột biến gói owner.*</title>
+    <style>
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        background: #0B132B;
+        color: #E2E8F0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+    }
+    .slide {
+        width: 1920px;
+        height: 1080px;
+        padding: 50px 70px 40px 70px;
+        background: radial-gradient(circle at top right, #1C2541 0%, #0B132B 100%);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        position: relative;
+    }
+    .slide-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 44px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding-bottom: 12px;
+    }
+    .header-left { display: flex; align-items: center; gap: 14px; }
+    .role-badge {
+        background: #3A86FF;
+        color: #FFFFFF;
+        font-weight: 700;
+        font-size: 15px;
+        padding: 6px 14px;
+        border-radius: 20px;
+        letter-spacing: 0.5px;
+    }
+    .time-badge {
+        background: rgba(255, 255, 255, 0.1);
+        color: #CBD5E1;
+        font-size: 14px;
+        padding: 6px 12px;
+        border-radius: 20px;
+    }
+    .project-tag { color: #94A3B8; font-size: 14px; font-weight: 500; }
+    .school-tag { color: #94A3B8; font-size: 14px; font-weight: 600; }
+
+    .slide-title-block { margin-top: 18px; margin-bottom: 10px; }
+    .slide-title {
+        font-size: 38px;
+        font-weight: 800;
+        color: #FFFFFF;
+        line-height: 1.25;
+        letter-spacing: -0.5px;
+    }
+    .slide-subtitle {
+        font-size: 20px;
+        color: #94A3B8;
+        margin-top: 6px;
+        font-weight: 400;
+    }
+
+    .message-banner {
+        background: rgba(58, 134, 255, 0.15);
+        border-left: 5px solid #3A86FF;
+        padding: 12px 20px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 18px;
+    }
+    .msg-icon { font-size: 20px; }
+    .msg-text {
+        font-size: 18px;
+        font-weight: 600;
+        color: #93C5FD;
+    }
+
+    .slide-content-grid {
+        display: grid;
+        grid-template-columns: 1.05fr 0.95fr;
+        gap: 40px;
+        flex: 1;
+        align-items: center;
+        min-height: 0;
+    }
+    .content-pane {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    .bullet-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+    .bullet-list li {
+        font-size: 19px;
+        line-height: 1.5;
+        color: #E2E8F0;
+        position: relative;
+        padding-left: 28px;
+    }
+    .bullet-list li::before {
+        content: "■";
+        position: absolute;
+        left: 0;
+        color: #3A86FF;
+        font-size: 14px;
+        top: 3px;
+    }
+    .bullet-list code {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-family: Consolas, monospace;
+        font-size: 17px;
+        color: #F8FAFC;
+    }
+    .bullet-list strong { color: #FFFFFF; font-weight: 700; }
+
+    .visual-pane {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        max-height: 580px;
+    }
+    .slide-fig {
+        max-width: 100%;
+        max-height: 560px;
+        object-fit: contain;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+        background: #FFFFFF;
+        padding: 10px;
+    }
+
+    .badges-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        width: 100%;
+    }
+    .metric-card {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        padding: 28px 20px;
+        text-align: center;
+        transition: transform 0.2s;
+    }
+    .card-emerald { border-color: #10B981; background: rgba(16, 185, 129, 0.1); }
+    .card-blue { border-color: #3A86FF; background: rgba(58, 134, 255, 0.1); }
+    .card-gold { border-color: #F59E0B; background: rgba(245, 158, 11, 0.1); }
+    .metric-val { font-size: 44px; font-weight: 900; color: #FFFFFF; margin-bottom: 6px; }
+    .metric-lbl { font-size: 18px; color: #94A3B8; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+    .metric-sub { font-size: 15px; color: #CBD5E1; margin-top: 4px; }
+
+    .info-stack { display: flex; flex-direction: column; gap: 16px; width: 100%; }
+    .info-card {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-left: 4px solid #3A86FF;
+        border-radius: 12px;
+        padding: 18px 24px;
+    }
+    .info-title { font-size: 19px; font-weight: 700; color: #FFFFFF; margin-bottom: 6px; }
+    .info-desc { font-size: 16px; color: #CBD5E1; line-height: 1.45; }
+
+    .card-table {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        overflow: hidden;
+        padding: 16px;
+    }
+    .card-header {
+        font-size: 18px;
+        font-weight: 700;
+        color: #93C5FD;
+        margin-bottom: 12px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding-bottom: 8px;
+    }
+    .truth-tbl {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 15px;
+    }
+    .truth-tbl th {
+        background: rgba(255, 255, 255, 0.08);
+        color: #FFFFFF;
+        padding: 8px 10px;
+        text-align: center;
+    }
+    .truth-tbl td {
+        padding: 7px 10px;
+        text-align: center;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .hl-row { background: rgba(58, 134, 255, 0.15); font-weight: 700; }
+    .res-0 { color: #94A3B8; font-weight: 700; }
+    .res-1 { color: #10B981; font-weight: 900; }
+    .eq-badge {
+        background: #10B981;
+        color: #FFFFFF;
+        font-size: 12px;
+        font-weight: 700;
+        padding: 3px 8px;
+        border-radius: 10px;
+    }
+    .badge-kill {
+        background: #10B981;
+        color: #FFFFFF;
+        font-size: 13px;
+        font-weight: 700;
+        padding: 4px 10px;
+        border-radius: 12px;
+        display: inline-block;
+    }
+    .score-formula {
+        margin-top: 14px;
+        background: rgba(16, 185, 129, 0.15);
+        border: 1px solid #10B981;
+        border-radius: 8px;
+        padding: 10px;
+        text-align: center;
+        font-size: 17px;
+        color: #A7F3D0;
+    }
+
+    .rip-card {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        padding: 20px;
+    }
+    .rip-step {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 8px;
+        padding: 12px 16px;
+        font-size: 16px;
+    }
+    .step-badge {
+        background: #3A86FF;
+        color: #FFFFFF;
+        font-weight: 900;
+        font-size: 18px;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .rip-arrow { text-align: center; font-size: 22px; color: #3A86FF; margin: 4px 0; }
+    .rip-outcome { text-align: center; margin-top: 14px; }
+
+    .gate-card {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        padding: 20px;
+    }
+    .code-box {
+        background: #000000;
+        border-radius: 8px;
+        padding: 16px;
+        color: #A7F3D0;
+        font-family: Consolas, monospace;
+        font-size: 15px;
+        overflow-x: auto;
+    }
+    .gate-status {
+        margin-top: 14px;
+        padding: 12px;
+        border-radius: 8px;
+        background: rgba(16, 185, 129, 0.15);
+        color: #A7F3D0;
+        text-align: center;
+        font-size: 18px;
+    }
+
+    .qa-hero {
+        text-align: center;
+        padding: 40px;
+        background: rgba(58, 134, 255, 0.1);
+        border: 2px dashed #3A86FF;
+        border-radius: 20px;
+        width: 100%;
+    }
+    .qa-icon { font-size: 72px; margin-bottom: 16px; }
+    .qa-text { font-size: 32px; font-weight: 900; color: #FFFFFF; }
+    .qa-sub { font-size: 18px; color: #93C5FD; margin-top: 8px; }
+
+    .slide-footer {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding-top: 12px;
+    }
+    .progress-bar-container {
+        width: 100%;
+        height: 4px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 2px;
+        overflow: hidden;
+    }
+    .progress-bar { height: 100%; background: #3A86FF; border-radius: 2px; }
+    .footer-info {
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+        color: #64748B;
+        font-weight: 500;
+    }
+
+    </style>
+</head>
+<body>
+
+    <div class="slide" id="slide-2">
+        <header class="slide-header">
+            <div class="header-left">
+                <span class="role-badge">TV2 (Trần Đình Việt Huy)</span>
+                <span class="time-badge">90s (01:00 - 02:30)</span>
+                <span class="project-tag">Program_R01-K03 &bull; Slide 2/12</span>
+            </div>
+            <div class="header-right">
+                <span class="school-tag">ĐH Đà Lạt &bull; Khoa CNTT</span>
+            </div>
+        </header>
+
+        <div class="slide-title-block">
+            <h1 class="slide-title">Bài toán nghiệp vụ SUT & Phạm vi đột biến gói owner.*</h1>
+            <p class="slide-subtitle">Khóa cứng commit khả tái và kiểm chứng 3 luồng nghiệp vụ cốt lõi trên runtime thật</p>
+        </div>
+
+        <div class="message-banner">
+            <span class="msg-icon">&#128161;</span>
+            <span class="msg-text">Tập trung tối đa tài nguyên vào gói nghiệp vụ phức tạp nhất gồm 8 thực thể & controllers</span>
+        </div>
+
+        <div class="slide-content-grid">
+            <div class="content-pane">
+                <ul class="bullet-list">
+                    <li><strong>SUT chuẩn hóa:</strong> Spring PetClinic khóa cứng commit SHA <code>500158f732419217507c7656904b8e6aa1bcc0d6</code>.</li><li><strong>Ngăn xếp công nghệ:</strong> Java 17 LTS, Spring Boot 4.1.0, Spring Data JPA, Thymeleaf, CSDL H2.</li><li><strong>Phạm vi cô lập K03:</strong> Gói <code>owner.*</code> gồm 8 lớp nghiệp vụ trọng yếu (Owner, Pet, Visit, các Controllers).</li><li><strong>03 Luồng nghiệp vụ cốt lõi đã xác minh HTTP 200 trên runtime thật:</strong><br>&bull; <em>Luồng 1:</em> Tìm kiếm và phân trang chủ nuôi (<code>OwnerController.processFindForm</code>).<br>&bull; <em>Luồng 2:</em> Thêm mới thú cưng kèm kiểm chuẩn (<code>PetController</code> + <code>PetValidator</code>).<br>&bull; <em>Luồng 3:</em> Đặt lịch khám và lưu hồ sơ bệnh án thú cưng (<code>VisitController</code>).</li><li><strong>Bảo toàn kiến trúc:</strong> Toàn bộ 153 unit tests của cả repo luôn PASS (zero regression).</li>
+                </ul>
+            </div>
+            <div class="visual-pane"><div class="info-stack">
+            <div class="info-card">
+                <div class="info-title">Owner Entity & Lifecycle</div>
+                <div class="info-desc">Quản lý quan hệ 1-N với Pets, phân trang tìm kiếm theo họ, validate số điện thoại và địa chỉ.</div>
+            </div>
+        
+            <div class="info-card">
+                <div class="info-title">Pet & Custom Validator</div>
+                <div class="info-desc">Kiểm chuẩn độ dài tên thú cưng (&le; 30 ký tự), bắt buộc loại pet và ngày sinh hợp lệ.</div>
+            </div>
+        
+            <div class="info-card">
+                <div class="info-title">Visit & Medical Records</div>
+                <div class="info-desc">Lưu vết lịch sử khám bệnh, liên kết chặt chẽ Pet-Visit, phục vụ chẩn đoán lâm sàng.</div>
+            </div>
+        </div></div>
+        </div>
+
+        <footer class="slide-footer">
+            <div class="progress-bar-container">
+                <div class="progress-bar" style="width: 16.666666666666664%;"></div>
+            </div>
+            <div class="footer-info">
+                <span>Mutation Testing bằng PIT trên Spring PetClinic</span>
+                <span>GVHD: ThS. Nguyễn Thế Lâm &bull; Nhóm 20</span>
+            </div>
+        </footer>
+    </div>
+    
+</body>
+</html>

@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Slide 7: "Ảo giác an toàn": 97% Line Coverage vs. 67% Mutation Score</title>
+    <style>
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        background: #0B132B;
+        color: #E2E8F0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+    }
+    .slide {
+        width: 1920px;
+        height: 1080px;
+        padding: 50px 70px 40px 70px;
+        background: radial-gradient(circle at top right, #1C2541 0%, #0B132B 100%);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        position: relative;
+    }
+    .slide-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 44px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding-bottom: 12px;
+    }
+    .header-left { display: flex; align-items: center; gap: 14px; }
+    .role-badge {
+        background: #3A86FF;
+        color: #FFFFFF;
+        font-weight: 700;
+        font-size: 15px;
+        padding: 6px 14px;
+        border-radius: 20px;
+        letter-spacing: 0.5px;
+    }
+    .time-badge {
+        background: rgba(255, 255, 255, 0.1);
+        color: #CBD5E1;
+        font-size: 14px;
+        padding: 6px 12px;
+        border-radius: 20px;
+    }
+    .project-tag { color: #94A3B8; font-size: 14px; font-weight: 500; }
+    .school-tag { color: #94A3B8; font-size: 14px; font-weight: 600; }
+
+    .slide-title-block { margin-top: 18px; margin-bottom: 10px; }
+    .slide-title {
+        font-size: 38px;
+        font-weight: 800;
+        color: #FFFFFF;
+        line-height: 1.25;
+        letter-spacing: -0.5px;
+    }
+    .slide-subtitle {
+        font-size: 20px;
+        color: #94A3B8;
+        margin-top: 6px;
+        font-weight: 400;
+    }
+
+    .message-banner {
+        background: rgba(58, 134, 255, 0.15);
+        border-left: 5px solid #3A86FF;
+        padding: 12px 20px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 18px;
+    }
+    .msg-icon { font-size: 20px; }
+    .msg-text {
+        font-size: 18px;
+        font-weight: 600;
+        color: #93C5FD;
+    }
+
+    .slide-content-grid {
+        display: grid;
+        grid-template-columns: 1.05fr 0.95fr;
+        gap: 40px;
+        flex: 1;
+        align-items: center;
+        min-height: 0;
+    }
+    .content-pane {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    .bullet-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+    .bullet-list li {
+        font-size: 19px;
+        line-height: 1.5;
+        color: #E2E8F0;
+        position: relative;
+        padding-left: 28px;
+    }
+    .bullet-list li::before {
+        content: "■";
+        position: absolute;
+        left: 0;
+        color: #3A86FF;
+        font-size: 14px;
+        top: 3px;
+    }
+    .bullet-list code {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-family: Consolas, monospace;
+        font-size: 17px;
+        color: #F8FAFC;
+    }
+    .bullet-list strong { color: #FFFFFF; font-weight: 700; }
+
+    .visual-pane {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        max-height: 580px;
+    }
+    .slide-fig {
+        max-width: 100%;
+        max-height: 560px;
+        object-fit: contain;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+        background: #FFFFFF;
+        padding: 10px;
+    }
+
+    .badges-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        width: 100%;
+    }
+    .metric-card {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        padding: 28px 20px;
+        text-align: center;
+        transition: transform 0.2s;
+    }
+    .card-emerald { border-color: #10B981; background: rgba(16, 185, 129, 0.1); }
+    .card-blue { border-color: #3A86FF; background: rgba(58, 134, 255, 0.1); }
+    .card-gold { border-color: #F59E0B; background: rgba(245, 158, 11, 0.1); }
+    .metric-val { font-size: 44px; font-weight: 900; color: #FFFFFF; margin-bottom: 6px; }
+    .metric-lbl { font-size: 18px; color: #94A3B8; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+    .metric-sub { font-size: 15px; color: #CBD5E1; margin-top: 4px; }
+
+    .info-stack { display: flex; flex-direction: column; gap: 16px; width: 100%; }
+    .info-card {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-left: 4px solid #3A86FF;
+        border-radius: 12px;
+        padding: 18px 24px;
+    }
+    .info-title { font-size: 19px; font-weight: 700; color: #FFFFFF; margin-bottom: 6px; }
+    .info-desc { font-size: 16px; color: #CBD5E1; line-height: 1.45; }
+
+    .card-table {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        overflow: hidden;
+        padding: 16px;
+    }
+    .card-header {
+        font-size: 18px;
+        font-weight: 700;
+        color: #93C5FD;
+        margin-bottom: 12px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding-bottom: 8px;
+    }
+    .truth-tbl {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 15px;
+    }
+    .truth-tbl th {
+        background: rgba(255, 255, 255, 0.08);
+        color: #FFFFFF;
+        padding: 8px 10px;
+        text-align: center;
+    }
+    .truth-tbl td {
+        padding: 7px 10px;
+        text-align: center;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .hl-row { background: rgba(58, 134, 255, 0.15); font-weight: 700; }
+    .res-0 { color: #94A3B8; font-weight: 700; }
+    .res-1 { color: #10B981; font-weight: 900; }
+    .eq-badge {
+        background: #10B981;
+        color: #FFFFFF;
+        font-size: 12px;
+        font-weight: 700;
+        padding: 3px 8px;
+        border-radius: 10px;
+    }
+    .badge-kill {
+        background: #10B981;
+        color: #FFFFFF;
+        font-size: 13px;
+        font-weight: 700;
+        padding: 4px 10px;
+        border-radius: 12px;
+        display: inline-block;
+    }
+    .score-formula {
+        margin-top: 14px;
+        background: rgba(16, 185, 129, 0.15);
+        border: 1px solid #10B981;
+        border-radius: 8px;
+        padding: 10px;
+        text-align: center;
+        font-size: 17px;
+        color: #A7F3D0;
+    }
+
+    .rip-card {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        padding: 20px;
+    }
+    .rip-step {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 8px;
+        padding: 12px 16px;
+        font-size: 16px;
+    }
+    .step-badge {
+        background: #3A86FF;
+        color: #FFFFFF;
+        font-weight: 900;
+        font-size: 18px;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .rip-arrow { text-align: center; font-size: 22px; color: #3A86FF; margin: 4px 0; }
+    .rip-outcome { text-align: center; margin-top: 14px; }
+
+    .gate-card {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        padding: 20px;
+    }
+    .code-box {
+        background: #000000;
+        border-radius: 8px;
+        padding: 16px;
+        color: #A7F3D0;
+        font-family: Consolas, monospace;
+        font-size: 15px;
+        overflow-x: auto;
+    }
+    .gate-status {
+        margin-top: 14px;
+        padding: 12px;
+        border-radius: 8px;
+        background: rgba(16, 185, 129, 0.15);
+        color: #A7F3D0;
+        text-align: center;
+        font-size: 18px;
+    }
+
+    .qa-hero {
+        text-align: center;
+        padding: 40px;
+        background: rgba(58, 134, 255, 0.1);
+        border: 2px dashed #3A86FF;
+        border-radius: 20px;
+        width: 100%;
+    }
+    .qa-icon { font-size: 72px; margin-bottom: 16px; }
+    .qa-text { font-size: 32px; font-weight: 900; color: #FFFFFF; }
+    .qa-sub { font-size: 18px; color: #93C5FD; margin-top: 8px; }
+
+    .slide-footer {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding-top: 12px;
+    }
+    .progress-bar-container {
+        width: 100%;
+        height: 4px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 2px;
+        overflow: hidden;
+    }
+    .progress-bar { height: 100%; background: #3A86FF; border-radius: 2px; }
+    .footer-info {
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+        color: #64748B;
+        font-weight: 500;
+    }
+
+    </style>
+</head>
+<body>
+
+    <div class="slide" id="slide-7">
+        <header class="slide-header">
+            <div class="header-left">
+                <span class="role-badge">TV5 (Hoàng Việt Linh)</span>
+                <span class="time-badge">65s (08:30 - 09:35)</span>
+                <span class="project-tag">Program_R01-K03 &bull; Slide 7/12</span>
+            </div>
+            <div class="header-right">
+                <span class="school-tag">ĐH Đà Lạt &bull; Khoa CNTT</span>
+            </div>
+        </header>
+
+        <div class="slide-title-block">
+            <h1 class="slide-title">"Ảo giác an toàn": 97% Line Coverage vs. 67% Mutation Score</h1>
+            <p class="slide-subtitle">Vạch trần khoảng trống kiểm thử (Test Gap) 29.62% giữa việc chạy qua lệnh và bắt lỗi</p>
+        </div>
+
+        <div class="message-banner">
+            <span class="msg-icon">&#128161;</span>
+            <span class="msg-text">Thực thi dòng mã (Execution) không đồng nghĩa với kiểm tra đúng đắn (Assertion & Propagation)!</span>
+        </div>
+
+        <div class="slide-content-grid">
+            <div class="content-pane">
+                <ul class="bullet-list">
+                    <li><strong>Hiện tượng thực nghiệm tại gói owner.* (Hình G.1):</strong><br>&bull; Bộ test gốc của Spring PetClinic đạt độ bao phủ dòng rất cao: <strong>96.80% (242/250 lines)</strong>.<br>&bull; Tuy nhiên, điểm Mutation Score ban đầu chỉ đạt khiêm tốn: <strong>67.18% (131/195 killed)</strong>.</li><li><strong>Khoảng trống kiểm thử nguy hiểm (Test Gap):</strong> Chênh lệch lên tới <strong>29.62%</strong>!</li><li><strong>Vạch trần bản chất khoa học:</strong><br>&bull; Line Coverage chỉ đo lường nạp lệnh vào CPU (<strong>Execution / Reachability</strong>).<br>&bull; Line Coverage hoàn toàn bỏ qua năng lực của Assertion và sự lan truyền lỗi (<strong>Propagation</strong>).</li><li><strong>Kết quả bứt phá của nhóm:</strong><br>&bull; Đưa Line Coverage đạt tuyệt đối <strong>100.00% (250/250 lines)</strong>.<br>&bull; Đưa Mutation Score đạt <strong>98.46% (192/195 killed)</strong>, triệt tiêu hoàn toàn khoảng trống rủi ro!</li>
+                </ul>
+            </div>
+            <div class="visual-pane"><img src="file:///D:/Kiểm Thử Phần Mềm/Nhom_20/Mutation-Testing_-Spring-PetClinic-System/reports/figures/fig1_coverage_vs_mutation.png" alt="fig1_coverage_vs_mutation.png" class="slide-fig" /></div>
+        </div>
+
+        <footer class="slide-footer">
+            <div class="progress-bar-container">
+                <div class="progress-bar" style="width: 58.333333333333336%;"></div>
+            </div>
+            <div class="footer-info">
+                <span>Mutation Testing bằng PIT trên Spring PetClinic</span>
+                <span>GVHD: ThS. Nguyễn Thế Lâm &bull; Nhóm 20</span>
+            </div>
+        </footer>
+    </div>
+    
+</body>
+</html>

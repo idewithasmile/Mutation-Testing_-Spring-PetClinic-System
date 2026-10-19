@@ -7,5 +7,9 @@
 	<suppress files="node[\\/].*" checks=".*"/>
 	<suppress files="build[\\/].*" checks=".*"/>
 	<suppress files="target[\\/].*" checks=".*"/>
-	<suppress files=".+\.(jar|git|ico|p12|gif|jks|jpg|svg|log)" checks="NoHttp"/>
+	<suppress files="scripts[\\/].*" checks=".*"/>
+	<suppress files="docs[\\/].*" checks=".*"/>
+	<suppress files="slides[\\/].*" checks=".*"/>
+	<suppress files="reports[\\/].*" checks=".*"/>
+	<suppress files=".+\.(jar|git|ico|p12|gif|jks|jpg|svg|log|docx|pptx|pdf|png)" checks="NoHttp"/>
 </suppressions>

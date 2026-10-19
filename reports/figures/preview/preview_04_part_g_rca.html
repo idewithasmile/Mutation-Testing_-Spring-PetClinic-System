@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>BÁO CÁO TỔNG KẾT HỌC PHẦN: ĐỀ TÀI R01 (SPRING PETCLINIC) + K03 (MUTATION TESTING)</title>
+<style>
+  @page {
+    size: A4 portrait;
+    margin-top: 20mm;
+    margin-bottom: 20mm;
+    margin-left: 30mm;
+    margin-right: 20mm;
+    @bottom-right {
+      content: "Trang " counter(page);
+      font-family: "Times New Roman", Times, serif;
+      font-size: 10pt;
+    }
+  }
+
+  *, *:before, *:after {
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 12pt;
+    line-height: 1.35;
+    color: #111;
+    background-color: #fff;
+    margin: 0;
+    padding: 0;
+  }
+
+  h1.report-title {
+    font-size: 18pt;
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+    color: #0d3b66;
+    margin-top: 20px;
+    margin-bottom: 25px;
+    line-height: 1.3;
+  }
+
+  h2 {
+    font-size: 14pt;
+    font-weight: bold;
+    color: #1d3557;
+    margin-top: 28px;
+    margin-bottom: 12px;
+    border-bottom: 1.5px solid #1d3557;
+    padding-bottom: 4px;
+  }
+
+  h2.section-break {
+    page-break-before: always;
+    margin-top: 15px;
+  }
+
+  h3 {
+    font-size: 13pt;
+    font-weight: bold;
+    color: #2b2d42;
+    margin-top: 20px;
+    margin-bottom: 8px;
+  }
+
+  h4 {
+    font-size: 12pt;
+    font-weight: bold;
+    color: #333;
+    margin-top: 14px;
+    margin-bottom: 6px;
+  }
+
+  h5 {
+    font-size: 11.5pt;
+    font-weight: bold;
+    font-style: italic;
+    color: #444;
+    margin-top: 10px;
+    margin-bottom: 4px;
+  }
+
+  p {
+    text-align: justify;
+    margin-top: 0;
+    margin-bottom: 8px;
+    text-indent: 0;
+  }
+
+  /* Table styling */
+  .table-container {
+    width: 100%;
+    margin: 14px 0;
+    overflow-x: auto;
+    page-break-inside: avoid;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10pt;
+    line-height: 1.25;
+    margin: 0 auto;
+    page-break-inside: avoid;
+  }
+
+  th, td {
+    border: 1px solid #555;
+    padding: 5px 7px;
+    text-align: left;
+    vertical-align: top;
+    word-break: break-word;
+  }
+
+  th {
+    background-color: #e9ecef;
+    font-weight: bold;
+    color: #111;
+    text-align: center;
+  }
+
+  tr:nth-child(even) td {
+    background-color: #fbfbfb;
+  }
+
+  /* Callout styling */
+  .callout {
+    margin: 12px 0;
+    padding: 10px 14px;
+    border-left: 4px solid #0077b6;
+    background-color: #f0f7fb;
+    border-radius: 2px;
+    page-break-inside: avoid;
+    font-size: 11pt;
+  }
+
+  .callout-header {
+    font-weight: bold;
+    color: #0077b6;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    font-size: 9.5pt;
+  }
+
+  .callout-tip {
+    border-left-color: #2a9d8f;
+    background-color: #eef8f6;
+  }
+  .callout-tip .callout-header { color: #2a9d8f; }
+
+  .callout-important {
+    border-left-color: #e76f51;
+    background-color: #fdf2ef;
+  }
+  .callout-important .callout-header { color: #e76f51; }
+
+  .callout-warning {
+    border-left-color: #e63946;
+    background-color: #fdf0f0;
+  }
+  .callout-warning .callout-header { color: #e63946; }
+
+  /* Code block */
+  pre.code-block {
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 9pt;
+    line-height: 1.25;
+    background-color: #f6f8fa;
+    border: 1px solid #d0d7de;
+    border-radius: 4px;
+    padding: 8px 12px;
+    margin: 10px 0;
+    overflow-x: auto;
+    page-break-inside: avoid;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  code.inline-code {
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 10pt;
+    background-color: #eff1f3;
+    padding: 1px 4px;
+    border-radius: 3px;
+    color: #c7254e;
+  }
+
+  /* Figures */
+  figure.report-figure {
+    text-align: center;
+    margin: 16px 0;
+    page-break-inside: avoid;
+  }
+
+  figure.report-figure img {
+    max-width: 95%;
+    max-height: 480px;
+    height: auto;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+
+  figcaption {
+    font-size: 10pt;
+    font-style: italic;
+    color: #444;
+    margin-top: 6px;
+    text-align: center;
+  }
+
+  /* Lists */
+  li.ul-item, li.ol-item {
+    margin-bottom: 4px;
+    line-height: 1.3;
+    text-align: justify;
+  }
+
+  hr.section-divider {
+    border: 0;
+    height: 1px;
+    background: #ccc;
+    margin: 20px 0;
+  }
+
+  .math-block {
+    text-align: center;
+    font-family: "Times New Roman", Times, serif;
+    font-style: italic;
+    font-size: 12pt;
+    margin: 12px 0;
+    color: #0b3954;
+  }
+
+  .math-tex {
+    font-style: italic;
+    color: #0b3954;
+  }
+
+  .doc-link {
+    color: #0d3b66;
+    text-decoration: underline;
+  }
+</style>
+</head>
+<body><h3>G.3. PHÂN TÍCH NGUYÊN NHÂN CỐT LÕI (ROOT CAUSE ANALYSIS - RCA)</h3>
+<p>Áp dụng tiêu chuẩn quốc tế IEEE 1044 (Phân loại lỗi phần mềm) và IEEE 610.12 (Thuật ngữ kỹ thuật phần mềm), nhóm tiến hành phân tích nguyên nhân gốc rễ cho toàn bộ <strong>64 mutants không bị tiêu diệt</strong> tại giai đoạn Baseline (<code class="inline-code">reports/data/survivors_baseline.csv</code>).</p>
+<h4>G.3.1. Phương pháp luận phân tích theo chuẩn IEEE 1044 / IEEE 610.12</h4>
+<p>Quá trình phân tích tuân thủ chuỗi nhân quả 3 tầng:</p>
+<li class="ol-item"><strong>ERROR (Sai sót con người):</strong> Nhận thức sai lầm hoặc thiếu sót của kiểm thử viên/lập trình viên trong quá trình phân tích và thiết kế kịch bản test (ví dụ: ngộ nhận <code class="inline-code">MockMvc</code> bao quát hết tác dụng phụ; tin rằng mã HTTP 200/302 là đủ; bỏ qua phân tích giá trị biên).</li>
+<li class="ol-item"><strong>FAULT (Khiếm khuyết trong bộ kiểm thử):</strong> Lỗ hổng cụ thể tồn tại trong mã test (ví dụ: thiếu lệnh <code class="inline-code">verify()</code> kiểm tra tương tác void; thiếu ca kiểm thử ném ngoại lệ khi ID không tồn tại; thiếu tổ hợp điều kiện trong bảng quyết định).</li>
+<li class="ol-item"><strong>FAILURE (Thất bại quan sát được = Mutant sống sót):</strong> Khi PIT tiêm đột biến thay đổi mã nguồn, test suite vẫn PASS (xanh) thay vì FAIL (đỏ). Biểu hiện thất bại là mutant trạng thái <code class="inline-code">SURVIVED</code> hoặc <code class="inline-code">NO_COVERAGE</code>.</li>
+<pre class="code-block "><code>┌───────────────────────────────┐
+│     ERROR (Sai sót con người) │  Nhận thức sai lầm về Spring Framework,
+└──────────────┬────────────────┘  chỉ kiểm tra luồng danh định, bỏ qua tác dụng phụ.
+               │ sinh ra
+               ▼
+┌───────────────────────────────┐
+│  FAULT (Khiếm khuyết Test)    │  Thiếu verify(), thiếu BVA, thiếu Decision Table,
+└──────────────┬────────────────┘  thiếu assertion nội dung sâu, thiếu negative path.
+               │ dẫn đến
+               ▼
+┌───────────────────────────────┐
+│ FAILURE (Mutant sống sót)     │  PIT tiêm đột biến nhưng test suite vẫn PASS.
+│   64 Baseline Survivors       │  55 Survived + 9 No Coverage.
+└───────────────────────────────┘</code></pre>
+<hr class="section-divider" />
+<h4>G.3.2. Bảng tổng hợp 6 nhóm nguyên nhân cốt lõi (RCA Summary)</h4>
+<p>Toàn bộ 64 baseline survivors được phân loại chính xác, không sót, không trùng vào 6 nhóm nguyên nhân (đã được kiểm chứng toán học bằng <span class="doc-link"><code class="inline-code">scripts/verify_rca.py</code></span>):</p>
+<h5>Bảng G.5: Bảng phân loại nguyên nhân cốt lõi (RCA) cho 64 Baseline Survivors</h5>
+<div class="table-container"><table><thead><tr><th>STT</th><th>Nhóm nguyên nhân gốc rễ (Root Cause Group)</th><th>Số lượng Mutants</th><th>Tỷ lệ (%)</th><th>Error (Sai sót con người)</th><th>Fault (Khiếm khuyết Test Suite)</th><th>Biện pháp & Kỹ thuật khắc phục (TV3 / TV4)</th></tr></thead><tbody><tr><td><strong>1</strong></td><td><strong>MockMvc che khuất cập nhật thực thể & gán dư thừa</strong></td><td>5</td><td>7.81%</td><td>Ngộ nhận <code class="inline-code">MockMvc</code> bao phủ toàn diện; không nhận thức cơ chế in-place mutation của DataBinder.</td><td>Chỉ test qua <code class="inline-code">MockMvc</code> nơi <code class="inline-code">existingPet</code> và <code class="inline-code">pet</code> trỏ cùng vùng nhớ; dòng <code class="inline-code">owner.setId</code> là dead-store.</td><td>Khởi tạo Controller trực tiếp (POJO Unit Test), truyền detached entity, dùng <code class="inline-code">ArgumentCaptor</code> (xem mục E.2); chứng minh Equivalent cho <code class="inline-code">setId</code> (xem mục G.4).</td></tr><tr><td><strong>2</strong></td><td><strong>Thiếu kiểm chứng tác dụng phụ & phương thức void</strong></td><td>14</td><td>21.88%</td><td>Chỉ kiểm tra HTTP status 200/302; giả định framework tự động gọi các hàm cấu hình và guard.</td><td>Thiếu Mockito <code class="inline-code">verify()</code> kiểm tra tương tác mock; thiếu test kích hoạt assertion tiền điều kiện (<code class="inline-code">Assert.notNull</code>).</td><td>Bổ sung Mockito <code class="inline-code">verify()</code> kiểm tra lệnh gọi <code class="inline-code">@InitBinder setDisallowedFields</code>; kiểm thử ngoại lệ cho guard (xem mục E.1 và E.2).</td></tr><tr><td><strong>3</strong></td><td><strong>Thiếu kiểm thử giá trị biên & tính toán số học</strong></td><td>6</td><td>9.38%</td><td>Chỉ kiểm tra dữ liệu danh định điển hình; bỏ qua kiểm thử biên (BVA) và chỉ số phân trang.</td><td>Thiếu test tại biên 30 và 31 ký tự; thiếu kiểm tra tính toán chỉ số trang 0-based vs 1-based (<code class="inline-code">validatedPage - 1</code>).</td><td>Áp dụng BVA 2-point (30 vs 31 ký tự, xem mục E.1); dùng <code class="inline-code">ArgumentCaptor<Pageable></code> kiểm tra <code class="inline-code">pageNumber</code> (xem mục E.2).</td></tr><tr><td><strong>4</strong></td><td><strong>Thiếu assert nội dung sâu & giá trị trả về</strong></td><td>3</td><td>4.69%</td><td>Tin rằng phương thức chạy không lỗi là dữ liệu trả về đã đúng; không kiểm tra chuỗi hoặc model.</td><td>Test suite thiếu lệnh assert trên chuỗi <code class="inline-code">toString()</code>, getter <code class="inline-code">getDescription()</code> hoặc danh sách trong Model.</td><td>Viết test kiểm tra trạng thái sâu: <code class="inline-code">assertThat(owner.toString()).contains(...)</code>, assert thuộc tính model (xem mục E.1 và E.2).</td></tr><tr><td><strong>5</strong></td><td><strong>Nhánh ngoại lệ & luồng rẽ thiếu độ bao phủ (NO_COV)</strong></td><td>9</td><td>14.06%</td><td>Bỏ qua kiểm thử đường dẫn phủ định (Negative Testing); không test trường hợp bản ghi không tồn tại.</td><td>Không có test truyền ID không tồn tại (<code class="inline-code">id = 999</code>); không có test mô phỏng form lỗi; thiếu stubbing tuần tự.</td><td>Bổ sung test truyền ID lạ ép ném ngoại lệ; thiết kế test form lỗi; dùng Mockito Sequential Stubbing (xem mục E.2).</td></tr><tr><td><strong>6</strong></td><td><strong>Thiếu bảng quyết định cho tổ hợp logic phức tạp</strong></td><td>27</td><td>42.19%</td><td>Áp dụng kiểm thử sơ sài cho các mệnh đề <code class="inline-code">if</code> ghép nhiều điều kiện; không lập Bảng quyết định.</td><td>Thiếu ca test cho các tổ hợp: pet mới vs cũ, cùng ID khác instance, khác ID, tên trùng, cờ <code class="inline-code">ignoreNew</code>.</td><td>Xây dựng Bảng quyết định toàn diện: bộ 9 test cho <code class="inline-code">Owner.addPet</code>, bộ 6 test cho <code class="inline-code">Owner.getPet</code>, bảng 2 chiều cho <code class="inline-code">PetValidator</code> (xem mục E.1).</td></tr><tr><td><strong>—</strong></td><td><strong>TỔNG CỘNG</strong></td><td><strong>64</strong></td><td><strong>100.0%</strong></td><td><em>(Khớp 100% số liệu <code class="inline-code">survivors_baseline.csv</code>, không sót bất kỳ mutant nào)</em></td><td></td><td></td></tr></tbody></table></div>
+<hr class="section-divider" />
+<h4>G.3.3. Phân tích chi tiết từng nhóm nguyên nhân và Ma trận truy vết kiểm thử</h4>
+<h5>1. Nhóm 1: MockMvc che khuất cập nhật thực thể & gán dư thừa (5 mutants)</h5>
+<li class="ul-item"><strong>Cơ chế lỗi:</strong> Spring DataBinder ghi đè trực tiếp dữ liệu HTTP lên đối tượng đã nạp từ model. Lệnh <code class="inline-code">updatePetDetails</code> gán <code class="inline-code">existingPet.setName(pet.getName())</code> thực chất là gán giá trị cho chính nó. Khi PIT xóa 3 lệnh copy trường (dòng 192–194), <code class="inline-code">MockMvc</code> không phát hiện được.</li>
+<li class="ul-item"><strong>Biện pháp tiêu diệt (TV4):</strong> Viết POJO Unit Test trực tiếp không qua Spring Context, inject đối tượng <code class="inline-code">Pet</code> tách rời (detached entity) vào <code class="inline-code">updatePetDetails</code>.</li>
+<li class="ul-item"><strong>Ma trận truy vết:</strong></li>
+<li class="ul-item"><code class="inline-code">PetController:190</code> (<code class="inline-code">RemoveConditionalMutator_EQUAL_ELSE</code>) -> Diệt bởi <code class="inline-code">PetControllerMutationTests.updateCopiesFieldsOntoManagedPet</code> (xem mục E.2, BP-PC-09).</li>
+<li class="ul-item"><code class="inline-code">PetController:192, 193, 194</code> (<code class="inline-code">VoidMethodCallMutator</code> - <code class="inline-code">setName</code>, <code class="inline-code">setBirthDate</code>, <code class="inline-code">setType</code>) -> Diệt bởi <code class="inline-code">PetControllerMutationTests.updateCopiesFieldsOntoManagedPet</code> (xem mục E.2).</li>
+<li class="ul-item"><code class="inline-code">OwnerController:167</code> (<code class="inline-code">VoidMethodCallMutator</code> - <code class="inline-code">owner.setId</code>) -> <strong>Equivalent Mutant</strong> (xem chứng minh hình thức tại Mục G.4).</li>
+<h5>2. Nhóm 2: Thiếu kiểm chứng tác dụng phụ & phương thức void (14 mutants)</h5>
+<li class="ul-item"><strong>Cơ chế lỗi:</strong> PIT xóa các lời gọi phương thức <code class="inline-code">void</code> (<code class="inline-code">VoidMethodCallMutator</code>), bao gồm lệnh cấu hình bảo mật <code class="inline-code">dataBinder.setDisallowedFields("id", "*.id")</code> và các lệnh guard <code class="inline-code">Assert.notNull</code>. Vì test baseline chỉ assert mã HTTP status, đột biến không bị phát hiện.</li>
+<li class="ul-item"><strong>Biện pháp tiêu diệt (TV3 / TV4):</strong> Sử dụng Mockito <code class="inline-code">verify()</code> kiểm tra chính xác lời gọi cấu hình Binder; viết test truyền tham số null để kích hoạt ngoại lệ từ guard <code class="inline-code">Assert.notNull</code>.</li>
+<li class="ul-item"><strong>Ma trận truy vết:</strong></li>
+<li class="ul-item"><code class="inline-code">OwnerController:61</code>, <code class="inline-code">PetController:91, 97</code>, <code class="inline-code">VisitController:53</code> -> Diệt bởi <code class="inline-code">ControllerBinderMutationTests</code> (4 test methods dùng Mockito <code class="inline-code">verify()</code>, xem mục E.2, BP-OC-01, BP-PC-01, BP-VC-01).</li>
+<li class="ul-item"><code class="inline-code">Owner:178, 179</code> (<code class="inline-code">Assert.notNull</code> petId, visit) -> Diệt bởi <code class="inline-code">OwnerMutationTests.addVisitRejectsNullPetId</code>, <code class="inline-code">addVisitRejectsNullVisit</code> (xem mục E.1, Decision Table).</li>
+<li class="ul-item"><code class="inline-code">Pet:72</code> (<code class="inline-code">Assert.notNull</code> visit) -> Diệt bởi <code class="inline-code">PetVisitModelMutationTests.petAddVisitRejectsNull</code> (xem mục E.1).</li>
+<li class="ul-item"><code class="inline-code">PetController:166</code> (<code class="inline-code">result.rejectValue</code>) -> Diệt bởi <code class="inline-code">PetControllerMutationTests.updateDuplicatePetNameRejectsField</code> (xem mục E.2).</li>
+<li class="ul-item"><code class="inline-code">VisitController:76, 108</code> (<code class="inline-code">owner.addVisit</code>, <code class="inline-code">pet.addVisit</code>) -> Diệt bởi <code class="inline-code">VisitControllerMutationTests.newVisitFormBindsAndAddsVisitToPet</code> (xem mục E.2).</li>
+<h5>3. Nhóm 3: Thiếu kiểm thử giá trị biên & tính toán số học (6 mutants)</h5>
+<li class="ul-item"><strong>Cơ chế lỗi:</strong> Kiểm thử viên chỉ chọn giá trị danh định (ví dụ tên dài 5 ký tự, trang số 1). Khi PIT đổi điều kiện ranh giới <code class="inline-code">> 30</code> thành <code class="inline-code">>= 30</code> (<code class="inline-code">ConditionalsBoundaryMutator</code>) hoặc đổi phép tính chỉ số trang <code class="inline-code">validatedPage - 1</code> thành <code class="inline-code">+ 1</code> (<code class="inline-code">MathMutator</code>), test không phát hiện được.</li>
+<li class="ul-item"><strong>Biện pháp tiêu diệt (TV3 / TV4):</strong> Áp dụng kỹ thuật Phân tích giá trị biên (BVA) 2-point tại 30 và 31 ký tự; dùng <code class="inline-code">ArgumentCaptor<Pageable></code> bắt đối tượng phân trang truyền vào repository.</li>
+<li class="ul-item"><strong>Ma trận truy vết:</strong></li>
+<li class="ul-item"><code class="inline-code">PetValidator:41</code> (biên độ dài tên 30/31 ký tự) -> Diệt bởi <code class="inline-code">PetValidatorMutationTests.name30CharsAccepted</code>, <code class="inline-code">name31CharsRejected</code> (xem mục E.1, BVA).</li>
+<li class="ul-item"><code class="inline-code">OwnerController:144</code> (<code class="inline-code">MathMutator</code> phép trừ <code class="inline-code">validatedPage - 1</code>) -> Diệt bởi <code class="inline-code">OwnerControllerMutationTests.findPaginatedRequestsZeroIndexedPage</code> (xem mục E.2, BP-OC-07).</li>
+<li class="ul-item"><code class="inline-code">OwnerController:103</code> (biên chuyển hướng trang vượt ngưỡng) -> Diệt bởi <code class="inline-code">OwnerControllerMutationTests.outOfBoundsPageRedirectsToLastPage</code> (xem mục E.2).</li>
+<li class="ul-item"><code class="inline-code">Visit:43</code> (khởi tạo ngày mặc định <code class="inline-code">now + 1</code>) -> Diệt bởi <code class="inline-code">PetVisitModelMutationTests.visitDefaultDateIsTomorrow</code> (xem mục E.1, BVA).</li>
+<h5>4. Nhóm 4: Thiếu assert nội dung sâu & giá trị trả về (3 mutants)</h5>
+<li class="ul-item"><strong>Cơ chế lỗi:</strong> PIT thay thế giá trị trả về của chuỗi bằng rỗng <code class="inline-code">""</code> hoặc tập hợp rỗng (<code class="inline-code">EmptyObjectReturnValsMutator</code>). Bộ test baseline chỉ kiểm tra đối tượng khác null mà không kiểm tra nội dung bên trong.</li>
+<li class="ul-item"><strong>Biện pháp tiêu diệt (TV3 / TV4):</strong> Viết các câu lệnh assert trạng thái sâu kiểm tra toàn diện chuỗi và thuộc tính Model.</li>
+<li class="ul-item"><strong>Ma trận truy vết:</strong></li>
+<li class="ul-item"><code class="inline-code">Owner:156</code> (<code class="inline-code">toString</code>) -> Diệt bởi <code class="inline-code">OwnerMutationTests.toStringContainsIdentityAndDetails</code> (xem mục E.1).</li>
+<li class="ul-item"><code class="inline-code">Visit:61</code> (<code class="inline-code">getDescription</code>) -> Diệt bởi <code class="inline-code">PetVisitModelMutationTests.visitDescriptionGetterSetter</code> (xem mục E.1).</li>
+<li class="ul-item"><code class="inline-code">PetController:131</code> (nạp <code class="inline-code">types</code> vào Model) -> Diệt bởi <code class="inline-code">PetControllerMutationTests.initCreationFormPopulatesPetTypesModel</code> (xem mục E.2).</li>
+<h5>5. Nhóm 5: Nhánh ngoại lệ & luồng rẽ thiếu độ bao phủ (9 mutants)</h5>
+<li class="ul-item"><strong>Cơ chế lỗi:</strong> 9 mutants trạng thái <code class="inline-code">NO_COVERAGE</code> tại baseline do mã nguồn chứa các nhánh rẽ xử lý lỗi hoặc lambda không bao giờ được kích hoạt trong kịch bản danh định thông thường.</li>
+<li class="ul-item"><strong>Biện pháp tiêu diệt (TV3 / TV4):</strong> Thiết kế kịch bản kiểm thử đường dẫn phủ định (Negative Paths): truyền ID không tồn tại (<code class="inline-code">id = 999</code>), ép ném <code class="inline-code">IllegalArgumentException</code>, sử dụng Mockito Sequential Stubbing.</li>
+<li class="ul-item"><strong>Ma trận truy vết:</strong></li>
+<li class="ul-item"><code class="inline-code">OwnerController:68</code> (lambda <code class="inline-code">orElseThrow</code> tìm owner lạ) -> Diệt bởi <code class="inline-code">OwnerControllerMutationTests.editFormWithUnknownOwnerThrowsIllegalArgument</code> (xem mục E.2, BP-OC-03).</li>
+<li class="ul-item"><code class="inline-code">OwnerController:182</code> (lambda <code class="inline-code">orElseThrow</code> trong <code class="inline-code">showOwner</code>) -> Diệt bởi <code class="inline-code">OwnerControllerMutationTests.showOwnerWithUnknownIdThrowsIllegalArgument</code> (xem mục E.2, BP-OC-09).</li>
+<li class="ul-item"><code class="inline-code">PetController:74, 82</code> (lambda <code class="inline-code">orElseThrow</code> tìm pet/owner lạ) -> Diệt bởi <code class="inline-code">PetControllerMutationTests.findPetWithUnknownPetThrowsIllegalArgument</code> (xem mục E.2, BP-PC-02).</li>
+<li class="ul-item"><code class="inline-code">VisitController:72</code> (lambda <code class="inline-code">orElseThrow</code> pet lạ) -> Diệt bởi <code class="inline-code">VisitControllerMutationTests.newVisitFormWithUnknownPetThrowsIllegalArgument</code> (xem mục E.2, BP-VC-02).</li>
+<li class="ul-item"><code class="inline-code">PetController:127, 181</code> (fallback nạp <code class="inline-code">types</code> khi validation thất bại) -> Diệt bởi <code class="inline-code">PetControllerMutationTests.processCreationFormHasErrorsRepopulatesTypes</code> (xem mục E.2, BP-PC-04).</li>
+<li class="ul-item"><code class="inline-code">Owner:112</code> (lệnh <code class="inline-code">getPets().add(pet)</code>) -> Diệt bởi <code class="inline-code">OwnerMutationTests.addPetSuccess</code> (xem mục E.1, Decision Table).</li>
+<h5>6. Nhóm 6: Thiếu bảng quyết định cho tổ hợp điều kiện logic phức tạp (27 mutants)</h5>
+<li class="ul-item"><strong>Cơ chế lỗi:</strong> Chiếm tỷ trọng áp đảo (<strong>42.19%</strong>). Các câu lệnh <code class="inline-code">if</code> ghép nhiều mệnh đề logic (<code class="inline-code">&&</code>, <code class="inline-code">||</code>) trong <code class="inline-code">Owner.addPet</code>, <code class="inline-code">Owner.getPet</code> và <code class="inline-code">PetValidator</code> bị PIT loại bỏ từng vế điều kiện (<code class="inline-code">RemoveConditionalMutator_EQUAL_IF</code> / <code class="inline-code">EQUAL_ELSE</code>). Do test baseline chỉ thử nghiệm 1–2 ca đơn giản, các đột biến thay đổi logic rẽ nhánh sống sót hàng loạt.</li>
+<li class="ul-item"><strong>Biện pháp tiêu diệt (TV3):</strong> Xây dựng Bảng quyết định (Decision Table) toàn diện, bao phủ mọi tổ hợp trạng thái logic độc lập:</li>
+<li class="ul-item">Bảng quyết định <code class="inline-code">Owner.addPet</code>: 9 ca kiểm thử (O01–O09) kiểm tra các tổ hợp pet null, cùng instance, khác instance nhưng trùng ID, pet mới chưa có ID, v.v. (xem chi tiết mục E.1).</li>
+<li class="ul-item">Bảng quyết định <code class="inline-code">Owner.getPet</code>: 6 ca kiểm thử (O10–O19) kiểm tra tìm kiếm theo tên và ID (khác hoa thường, không tìm thấy, trùng ID).</li>
+<li class="ul-item">Bảng quyết định <code class="inline-code">PetValidator</code>: 9 ca kiểm thử ma trận 2 chiều <code class="inline-code">isNew × type</code>.</li>
+<li class="ul-item"><strong>Ma trận truy vết:</strong></li>
+<li class="ul-item"><code class="inline-code">Owner:108</code> (4 mutants logic <code class="inline-code">addPet</code>) -> 2 mutants bị diệt bởi <code class="inline-code">OwnerMutationTests</code> (xem mục E.1), 2 mutants là Equivalent (xem mục G.4).</li>
+<li class="ul-item"><code class="inline-code">Owner:125, 126, 140, 141</code> (8 mutants logic <code class="inline-code">getPet</code>) -> Diệt bởi <code class="inline-code">OwnerMutationTests.getPetByIdMatchesPersistedId</code>, <code class="inline-code">getPetByNameIgnoreCase</code> (xem mục E.1).</li>
+<li class="ul-item"><code class="inline-code">PetController:153, 159, 171, 190, 204</code> (10 mutants logic form update pet) -> Diệt bởi <code class="inline-code">PetControllerMutationTests</code> (xem mục E.2).</li>
+<li class="ul-item"><code class="inline-code">PetValidator:51</code> (2 mutants logic <code class="inline-code">isNew && type == null</code>) -> Diệt bởi <code class="inline-code">PetValidatorTests.validate</code> (xem mục E.1).</li>
+<li class="ul-item"><code class="inline-code">VisitController:71, 100</code> (3 mutants logic ngày và pet rỗng) -> Diệt bởi <code class="inline-code">VisitControllerMutationTests</code> (xem mục E.2).</li>
+<hr class="section-divider" />
+</body></html>
